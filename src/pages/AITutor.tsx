@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AIChatbot from '@/components/AIChatbot';
@@ -8,6 +8,7 @@ import { useToast } from '@/components/ui/use-toast';
 
 const AITutor = () => {
   const { toast } = useToast();
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   
   const handleVoiceMode = () => {
     toast({
@@ -35,6 +36,14 @@ const AITutor = () => {
     'What are data structures in programming?',
     'How does the human circulatory system work?',
   ];
+  
+  const handleSubjectSelect = (subject: string) => {
+    setSelectedSubject(subject);
+    toast({
+      title: "Subject Selected",
+      description: `You've selected ${subject}. The AI tutor will focus on this subject.`,
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -73,10 +82,18 @@ const AITutor = () => {
               <div className="space-y-8">
                 {/* Subject Selection */}
                 <div className="bg-white p-6 rounded-lg border border-border/40">
-                  <h3 className="heading text-lg mb-4">Select Subject</h3>
+                  <h3 className="heading text-lg mb-4">
+                    Select Subject
+                    {selectedSubject && <span className="ml-2 text-sm text-primary">(Current: {selectedSubject})</span>}
+                  </h3>
                   <div className="grid grid-cols-2 gap-2">
                     {subjects.map((subject, index) => (
-                      <Button key={index} variant="outline" className="justify-start">
+                      <Button 
+                        key={index} 
+                        variant={selectedSubject === subject ? "default" : "outline"} 
+                        className="justify-start"
+                        onClick={() => handleSubjectSelect(subject)}
+                      >
                         {subject}
                       </Button>
                     ))}
