@@ -5,17 +5,12 @@ import Footer from '@/components/Footer';
 import AIChatbot from '@/components/AIChatbot';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import VoiceControl from '@/components/VoiceControl';
 
 const AITutor = () => {
   const { toast } = useToast();
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
-  
-  const handleVoiceMode = () => {
-    toast({
-      title: "Voice Mode",
-      description: "Voice interaction is coming soon!",
-    });
-  };
+  const [inputText, setInputText] = useState<string>('');
   
   const subjects = [
     'Mathematics',
@@ -45,6 +40,14 @@ const AITutor = () => {
     });
   };
 
+  const handleVoiceInput = (text: string) => {
+    setInputText(text);
+    toast({
+      title: "Voice Input Received",
+      description: `You said: "${text}"`,
+    });
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -60,14 +63,17 @@ const AITutor = () => {
               <p className="text-xl text-white/90 mb-6">
                 Your personal AI-powered tutor that helps you understand any concept, solve problems, and excel in your studies.
               </p>
-              <Button variant="secondary" onClick={handleVoiceMode} className="bg-white text-primary hover:bg-white/90">
-                <svg className="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                  <line x1="12" x2="12" y1="19" y2="22"></line>
-                </svg>
-                Enable Voice Mode (Coming Soon)
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="secondary" className="bg-white text-primary hover:bg-white/90">
+                  <svg className="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" x2="12" y1="19" y2="22"></line>
+                  </svg>
+                  Voice Mode
+                </Button>
+                <VoiceControl onVoiceInput={handleVoiceInput} />
+              </div>
             </div>
           </div>
         </section>
@@ -76,7 +82,7 @@ const AITutor = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                <AIChatbot />
+                <AIChatbot initialInput={inputText} />
               </div>
               
               <div className="space-y-8">

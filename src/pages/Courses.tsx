@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 
 // Sample course data - in a real application, this would come from an API
@@ -85,12 +85,10 @@ const coursesData = [
 
 const Courses = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleEnroll = (courseId: number) => {
-    toast({
-      title: "Enrollment Successful",
-      description: `You've enrolled in course #${courseId}. Start learning now!`,
-    });
+    navigate(`/course/${courseId}`);
   };
 
   return (
@@ -144,7 +142,8 @@ const Courses = () => {
                     <img 
                       src={course.image} 
                       alt={course.title}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
+                      onClick={() => navigate(`/course/${course.id}`)}
                     />
                   </div>
                   <CardContent className="p-6">
@@ -157,7 +156,9 @@ const Courses = () => {
                         {course.rating}
                       </span>
                     </div>
-                    <h3 className="heading text-xl mb-2">{course.title}</h3>
+                    <h3 className="heading text-xl mb-2 cursor-pointer hover:text-primary" onClick={() => navigate(`/course/${course.id}`)}>
+                      {course.title}
+                    </h3>
                     <p className="text-muted-foreground mb-4 text-sm">{course.description}</p>
                     <div className="flex flex-wrap gap-y-2 gap-x-4 text-sm mb-4">
                       <div className="flex items-center">
@@ -189,7 +190,7 @@ const Courses = () => {
                         <span className="text-muted-foreground">Instructor:</span> <br />
                         <span className="font-medium">{course.instructor}</span>
                       </div>
-                      <Button onClick={() => handleEnroll(course.id)}>Enroll Now</Button>
+                      <Button onClick={() => handleEnroll(course.id)}>View Course</Button>
                     </div>
                   </CardContent>
                 </Card>
