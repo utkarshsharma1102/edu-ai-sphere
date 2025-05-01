@@ -10,16 +10,52 @@ type VoiceControlProps = {
 const VoiceControl: React.FC<VoiceControlProps> = ({ onVoiceInput }) => {
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
+  const [recognition, setRecognition] = useState<any>(null);
   const { toast } = useToast();
 
   useEffect(() => {
     // Check if browser supports speech recognition
-    const supported = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
-    setIsSupported(supported);
-    
-    if (!supported) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      setIsSupported(true);
+      const recognitionInstance = new SpeechRecognition();
+      recognitionInstance.continuous = false;
+      recognitionInstance.interimResults = false;
+      recognitionInstance.lang = 'en-US';
+      
+      recognitionInstance.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        if (onVoiceInput) {
+          onVoiceInput(transcript);
+        }
+        stopListening();
+      };
+      
+      recognitionInstance.onerror = (event: any) => {
+        console.error('Speech recognition error', event.error);
+        toast({
+          title: "Recognition Error",
+          description: `Error: ${event.error}. Please try again.`,
+          variant: "destructive",
+        });
+        stopListening();
+      };
+
+      recognitionInstance.onend = () => {
+        setIsListening(false);
+      };
+      
+      setRecognition(recognitionInstance);
+    } else {
       console.log("Speech recognition not supported in this browser");
     }
+    
+    // Cleanup
+    return () => {
+      if (recognition) {
+        recognition.abort();
+      }
+    };
   }, []);
 
   const toggleListening = () => {
@@ -40,27 +76,30 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onVoiceInput }) => {
   };
 
   const startListening = () => {
-    toast({
-      title: "Voice Recognition",
-      description: "Voice recognition feature coming soon! We're working on it.",
-    });
-    // For demonstration purposes, we're just toggling the state
-    setIsListening(true);
-    
-    // In a real implementation, you would connect to SpeechRecognition API
-    setTimeout(() => {
-      // Simulate stopping after 3 seconds
-      stopListening();
-      
-      // Send simulated result
-      if (onVoiceInput) {
-        onVoiceInput("What is the theory of relativity?");
+    if (recognition) {
+      try {
+        recognition.start();
+        setIsListening(true);
+        toast({
+          title: "Listening",
+          description: "Speak now. I'm listening...",
+        });
+      } catch (error) {
+        console.error('Error starting speech recognition:', error);
+        toast({
+          title: "Error",
+          description: "Could not start speech recognition. Please try again.",
+          variant: "destructive",
+        });
       }
-    }, 3000);
+    }
   };
   
   const stopListening = () => {
-    setIsListening(false);
+    if (recognition && isListening) {
+      recognition.stop();
+      setIsListening(false);
+    }
   };
 
   return (
