@@ -1,9 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import VoiceControl from './VoiceControl';
 
 type Message = {
@@ -12,6 +12,10 @@ type Message = {
   isUser: boolean;
   timestamp: Date;
 };
+
+interface AIChatbotProps {
+  initialInput?: string;
+}
 
 const initialMessages: Message[] = [
   {
@@ -22,11 +26,18 @@ const initialMessages: Message[] = [
   },
 ];
 
-const AIChatbot = () => {
+const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(initialInput);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  // Effect to handle initialInput changes
+  useEffect(() => {
+    if (initialInput && initialInput !== input) {
+      setInput(initialInput);
+    }
+  }, [initialInput]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
