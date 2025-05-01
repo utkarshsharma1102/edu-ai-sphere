@@ -6,6 +6,7 @@ import AIChatbot from '@/components/AIChatbot';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import VoiceControl from '@/components/VoiceControl';
+import { Volume2 } from 'lucide-react';
 
 const AITutor = () => {
   const { toast } = useToast();
@@ -47,6 +48,14 @@ const AITutor = () => {
       description: `You said: "${text}"`,
     });
   };
+  
+  const handleSampleQuestionClick = (question: string) => {
+    setInputText(question);
+    toast({
+      title: "Sample Question Selected",
+      description: `Question loaded: "${question}"`,
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -65,15 +74,14 @@ const AITutor = () => {
               </p>
               <div className="flex items-center gap-2">
                 <Button variant="secondary" className="bg-white text-primary hover:bg-white/90">
-                  <svg className="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                    <line x1="12" x2="12" y1="19" y2="22"></line>
-                  </svg>
-                  Voice Mode
+                  <Volume2 className="mr-2 h-5 w-5" />
+                  Voice Enabled
                 </Button>
                 <VoiceControl onVoiceInput={handleVoiceInput} />
               </div>
+              <p className="text-sm text-white/80 mt-2">
+                Try saying "Tell me about photosynthesis" or click on one of the sample questions below!
+              </p>
             </div>
           </div>
         </section>
@@ -111,40 +119,45 @@ const AITutor = () => {
                   <h3 className="heading text-lg mb-4">Try Asking</h3>
                   <div className="space-y-2">
                     {sampleQuestions.map((question, index) => (
-                      <Button key={index} variant="ghost" className="w-full justify-start text-left normal-case font-normal">
+                      <Button 
+                        key={index} 
+                        variant="ghost" 
+                        className="w-full justify-start text-left normal-case font-normal"
+                        onClick={() => handleSampleQuestionClick(question)}
+                      >
                         "{question}"
                       </Button>
                     ))}
                   </div>
                 </div>
                 
-                {/* Tips */}
+                {/* Voice Interaction Tips */}
                 <div className="bg-slate-50 p-6 rounded-lg border border-border/40">
-                  <h3 className="heading text-lg mb-4">Tips for Better Responses</h3>
+                  <h3 className="heading text-lg mb-4">Voice Interaction Tips</h3>
                   <ul className="space-y-2 text-sm">
                     <li className="flex gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-primary flex-shrink-0">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
-                      <span>Be specific with your questions</span>
+                      <span>Click the microphone icon to start speaking</span>
                     </li>
                     <li className="flex gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-primary flex-shrink-0">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
-                      <span>If you need clarification, ask follow-up questions</span>
+                      <span>Speak clearly and at a moderate pace</span>
                     </li>
                     <li className="flex gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-primary flex-shrink-0">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
-                      <span>Request step-by-step explanations for complex problems</span>
+                      <span>Click any AI message to have it read aloud again</span>
                     </li>
                     <li className="flex gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-primary flex-shrink-0">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
-                      <span>Tell the AI tutor about your knowledge level</span>
+                      <span>Use the volume icon to mute/unmute voice responses</span>
                     </li>
                   </ul>
                 </div>

@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { Mic, MicOff } from 'lucide-react';
 
 // Add type declarations for the Web Speech API
 interface SpeechRecognitionEvent extends Event {
@@ -153,21 +154,11 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onVoiceInput }) => {
       className={isListening ? "animate-pulse" : ""}
       aria-label={isListening ? "Stop listening" : "Start voice recognition"}
     >
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width="18" 
-        height="18" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
-        strokeLinejoin="round"
-      >
-        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-        <line x1="12" x2="12" y1="19" y2="22"></line>
-      </svg>
+      {isListening ? (
+        <MicOff className="h-5 w-5" />
+      ) : (
+        <Mic className="h-5 w-5" />
+      )}
     </Button>
   );
 };

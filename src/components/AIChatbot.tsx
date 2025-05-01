@@ -1,10 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import VoiceControl from './VoiceControl';
+import { Volume2, VolumeX } from 'lucide-react';
 
 type Message = {
   id: number;
@@ -30,7 +31,11 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState(initialInput);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const { toast } = useToast();
+  const speechSynthesis = window.speechSynthesis;
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Effect to handle initialInput changes
   useEffect(() => {
@@ -38,6 +43,21 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
       setInput(initialInput);
     }
   }, [initialInput]);
+
+  // Effect to scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Effect to handle speech synthesis
+  useEffect(() => {
+    return () => {
+      // Cleanup any ongoing speech when component unmounts
+      if (speechSynthesis) {
+        speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,15 +78,21 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     
     // Simulate AI response - in a real app, this would be an API call to OpenAI or similar
     setTimeout(() => {
-      const aiResponse: Message = {
+      const aiResponse = generateMockResponse(input);
+      const aiResponseMessage: Message = {
         id: messages.length + 2,
-        content: generateMockResponse(input),
+        content: aiResponse,
         isUser: false,
         timestamp: new Date(),
       };
       
-      setMessages((prev) => [...prev, aiResponse]);
+      setMessages((prev) => [...prev, aiResponseMessage]);
       setIsLoading(false);
+
+      // Speak the response if not muted
+      if (!isMuted) {
+        speakText(aiResponse);
+      }
     }, 1500);
   };
   
@@ -91,11 +117,85 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     });
   };
 
+  const speakText = (text: string) => {
+    if (!speechSynthesis) {
+      toast({
+        title: "Speech Synthesis Not Supported",
+        description: "Your browser does not support text-to-speech functionality.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Cancel any ongoing speech
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    // Get available voices and select one
+    const voices = speechSynthesis.getVoices();
+    const englishVoices = voices.filter(voice => voice.lang.includes('en-'));
+    
+    if (englishVoices.length > 0) {
+      // Prefer a female voice if available
+      const femaleVoice = englishVoices.find(voice => voice.name.includes('Female') || voice.name.includes('female'));
+      utterance.voice = femaleVoice || englishVoices[0];
+    }
+
+    // Set events
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      toast({
+        title: "Speech Error",
+        description: "An error occurred while speaking.",
+        variant: "destructive",
+      });
+    };
+
+    // Speak
+    speechSynthesis.speak(utterance);
+  };
+
+  const toggleMute = () => {
+    if (isSpeaking && !isMuted) {
+      speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+    setIsMuted(!isMuted);
+    toast({
+      title: isMuted ? "Voice Enabled" : "Voice Disabled",
+      description: isMuted ? "The AI will now speak responses." : "The AI will not speak responses.",
+    });
+  };
+
+  const replayLastMessage = () => {
+    const lastAiMessage = messages.filter(m => !m.isUser).pop();
+    if (lastAiMessage && !isMuted) {
+      speakText(lastAiMessage.content);
+    }
+  };
+
   return (
     <div className="flex flex-col h-[600px] md:h-[700px] bg-slate-50 rounded-lg border border-border/40">
-      <div className="p-4 border-b border-border/40 bg-white rounded-t-lg">
-        <h2 className="font-heading text-lg font-medium">AI Educational Assistant</h2>
-        <p className="text-sm text-muted-foreground">Ask me anything about your studies!</p>
+      <div className="p-4 border-b border-border/40 bg-white rounded-t-lg flex justify-between items-center">
+        <div>
+          <h2 className="font-heading text-lg font-medium">AI Educational Assistant</h2>
+          <p className="text-sm text-muted-foreground">Ask me anything about your studies!</p>
+        </div>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={toggleMute} 
+          className="ml-auto"
+          aria-label={isMuted ? "Enable voice" : "Disable voice"}
+        >
+          {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+        </Button>
       </div>
       
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -104,7 +204,10 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
             key={message.id}
             className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
           >
-            <Card className={`max-w-[80%] ${message.isUser ? 'bg-primary text-primary-foreground' : 'bg-background'}`}>
+            <Card 
+              className={`max-w-[80%] ${message.isUser ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
+              onClick={() => !message.isUser && !isMuted && speakText(message.content)}
+            >
               <CardContent className="p-3">
                 <p className="text-sm">{message.content}</p>
                 <span className="text-xs opacity-70 mt-1 block">
@@ -128,6 +231,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
             </Card>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
       
       <div className="p-4 border-t border-border/40 bg-white rounded-b-lg">
