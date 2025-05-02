@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Menu, User, Book, Settings } from 'lucide-react';
+import { Menu, User, Book, Settings, LayoutDashboard } from 'lucide-react';
 
 type NavLink = {
   label: string;
@@ -13,7 +13,6 @@ const navLinks: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'Courses', href: '/courses' },
   { label: 'AI Tutor', href: '/ai-tutor' },
-  { label: 'Voice Clone Agent', href: '/voice-clone-agent' },
   { label: 'About', href: '/about' },
 ];
 
@@ -64,6 +63,12 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="hidden md:flex items-center gap-2">
+              <Link to="/dashboard">
+                <Button variant="outline" size="sm" className="flex items-center gap-1.5">
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Button>
+              </Link>
               <Link to="/sign-in">
                 <Button variant="ghost">Sign In</Button>
               </Link>
@@ -97,6 +102,10 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
+            <Link to="/dashboard" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-dark transition-colors px-2 py-1.5">
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Link>
             {!isLoggedIn && (
               <div className="flex flex-col space-y-2 pt-2 border-t border-border/40">
                 <Link to="/sign-in" onClick={() => setIsOpen(false)}>

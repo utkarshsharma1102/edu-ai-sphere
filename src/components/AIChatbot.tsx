@@ -5,13 +5,20 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import VoiceControl from './VoiceControl';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Youtube } from 'lucide-react';
 
 type Message = {
   id: number;
   content: string;
   isUser: boolean;
   timestamp: Date;
+  resources?: Resource[];
+};
+
+type Resource = {
+  type: 'youtube' | 'course' | 'book';
+  title: string;
+  url: string;
 };
 
 interface AIChatbotProps {
@@ -21,50 +28,112 @@ interface AIChatbotProps {
 const initialMessages: Message[] = [
   {
     id: 1,
-    content: "Hello! I'm your AI educational assistant. What would you like to learn about today?",
+    content: "Hello! I'm your AI educational assistant specialized in the Indian education system. What would you like to learn about today?",
     isUser: false,
     timestamp: new Date(),
   },
 ];
 
-// Topics for more accurate and contextual responses
+// Enhanced educational topics focused on Indian education system
 const educationalTopics = {
   mathematics: [
-    "Algebra is the study of mathematical symbols and the rules for manipulating these symbols. It's a fundamental branch of mathematics.",
-    "Calculus is the mathematical study of continuous change. It's divided into differential calculus and integral calculus.",
-    "Geometry is the branch of mathematics that deals with shapes, sizes, and properties of space.",
-    "Quadratic equations can be solved using the quadratic formula: x = (-b ± √(b² - 4ac)) / 2a.",
-    "The Pythagorean theorem states that in a right triangle, the square of the length of the hypotenuse equals the sum of the squares of the other two sides."
+    "In Indian education, mathematics is given significant emphasis from early classes. NCERT textbooks follow a progressive approach to mathematics learning.",
+    "Vedic Mathematics is a collection of techniques to solve mathematical problems in a faster and easier way, developed by ancient Indian mathematicians.",
+    "For competitive exams like JEE, mathematics topics such as calculus, coordinate geometry, and algebra are extensively tested with specific problem patterns.",
+    "The Indian education system emphasizes mathematical derivations and theoretical concepts alongside numerical problem-solving.",
+    "The CBSE and ICSE boards have slightly different approaches to mathematics education, with ICSE generally considered more comprehensive."
   ],
   physics: [
-    "Newton's laws of motion describe the relationship between an object and the forces acting upon it.",
-    "Quantum entanglement is a physical phenomenon that occurs when a pair of particles interact in ways such that the quantum state of each particle cannot be described independently.",
-    "The theory of relativity, proposed by Albert Einstein, describes the laws of physics as observed by different observers moving relative to each other.",
-    "Thermodynamics is the branch of physics that deals with heat, work, and temperature, and their relation to energy and entropy.",
-    "The uncertainty principle, formulated by Werner Heisenberg, states that the more precisely the position of a particle is determined, the less precisely its momentum can be predicted."
+    "Physics in the Indian curriculum is divided into theoretical concepts and practical applications, with experiments forming a crucial part of evaluation.",
+    "HC Verma's Concepts of Physics is a widely recommended textbook for JEE and NEET preparation in India.",
+    "The NCERT Physics curriculum follows international standards while incorporating local contexts and applications relevant to India.",
+    "In higher classes (11-12), physics is categorized into mechanics, thermodynamics, electricity and magnetism, optics, and modern physics.",
+    "Practical examinations in physics focus on error analysis and experimental skills, which is a unique aspect of the Indian education system."
+  ],
+  chemistry: [
+    "Chemistry in Indian education is divided into physical, organic and inorganic branches with equal emphasis on all three.",
+    "NCERT Chemistry textbooks are considered the foundation for competitive exams like NEET and JEE.",
+    "Structural formulas and reaction mechanisms are emphasized in organic chemistry sections of Indian syllabi.",
+    "The periodic table and its trends form a core component of the inorganic chemistry curriculum in Indian education.",
+    "Chemical equations and stoichiometry are given special focus in the Indian chemistry curriculum."
   ],
   biology: [
-    "Photosynthesis is the process used by plants to convert light energy into chemical energy that can be released to fuel activities of the organism.",
-    "The human circulatory system consists of the heart, blood vessels, and blood, which circulate oxygen and nutrients throughout the body.",
-    "DNA (deoxyribonucleic acid) is a molecule that carries genetic information for the development and functioning of an organism.",
-    "Cellular respiration is the process by which cells convert nutrients into energy in the form of ATP.",
-    "Evolution is the change in heritable traits of biological populations over successive generations."
+    "Biology in Indian education has a strong focus on taxonomic classification and detailed study of plant and animal physiology.",
+    "NEET (National Eligibility cum Entrance Test) heavily tests biology concepts, making it a crucial subject for medical aspirants in India.",
+    "The NCERT Biology curriculum includes chapters on biodiversity with special emphasis on Indian flora and fauna.",
+    "Practical examinations in biology include microscopy skills, dissections (now mostly virtual), and herbarium preparation.",
+    "Environmental science and ecology have gained importance in recent years in the Indian biology curriculum."
   ],
   history: [
-    "The French Revolution was a period of radical social and political upheaval in France from 1789 to 1799.",
-    "World War II was a global war that lasted from 1939 to 1945, involving many of the world's nations.",
-    "The Industrial Revolution was the transition to new manufacturing processes in Europe and the United States in the period from about 1760 to 1840.",
-    "The American Civil War was fought in the United States from 1861 to 1865 between the North and South, primarily over the issues of slavery and states' rights.",
-    "Ancient Egypt was a civilization of ancient North Africa that flourished from around 3100 BC to 30 BC."
+    "Indian history curriculum is typically divided into Ancient, Medieval, and Modern periods with special emphasis on freedom struggle.",
+    "Ancient Indian history covers the Indus Valley Civilization, Vedic period, and various dynasties like Maurya, Gupta, Chola, etc.",
+    "Medieval Indian history focuses on Delhi Sultanate, Mughal Empire, and regional kingdoms like Vijayanagara and Maratha empires.",
+    "Modern Indian history emphasizes the British colonial period, freedom movement, and post-independence developments.",
+    "UPSC Civil Services examination extensively tests Indian history with focus on socio-economic and cultural aspects alongside political events."
+  ],
+  geography: [
+    "Indian geography curriculum covers physical features, climate, natural resources, agriculture, and demographics of India.",
+    "The diverse physiographic divisions of India (Himalayan region, Indo-Gangetic Plains, Peninsular Plateau, etc.) are studied in detail.",
+    "Indian monsoon systems and their impact on agriculture and economy form a crucial part of geography education.",
+    "Natural resources, conservation, and sustainable development with reference to India's policies are important topics.",
+    "Human geography aspects like population distribution, migration patterns, and urbanization in the Indian context are extensively covered."
   ],
   computerScience: [
-    "Data structures are specific ways of organizing and storing data in a computer so that it can be accessed and modified efficiently.",
-    "Algorithms are step-by-step procedures or formulas for solving problems, often used in computation and data processing.",
-    "Object-oriented programming is a programming paradigm based on the concept of 'objects', which can contain data and code.",
-    "Machine learning is a subset of artificial intelligence that provides systems the ability to automatically learn and improve from experience.",
-    "Databases are organized collections of data generally stored and accessed electronically from a computer system."
+    "Computer Science education in India has evolved from basic programming to advanced topics like AI, ML and cybersecurity.",
+    "The CBSE curriculum includes Python programming from Class 11, while some state boards offer C++ or Java.",
+    "Computer Science olympiads like INOI provide platforms for talented students to represent India internationally.",
+    "The National Education Policy 2020 emphasizes coding skills from the middle school level in Indian education.",
+    "Indian technical institutions like IITs and NITs offer specialized computer science programs with focus on both theoretical foundations and practical applications."
   ]
 };
+
+// Indian education system specific information
+const indianEducationSystem = {
+  boards: [
+    "CBSE (Central Board of Secondary Education) is a national level board for public and private schools in India.",
+    "ICSE/ISC (Indian Certificate of Secondary Education) is known for its comprehensive curriculum covering a wide range of subjects.",
+    "State Boards operate under individual state governments with curriculum focused on regional languages and contexts.",
+    "IB (International Baccalaureate) and IGCSE are international curricula available in select schools across India."
+  ],
+  exams: [
+    "JEE (Joint Entrance Examination) is the entrance test for engineering programs at IITs, NITs, and other technical institutions.",
+    "NEET (National Eligibility cum Entrance Test) is mandatory for admission to medical courses across India.",
+    "UPSC conducts Civil Services Examination for recruitment to various administrative services like IAS, IPS, IFS etc.",
+    "CAT (Common Admission Test) is the entrance exam for prestigious management institutions like IIMs.",
+    "GATE (Graduate Aptitude Test in Engineering) is for admission to postgraduate engineering programs and PSU recruitment."
+  ],
+  institutions: [
+    "IITs (Indian Institutes of Technology) are premier engineering institutions known for technical education and research.",
+    "IIMs (Indian Institutes of Management) are the top business schools offering management education.",
+    "AIIMS (All India Institute of Medical Sciences) is the leading medical education and research institution.",
+    "Central Universities like JNU, DU, BHU offer diverse programs across disciplines.",
+    "NITs (National Institutes of Technology) are important technical institutions spread across different states."
+  ]
+};
+
+// YouTube resources for Indian education
+const youtubeResources = [
+  {
+    subject: "Mathematics",
+    channels: ["Khan Academy India", "Vedantu JEE", "Physics Wallah", "Unacademy"]
+  },
+  {
+    subject: "Physics",
+    channels: ["Physics Wallah", "Unacademy JEE", "Khan Academy India", "Pradeep Kshetrapal"]
+  },
+  {
+    subject: "Chemistry",
+    channels: ["Vedantu NEET Made Ejee", "Physics Wallah", "Unacademy NEET", "Khan Academy India"]
+  },
+  {
+    subject: "Biology",
+    channels: ["Aakash iTutor", "Khan Academy India", "Unacademy NEET", "Biology by PW"]
+  },
+  {
+    subject: "History",
+    channels: ["Study IAS", "Amit Sengupta", "Unacademy UPSC", "World of History"]
+  }
+];
 
 const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -73,6 +142,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [conversationContext, setConversationContext] = useState<string[]>([]);
+  const [speechRate, setSpeechRate] = useState(1);
   const { toast } = useToast();
   const speechSynthesis = window.speechSynthesis;
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -122,12 +192,13 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     
     // Generate improved AI response with context awareness
     setTimeout(() => {
-      const aiResponse = generateEnhancedResponse(input, updatedContext);
+      const responseData = generateIndianEducationResponse(input, updatedContext);
       const aiResponseMessage: Message = {
         id: messages.length + 2,
-        content: aiResponse,
+        content: responseData.content,
         isUser: false,
         timestamp: new Date(),
+        resources: responseData.resources
       };
       
       setMessages((prev) => [...prev, aiResponseMessage]);
@@ -135,13 +206,13 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
 
       // Speak the response if not muted
       if (!isMuted) {
-        speakText(aiResponse);
+        speakText(responseData.content);
       }
     }, 1500);
   };
   
-  // Enhanced response generator that uses context and more detailed responses
-  const generateEnhancedResponse = (query: string, context: string[]): string => {
+  // Enhanced response generator specialized for Indian education system
+  const generateIndianEducationResponse = (query: string, context: string[]): { content: string, resources?: Resource[] } => {
     // Convert query to lowercase for easier matching
     const lowerQuery = query.toLowerCase();
     
@@ -153,83 +224,236 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     
     // Define topics to search for in the query
     const topicMatches = {
-      math: ["math", "algebra", "calculus", "equation", "geometry", "trigonometry", "quadratic"],
-      physics: ["physics", "quantum", "relativity", "newton", "energy", "force", "motion", "thermodynamics"],
-      biology: ["biology", "cell", "dna", "evolution", "organism", "photosynthesis", "circulatory"],
-      history: ["history", "revolution", "war", "empire", "civilization", "ancient", "medieval", "century"],
-      computers: ["computer", "algorithm", "programming", "data structure", "database", "machine learning", "code"]
+      math: ["math", "algebra", "calculus", "equation", "geometry", "trigonometry", "quadratic", "vedic"],
+      physics: ["physics", "mechanics", "optics", "electrostatics", "magnetism", "thermodynamics", "hc verma"],
+      chemistry: ["chemistry", "organic", "inorganic", "physical", "periodic table", "reaction", "chemical"],
+      biology: ["biology", "zoology", "botany", "anatomy", "physiology", "ecosystem", "cell", "dna"],
+      history: ["history", "ancient", "medieval", "modern", "independence", "freedom struggle", "mughal", "british raj"],
+      geography: ["geography", "climate", "resources", "mountain", "river", "plateau", "population", "monsoon"],
+      computers: ["computer", "programming", "algorithm", "data structure", "python", "java", "c++", "coding"],
+      education: ["cbse", "icse", "state board", "ncert", "syllabus", "curriculum", "textbook"],
+      exams: ["jee", "neet", "upsc", "cat", "gate", "clat", "bank", "ssc", "ias", "civil services"]
     };
     
     // Try to determine the topic based on query content
     let detectedTopic = "";
+    let examDetected = false;
     
     for (const [topic, keywords] of Object.entries(topicMatches)) {
       if (keywords.some(keyword => lowerQuery.includes(keyword))) {
         detectedTopic = topic;
+        if (topic === "exams") examDetected = true;
         break;
       }
     }
-
-    // Handle specific educational queries with detailed responses
-    if (lowerQuery.includes("quadratic equation") || lowerQuery.includes("solve quadratic")) {
-      return "To solve a quadratic equation in the form ax² + bx + c = 0, you can use the quadratic formula: x = (-b ± √(b² - 4ac)) / 2a. For example, to solve 2x² + 3x - 5 = 0: a=2, b=3, c=-5, so x = (-3 ± √(9 + 40)) / 4 = (-3 ± √49) / 4 = (-3 ± 7) / 4, which gives us x = 1 or x = -2.5. Would you like me to explain another mathematical concept?";
+    
+    // YouTube resources to recommend based on the query
+    const getRelevantYouTubeResources = (topic: string): Resource[] => {
+      let resources: Resource[] = [];
+      
+      if (topic === "math") {
+        resources = [
+          { type: "youtube", title: "Khan Academy India - Algebra", url: "https://www.youtube.com/c/KhanAcademyIndia" },
+          { type: "youtube", title: "Vedantu JEE - Mathematics", url: "https://www.youtube.com/c/VedantuJEE" }
+        ];
+      } else if (topic === "physics") {
+        resources = [
+          { type: "youtube", title: "Physics Wallah - Mechanics", url: "https://www.youtube.com/c/PhysicsWallah" },
+          { type: "youtube", title: "Unacademy JEE - Physics", url: "https://www.youtube.com/c/UnacademyJEE" }
+        ];
+      } else if (topic === "chemistry") {
+        resources = [
+          { type: "youtube", title: "Vedantu NEET - Organic Chemistry", url: "https://www.youtube.com/c/VedantuNEET" },
+          { type: "youtube", title: "Physics Wallah - Chemistry", url: "https://www.youtube.com/c/PhysicsWallah" }
+        ];
+      } else if (topic === "biology") {
+        resources = [
+          { type: "youtube", title: "Unacademy NEET - Biology", url: "https://www.youtube.com/c/unacademyneet" },
+          { type: "youtube", title: "Aakash iTutor", url: "https://www.youtube.com/c/AakashiTutor" }
+        ];
+      } else if (topic === "history" || topic === "geography") {
+        resources = [
+          { type: "youtube", title: "Study IAS - History & Geography", url: "https://www.youtube.com/c/StudyIAS" },
+          { type: "youtube", title: "Unacademy UPSC", url: "https://www.youtube.com/c/UnacademyUPSC" }
+        ];
+      } else if (topic === "computers") {
+        resources = [
+          { type: "youtube", title: "Code with Harry - Programming", url: "https://www.youtube.com/c/CodeWithHarry" },
+          { type: "youtube", title: "Apni Kaksha - Computer Science", url: "https://www.youtube.com/c/ApniKaksha" }
+        ];
+      } else if (examDetected) {
+        if (lowerQuery.includes("jee")) {
+          resources = [
+            { type: "youtube", title: "Physics Wallah - JEE Complete Course", url: "https://www.youtube.com/c/PhysicsWallah" },
+            { type: "youtube", title: "Unacademy JEE", url: "https://www.youtube.com/c/UnacademyJEE" }
+          ];
+        } else if (lowerQuery.includes("neet")) {
+          resources = [
+            { type: "youtube", title: "Unacademy NEET", url: "https://www.youtube.com/c/unacademyneet" },
+            { type: "youtube", title: "Aakash iTutor - NEET Preparation", url: "https://www.youtube.com/c/AakashiTutor" }
+          ];
+        } else if (lowerQuery.includes("upsc") || lowerQuery.includes("ias") || lowerQuery.includes("civil services")) {
+          resources = [
+            { type: "youtube", title: "Study IAS", url: "https://www.youtube.com/c/StudyIAS" },
+            { type: "youtube", title: "Unacademy UPSC", url: "https://www.youtube.com/c/UnacademyUPSC" }
+          ];
+        }
+      }
+      
+      return resources;
+    };
+    
+    // Handle specific Indian education system queries
+    if (lowerQuery.includes("cbse") || lowerQuery.includes("icse") || lowerQuery.includes("state board")) {
+      const resources = [
+        { type: "youtube", title: "CBSE Official Channel", url: "https://www.youtube.com/c/cbsechannel" },
+        { type: "youtube", title: "NCERT Official", url: "https://www.youtube.com/c/ncertofficial" }
+      ];
+      
+      return {
+        content: "The Indian education system has multiple boards including CBSE (Central Board of Secondary Education), ICSE (Indian Certificate of Secondary Education), and various State Boards. CBSE is a national board that follows NCERT curriculum and is recognized throughout India. ICSE is known for its comprehensive curriculum with emphasis on language and practical knowledge. State Boards focus on regional contexts and often teach in local languages alongside English. The choice of board can impact a student's approach to competitive exams, though the major exams accept students from all recognized boards. Would you like more specific information about a particular board's curriculum or exam pattern?",
+        resources
+      };
     }
     
-    if (lowerQuery.includes("quantum entanglement")) {
-      return "Quantum entanglement is a fascinating phenomenon where two or more particles become correlated in such a way that the quantum state of each particle cannot be described independently. Instead, a quantum state must be described for the system as a whole. This connection persists even when the particles are separated by large distances. Einstein famously referred to this as 'spooky action at a distance.' When measuring one entangled particle, you instantaneously determine the corresponding property of its partner, regardless of the distance separating them. This phenomenon is fundamental to quantum computing and quantum information theory. Would you like to know more about specific applications or the theoretical background?";
+    if (lowerQuery.includes("jee") || lowerQuery.includes("engineering entrance")) {
+      const resources = getRelevantYouTubeResources("exams");
+      
+      return {
+        content: "The Joint Entrance Examination (JEE) is India's premier engineering entrance exam conducted in two stages: JEE Main and JEE Advanced. JEE Main is the qualifying exam for JEE Advanced and is also used for admission to NITs, IIITs and other technical institutions. JEE Advanced is specifically for admission to the prestigious IITs. The exam tests Physics, Chemistry, and Mathematics at a high difficulty level. Preparation typically takes 2 years of focused study during Classes 11-12. Key topics include Mechanics, Thermodynamics, and Optics in Physics; Organic, Inorganic, and Physical Chemistry; and Calculus, Algebra, and Coordinate Geometry in Mathematics. Would you like information about specific preparation strategies or important topics?",
+        resources
+      };
     }
     
-    if (lowerQuery.includes("french revolution")) {
-      return "The French Revolution (1789-1799) was a pivotal period in French and European history. It began with the Storming of the Bastille on July 14, 1789, driven by social inequality, financial crisis, and Enlightenment ideals. The revolution overthrew the monarchy, established a republic, and went through various phases including the Reign of Terror under Robespierre. It ended with Napoleon Bonaparte's rise to power. The revolution's legacy includes the Declaration of the Rights of Man and of the Citizen, which promoted liberty, equality, and fraternity. Would you like to explore specific aspects or consequences of the French Revolution?";
+    if (lowerQuery.includes("neet") || lowerQuery.includes("medical entrance")) {
+      const resources = getRelevantYouTubeResources("exams");
+      
+      return {
+        content: "The National Eligibility cum Entrance Test (NEET) is the unified medical entrance examination in India for admission to MBBS, BDS, AYUSH and other medical courses. It tests Physics, Chemistry, and Biology (Zoology and Botany) based on the NCERT curriculum of Classes 11-12. Biology carries the highest weightage (50%), followed by Chemistry (25%) and Physics (25%). Key topics include Human Physiology, Plant Physiology, Genetics, and Ecology in Biology; Organic Chemistry and Biomolecules in Chemistry; and Mechanics and Modern Physics in Physics. The competition is intense with over 15 lakh students competing annually for approximately 1 lakh seats. Would you like specific guidance on NEET preparation?",
+        resources
+      };
     }
     
-    if (lowerQuery.includes("photosynthesis")) {
-      return "Photosynthesis is the process used by plants, algae, and certain bacteria to convert light energy, usually from the sun, into chemical energy in the form of glucose or other sugars. This process takes place in chloroplasts, specifically using chlorophyll pigments that capture light energy. The basic equation is: 6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂. Photosynthesis has two main stages: light-dependent reactions and light-independent reactions (Calvin cycle). This process is fundamental for life on Earth as it produces oxygen and serves as the primary producer in most ecosystems. Would you like more details about a specific part of the photosynthesis process?";
+    if (lowerQuery.includes("upsc") || lowerQuery.includes("ias") || lowerQuery.includes("civil services")) {
+      const resources = getRelevantYouTubeResources("exams");
+      
+      return {
+        content: "The UPSC Civil Services Examination is considered one of the toughest exams in India, conducted in three stages: Preliminary, Main, and Interview. It recruits officers for prestigious services like IAS, IPS, IFS, and others. The syllabus is vast, covering General Studies (History, Geography, Polity, Economy, Science & Technology, Environment), Current Affairs, and optional subjects. The preparation requires a multi-dimensional approach with focus on developing analytical skills alongside factual knowledge. The exam tests candidates' aptitude, intellectual abilities, and personality traits suitable for civil services. Standard preparation time ranges from 1-3 years depending on individual capabilities and background. Would you like advice on a specific aspect of UPSC preparation?",
+        resources
+      };
     }
     
-    if (lowerQuery.includes("data structure")) {
-      return "Data structures are specialized formats for organizing, storing, and manipulating data in a computer system. Common data structures include arrays, linked lists, stacks, queues, trees, graphs, and hash tables. Each has specific use cases and performance characteristics. For example, arrays offer fast random access but slow insertions/deletions, while linked lists provide quick insertions/deletions but slower random access. The choice of data structure significantly impacts an algorithm's efficiency and performance. Understanding data structures is fundamental in computer science and software engineering. Would you like me to explain a specific data structure in more detail?";
+    // Handle queries about specific subjects in Indian education context
+    if (lowerQuery.includes("vedic math") || lowerQuery.includes("vedic mathematics")) {
+      const resources = getRelevantYouTubeResources("math");
+      
+      return {
+        content: "Vedic Mathematics is a system of mathematical techniques derived from the Vedas, specifically the Atharva Veda. It was reconstructed by Bharati Krishna Tirthaji in the early 20th century. Vedic Math provides shortcuts for various mathematical operations like multiplication, division, square roots, and more. These techniques can significantly reduce calculation time and are particularly useful for competitive exams where speed matters. Some key techniques include Nikhilam (for multiplication), Urdhva Tiryakbhyam (cross multiplication), and Dwandwa Yoga (for squaring numbers). In the Indian education system, Vedic Math is often taught as supplementary material to enhance calculation speed, though it's not typically part of the main curriculum. Many coaching centers for JEE, banking exams, and other competitive tests incorporate Vedic Math techniques. Would you like to learn about specific Vedic Math techniques?",
+        resources
+      };
+    }
+    
+    if (lowerQuery.includes("ncert") || lowerQuery.includes("textbook")) {
+      return {
+        content: "NCERT (National Council of Educational Research and Training) textbooks form the foundation of education in CBSE schools and are highly recommended for competitive exam preparation in India. These textbooks are developed by subject experts and follow a systematic approach to building concepts from basics to advanced levels. For board exams, NCERT books are sufficient, but for competitive exams like JEE and NEET, students typically need additional reference materials. NCERT textbooks are particularly valued for their clear explanations and accuracy. The CBSE board exam questions are largely based on NCERT content, and even competitive exams like JEE and NEET draw their fundamental concepts from NCERT textbooks. The latest editions incorporate modern teaching methodologies and real-life applications. Would you like recommendations for specific subject NCERT textbooks or complementary study materials?",
+        resources: [
+          { type: "youtube", title: "NCERT Official Channel", url: "https://www.youtube.com/c/ncertofficial" },
+          { type: "youtube", title: "CBSE Official", url: "https://www.youtube.com/c/cbsechannel" }
+        ]
+      };
     }
     
     // For follow-up questions, provide more context-aware responses
     if (isFollowUp) {
       const previousQuery = context[context.length - 2].toLowerCase();
       
-      if (previousQuery.includes("quadratic")) {
-        return "Building on our discussion about quadratic equations, there are several methods to solve them: 1) Factoring, 2) Completing the square, and 3) Using the quadratic formula. The discriminant (b² - 4ac) tells us about the nature of the solutions. If the discriminant is positive, there are two real solutions. If zero, there's exactly one real solution. If negative, there are two complex solutions. Would you like me to demonstrate a specific method with an example?";
+      if (previousQuery.includes("jee") || previousQuery.includes("engineering")) {
+        return {
+          content: "Following up on JEE preparation, it's crucial to focus on building strong fundamentals before attempting advanced problems. The JEE syllabus follows NCERT curriculum but goes deeper in conceptual understanding and application. Most successful JEE candidates recommend starting preparation from Class 11 onwards with equal focus on all three subjects. For Physics, understanding concepts thoroughly is more important than memorizing formulas. For Chemistry, regular revision is key, especially for organic reactions. For Mathematics, practice is essential - solve as many problems as possible to develop problem-solving skills. Mock tests should be incorporated into your preparation strategy from the beginning to develop time management skills. Resources like previous years' papers, NCERT textbooks with supplementary reference books like HC Verma for Physics, and regular practice tests are highly recommended.",
+          resources: getRelevantYouTubeResources("exams")
+        };
       }
       
-      if (previousQuery.includes("photosynthesis")) {
-        return "To elaborate on photosynthesis, the light-dependent reactions occur in the thylakoid membrane of the chloroplast, where light energy is converted to chemical energy (ATP and NADPH). The light-independent reactions (Calvin cycle) use this chemical energy to produce glucose from CO₂ in the stroma. Factors affecting photosynthesis include light intensity, CO₂ concentration, temperature, and water availability. Plants have adaptations like different leaf structures to optimize photosynthesis in their environments. Is there a specific aspect of this process you'd like me to explain further?";
+      if (previousQuery.includes("neet") || previousQuery.includes("medical")) {
+        return {
+          content: "Regarding NEET preparation, Biology requires systematic memorization along with conceptual clarity. Topics like Human Physiology, Genetics, and Ecology need special attention. For Biology, NCERT textbooks are considered the Bible - every line is important. For Chemistry, focus on organic reactions, mechanisms, and named reactions which are frequently tested. Physics for NEET is less calculation-intensive compared to JEE but still requires solid understanding of concepts. Creating short notes, diagrams, and flowcharts can help with quick revision, especially for Biology. Regular testing is crucial - solve previous years' papers and take mock tests to build stamina for the 3-hour exam. Most successful NEET aspirants dedicate specific time slots to each subject daily, with extra hours for their weaker areas. For Biology, supplement your study with visual aids and mnemonic techniques to remember complex processes and classifications.",
+          resources: getRelevantYouTubeResources("exams")
+        };
       }
     }
     
     // If we've detected a topic but haven't matched a specific query
     if (detectedTopic) {
+      const resources = getRelevantYouTubeResources(detectedTopic);
+      
       switch(detectedTopic) {
         case "math":
-          return educationalTopics.mathematics[Math.floor(Math.random() * educationalTopics.mathematics.length)];
+          return {
+            content: educationalTopics.mathematics[Math.floor(Math.random() * educationalTopics.mathematics.length)],
+            resources
+          };
         case "physics":
-          return educationalTopics.physics[Math.floor(Math.random() * educationalTopics.physics.length)];
+          return {
+            content: educationalTopics.physics[Math.floor(Math.random() * educationalTopics.physics.length)],
+            resources
+          };
+        case "chemistry":
+          return {
+            content: educationalTopics.chemistry[Math.floor(Math.random() * educationalTopics.chemistry.length)],
+            resources
+          };
         case "biology":
-          return educationalTopics.biology[Math.floor(Math.random() * educationalTopics.biology.length)];
+          return {
+            content: educationalTopics.biology[Math.floor(Math.random() * educationalTopics.biology.length)],
+            resources
+          };
         case "history":
-          return educationalTopics.history[Math.floor(Math.random() * educationalTopics.history.length)];
+          return {
+            content: educationalTopics.history[Math.floor(Math.random() * educationalTopics.history.length)],
+            resources
+          };
+        case "geography":
+          return {
+            content: educationalTopics.geography[Math.floor(Math.random() * educationalTopics.geography.length)],
+            resources
+          };
         case "computers":
-          return educationalTopics.computerScience[Math.floor(Math.random() * educationalTopics.computerScience.length)];
+          return {
+            content: educationalTopics.computerScience[Math.floor(Math.random() * educationalTopics.computerScience.length)],
+            resources
+          };
+        case "education":
+          return {
+            content: indianEducationSystem.boards[Math.floor(Math.random() * indianEducationSystem.boards.length)],
+            resources: [
+              { type: "youtube", title: "Indian Education System", url: "https://www.youtube.com/results?search_query=indian+education+system" },
+              { type: "youtube", title: "NCERT Solutions", url: "https://www.youtube.com/results?search_query=ncert+solutions" }
+            ]
+          };
+        case "exams":
+          return {
+            content: indianEducationSystem.exams[Math.floor(Math.random() * indianEducationSystem.exams.length)],
+            resources
+          };
       }
     }
     
     // Default responses for general queries
     const generalResponses = [
-      `I've analyzed your question about "${query}" and found it's a complex topic with multiple aspects. Would you like me to focus on a specific area of this subject?`,
-      `"${query}" is an interesting area to explore! I can provide information on different aspects of this topic. Which specific part interests you most?`,
-      `Based on your question about "${query}", I can see several educational angles we could explore. Would you like a general overview or a deep dive into a particular aspect?`,
-      `I've researched "${query}" extensively. This topic connects to several key concepts across multiple disciplines. Which perspective would you like me to elaborate on?`,
-      `Your question about "${query}" touches on important educational concepts. I can provide detailed explanations, examples, or historical context. What would be most helpful?`
+      `I've analyzed your question about "${query}" in the context of the Indian education system. This is a complex topic with multiple aspects relevant to different educational boards and standards. Would you like me to focus on CBSE, ICSE, or state board perspective?`,
+      `"${query}" is an interesting topic in the Indian educational context! I can provide information based on NCERT guidelines or go beyond the curriculum. Which specific aspect interests you most?`,
+      `Based on your question about "${query}", I can see several educational angles relevant to Indian students. Would you like a general overview according to CBSE/NCERT standards or a more competitive exam-oriented explanation?`,
+      `I've researched "${query}" from an Indian education perspective. This topic connects to several key concepts across multiple disciplines in the Indian curriculum. Which standard or board's perspective would you like me to elaborate on?`,
+      `Your question about "${query}" touches on important educational concepts for Indian students. I can provide detailed explanations based on NCERT textbooks, example problems from board exams, or approaches for competitive exams like JEE/NEET. What would be most helpful?`
     ];
     
-    return generalResponses[Math.floor(Math.random() * generalResponses.length)];
+    return {
+      content: generalResponses[Math.floor(Math.random() * generalResponses.length)],
+      resources: [
+        { type: "youtube", title: "Educational Resources", url: "https://www.youtube.com/results?search_query=indian+education" },
+        { type: "youtube", title: "NCERT Solutions", url: "https://www.youtube.com/results?search_query=ncert+solutions" }
+      ]
+    };
   };
   
   const handleVoiceInput = (text: string) => {
@@ -254,7 +478,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
+    utterance.rate = speechRate;  // Apply current speech rate
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
@@ -308,7 +532,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
       <div className="p-4 border-b border-border/40 bg-white rounded-t-lg flex justify-between items-center">
         <div>
           <h2 className="font-heading text-lg font-medium">AI Educational Assistant</h2>
-          <p className="text-sm text-muted-foreground">Ask me anything about your studies!</p>
+          <p className="text-sm text-muted-foreground">Specialized in Indian Education System</p>
         </div>
         <Button 
           variant="ghost" 
@@ -333,6 +557,28 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
             >
               <CardContent className="p-3">
                 <p className="text-sm">{message.content}</p>
+                
+                {/* Resource links */}
+                {message.resources && message.resources.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-border/40">
+                    <p className="text-xs font-medium mb-1">Helpful Resources:</p>
+                    <div className="space-y-1">
+                      {message.resources.map((resource, index) => (
+                        <a 
+                          key={index}
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-xs text-blue-600 hover:underline"
+                        >
+                          {resource.type === 'youtube' && <Youtube className="h-3 w-3" />}
+                          {resource.title}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
                 <span className="text-xs opacity-70 mt-1 block">
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
@@ -362,7 +608,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question..."
+            placeholder="Ask about NEET preparation, JEE syllabus, etc..."
             disabled={isLoading}
             className="flex-1"
           />
