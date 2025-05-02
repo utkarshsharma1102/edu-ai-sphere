@@ -13,6 +13,7 @@ const navLinks: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'Courses', href: '/courses' },
   { label: 'AI Tutor', href: '/ai-tutor' },
+  { label: 'Voice Clone Agent', href: '/voice-clone-agent' },
   { label: 'About', href: '/about' },
 ];
 

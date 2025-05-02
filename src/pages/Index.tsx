@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -38,7 +37,7 @@ const featuredCourses: CourseProps[] = [
     id: '3',
     title: 'Physics for Everyday Life',
     description: 'Understanding the physics principles that govern our daily experiences',
-    image: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHBoeXNpY3N8ZW58MHx8MHx8fDA%3D',
+    image: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHBoeXNpY3N8ZW58MHx8MHx8MA%3D%3D',
     category: 'Physics',
     level: 'intermediate',
     duration: '4 weeks',
@@ -76,7 +75,8 @@ const Index = () => {
         <section className="relative bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20 md:py-32 overflow-hidden">
           <div className="absolute inset-0 bg-grid-white/[0.05] [mask-image:linear-gradient(to_bottom,transparent,black)]"></div>
           <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/30 blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-secondary/30 blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-secondary/30 blur-3xl">
+          </div>
           
           <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -93,6 +93,9 @@ const Index = () => {
                   </Button>
                   <Button size="lg" variant="outline" className="text-base">
                     <Link to="/ai-tutor">Try AI Tutor</Link>
+                  </Button>
+                  <Button size="lg" variant="secondary" className="text-base">
+                    <Link to="/voice-clone-agent">Voice Clone Agent</Link>
                   </Button>
                 </div>
               </div>
@@ -357,6 +360,83 @@ const Index = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* Add Voice Clone Agent Showcase before the CTA Section */}
+        <section className="py-16 md:py-24 bg-gradient-to-br from-indigo-50 to-purple-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-2 inline-block mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-white">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" x2="12" y1="19" y2="22"></line>
+                  </svg>
+                </div>
+                <h2 className="heading text-3xl md:text-4xl mb-4">
+                  3D Voice Clone Agent
+                </h2>
+                <p className="text-lg text-muted-foreground mb-6">
+                  Experience natural conversations with our advanced 3D Voice Clone Agent. Ask questions with your voice and get detailed, spoken responses with conversation memory.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  {[
+                    "Voice-first natural interaction",
+                    "Realistic 3D visualization",
+                    "Complete conversation memory",
+                    "Detailed educational responses",
+                    "No typing required"
+                  ].map((feature, index) => (
+                    <li key={index} className="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-3 text-indigo-600">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button asChild size="lg" className="bg-indigo-600 hover:bg-indigo-700">
+                  <Link to="/voice-clone-agent">Try Voice Clone Agent</Link>
+                </Button>
+              </div>
+              
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-300/20 to-purple-300/20 rounded-2xl blur-xl"></div>
+                <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border border-indigo-100">
+                  <div className="p-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+                    <h3 className="text-xl font-bold">3D Voice Clone Agent</h3>
+                    <p className="text-indigo-100">Voice-first interaction with memory</p>
+                  </div>
+                  <div className="p-8 flex flex-col items-center">
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-indigo-400 to-purple-500 shadow-lg flex items-center justify-center mb-6">
+                      <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-12 w-12 text-indigo-600">
+                          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                          <line x1="12" x2="12" y1="19" y2="22"></line>
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="text-center mb-6">
+                      <p className="text-lg font-medium mb-2">Ask me anything</p>
+                      <p className="text-sm text-gray-500">Just speak naturally and I'll respond</p>
+                    </div>
+                    <div className="flex gap-4">
+                      <Button className="bg-indigo-100 text-indigo-700 hover:bg-indigo-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
+                          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                          <line x1="12" x2="12" y1="19" y2="22"></line>
+                        </svg>
+                        Start Speaking
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

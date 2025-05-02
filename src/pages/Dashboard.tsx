@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -26,6 +25,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Link } from 'react-router-dom';
+import VoiceControl from '@/components/VoiceControl';
 
 const Dashboard = () => {
   const courses = [
@@ -134,6 +135,23 @@ const Dashboard = () => {
     },
   ];
 
+  // Handle voice commands for dashboard
+  const handleVoiceInput = (text: string) => {
+    const lowerText = text.toLowerCase();
+    
+    // Basic dashboard voice commands
+    if (lowerText.includes("show courses") || lowerText.includes("view courses")) {
+      window.location.href = "/courses";
+    } else if (lowerText.includes("ai tutor") || lowerText.includes("open tutor")) {
+      window.location.href = "/ai-tutor";
+    } else if (lowerText.includes("voice agent") || lowerText.includes("clone agent")) {
+      window.location.href = "/voice-clone-agent";
+    } else if (lowerText.includes("show analytics") || lowerText.includes("analytics")) {
+      // Could scroll to analytics section
+      document.getElementById("analytics-section")?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -145,9 +163,18 @@ const Dashboard = () => {
               <h1 className="heading text-3xl font-bold">Dashboard</h1>
               <p className="text-muted-foreground">Welcome back, Alex! Track your progress and manage your learning.</p>
             </div>
-            <div className="mt-4 md:mt-0 flex gap-2">
+            <div className="mt-4 md:mt-0 flex gap-2 items-center">
               <Button>Resume Learning</Button>
               <Button variant="outline">My Schedule</Button>
+              <div className="ml-2 relative group">
+                <VoiceControl
+                  onVoiceInput={handleVoiceInput}
+                  variant="secondary"
+                />
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-2 text-xs text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                  Try: "Show courses" or "Open AI tutor"
+                </div>
+              </div>
             </div>
           </div>
           
@@ -217,6 +244,28 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             ))}
+            
+            {/* Add Voice Assistant Card */}
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Voice Assistant</p>
+                    <Link to="/voice-clone-agent">
+                      <p className="text-3xl font-bold mt-1 mb-1 hover:text-primary transition-colors">Try Now</p>
+                    </Link>
+                    <p className="text-xs text-muted-foreground">Voice-first learning</p>
+                  </div>
+                  <div className="rounded-full bg-primary/10 p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-primary">
+                      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                      <line x1="12" x2="12" y1="19" y2="22"></line>
+                    </svg>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -286,8 +335,8 @@ const Dashboard = () => {
             </Card>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-            {/* Analytics */}
+          {/* Analytics */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8" id="analytics-section">
             <Card className="lg:col-span-2">
               <CardHeader>
                 <CardTitle>Analytics</CardTitle>
@@ -331,34 +380,62 @@ const Dashboard = () => {
               </CardContent>
             </Card>
             
-            {/* Recent Activity */}
+            {/* Voice Learning Progress */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Your latest learning actions</CardDescription>
+                <CardTitle>Voice Learning</CardTitle>
+                <CardDescription>Track your voice interaction sessions</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentActivity.map((activity) => (
+                  {[
+                    {
+                      id: '1',
+                      activity: 'Voice Clone Session',
+                      topic: 'Machine Learning Basics',
+                      duration: '15 mins',
+                      date: 'Yesterday'
+                    },
+                    {
+                      id: '2',
+                      activity: 'Voice Question',
+                      topic: 'Neural Networks',
+                      responses: 5,
+                      date: '3 days ago'
+                    },
+                    {
+                      id: '3',
+                      activity: 'Voice Clone Training',
+                      samples: 10,
+                      date: '1 week ago'
+                    }
+                  ].map((activity) => (
                     <div key={activity.id} className="border-b border-border/40 pb-4 last:border-0 last:pb-0">
                       <div className="flex justify-between items-start mb-1">
                         <h4 className="font-medium text-sm">{activity.activity}</h4>
                         <span className="text-xs text-muted-foreground">{activity.date}</span>
                       </div>
-                      {activity.course && (
-                        <p className="text-xs text-muted-foreground">{activity.course}</p>
-                      )}
-                      {activity.score && (
-                        <p className="text-xs font-medium text-success mt-1">Score: {activity.score}</p>
-                      )}
-                      {activity.question && (
-                        <p className="text-xs italic mt-1">&ldquo;{activity.question}&rdquo;</p>
+                      {activity.topic && (
+                        <p className="text-xs text-muted-foreground">{activity.topic}</p>
                       )}
                       {activity.duration && (
                         <p className="text-xs mt-1">Duration: {activity.duration}</p>
                       )}
+                      {activity.responses && (
+                        <p className="text-xs mt-1">Responses: {activity.responses}</p>
+                      )}
+                      {activity.samples && (
+                        <p className="text-xs mt-1">Voice samples: {activity.samples}</p>
+                      )}
                     </div>
                   ))}
+                  <div className="mt-6 text-center">
+                    <Button variant="outline" asChild className="w-full">
+                      <Link to="/voice-clone-agent">
+                        Try Voice Clone Agent
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
