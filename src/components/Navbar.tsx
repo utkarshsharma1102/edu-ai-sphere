@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Menu, User, Book, Settings, LayoutDashboard } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 
 type NavLink = {
   label: string;
@@ -48,6 +49,7 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           {isLoggedIn ? (
             <div className="flex items-center">
               <Link to="/dashboard">

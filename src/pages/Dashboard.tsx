@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -27,6 +28,7 @@ import { Progress } from '@/components/ui/progress';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Link } from 'react-router-dom';
 import VoiceControl from '@/components/VoiceControl';
+import AcademicDetails from '@/components/AcademicDetails';
 
 const Dashboard = () => {
   const courses = [
@@ -149,6 +151,8 @@ const Dashboard = () => {
     } else if (lowerText.includes("show analytics") || lowerText.includes("analytics")) {
       // Could scroll to analytics section
       document.getElementById("analytics-section")?.scrollIntoView({ behavior: 'smooth' });
+    } else if (lowerText.includes("show academic") || lowerText.includes("academics")) {
+      document.getElementById("academic-section")?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -156,7 +160,7 @@ const Dashboard = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       
-      <main className="flex-1 bg-slate-50 py-8">
+      <main className="flex-1 bg-slate-50 py-8 dark:bg-slate-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div>
@@ -171,7 +175,7 @@ const Dashboard = () => {
                   onVoiceInput={handleVoiceInput}
                   variant="secondary"
                 />
-                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-2 text-xs text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 shadow-lg rounded-lg p-2 text-xs text-gray-600 dark:text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                   Try: "Show courses" or "Open AI tutor"
                 </div>
               </div>
@@ -266,6 +270,12 @@ const Dashboard = () => {
                 </div>
               </CardContent>
             </Card>
+          </div>
+          
+          {/* Academic Details Section */}
+          <div className="mb-8" id="academic-section">
+            <h2 className="heading text-2xl font-bold mb-4">Academic Details</h2>
+            <AcademicDetails />
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -440,6 +450,95 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
+          
+          {/* Payment Plans - Updated to show prices in Rupees */}
+          <div className="mt-8">
+            <h2 className="heading text-2xl font-bold mb-4">Premium Learning Plans</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  title: "Basic",
+                  price: "₹499",
+                  period: "/month",
+                  description: "Perfect for beginners",
+                  features: [
+                    "Access to 10+ courses",
+                    "Basic AI tutor support",
+                    "Limited voice learning",
+                    "Study materials",
+                    "Community forum access"
+                  ],
+                  cta: "Start Basic"
+                },
+                {
+                  title: "Pro",
+                  price: "₹999",
+                  period: "/month",
+                  description: "Best value for money",
+                  features: [
+                    "Access to 50+ courses",
+                    "Advanced AI tutor support",
+                    "Full voice learning access",
+                    "Study materials & notes",
+                    "Community forum access",
+                    "Practice tests with feedback"
+                  ],
+                  cta: "Upgrade to Pro",
+                  popular: true
+                },
+                {
+                  title: "Premium",
+                  price: "₹1,999",
+                  period: "/month",
+                  description: "Ultimate learning experience",
+                  features: [
+                    "Access to all courses",
+                    "Unlimited AI tutor support",
+                    "Priority support",
+                    "All study materials & notes",
+                    "Community forum moderation",
+                    "Practice tests with detailed feedback",
+                    "Personalized learning path",
+                    "1-on-1 mentoring sessions"
+                  ],
+                  cta: "Go Premium"
+                }
+              ].map((plan, index) => (
+                <Card key={index} className={`relative overflow-hidden ${plan.popular ? 'border-primary shadow-lg' : ''}`}>
+                  {plan.popular && (
+                    <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-semibold transform translate-x-2 -translate-y-2 rotate-45 origin-bottom-left">
+                      Popular
+                    </div>
+                  )}
+                  <CardHeader>
+                    <CardTitle>{plan.title}</CardTitle>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl font-bold">{plan.price}</span>
+                      <span className="text-sm text-muted-foreground">{plan.period}</span>
+                    </div>
+                    <CardDescription>{plan.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 mb-6">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Button 
+                      className={`w-full ${plan.popular ? '' : 'bg-secondary hover:bg-secondary/90'}`}
+                    >
+                      {plan.cta}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
       </main>
       
@@ -448,7 +547,7 @@ const Dashboard = () => {
   );
 };
 
-const Badge = ({ className, children }) => {
+const Badge = ({ className, children }: { className: string, children: React.ReactNode }) => {
   return (
     <span className={`inline-block text-xs font-medium ${className}`}>
       {children}
