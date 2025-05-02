@@ -1,548 +1,630 @@
-
-import React, { useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/components/ui/use-toast';
+import { Badge } from '@/components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ArrowRight, Book, CheckCircle, Clock, Globe, PlayCircle, User } from 'lucide-react';
 
-// Sample course data - would be fetched from an API in a real application
-const coursesData = [
+// Dummy course data (would typically come from an API)
+const courses = [
   {
-    id: 1,
-    title: 'Introduction to Artificial Intelligence',
-    description: 'Learn the fundamentals of AI, machine learning, and neural networks.',
-    detailedDescription: 'This comprehensive course covers the core concepts of modern artificial intelligence, from basic algorithms to neural networks and deep learning. You\'ll learn about supervised and unsupervised learning, reinforcement learning, and how to build your own AI models.',
-    level: 'Beginner',
-    duration: '8 weeks',
-    instructor: 'Dr. Sarah Johnson',
-    enrolledStudents: 1245,
+    id: "1",
+    title: "Mathematics for JEE Advanced",
+    description: "Comprehensive mathematics course covering all topics for JEE Advanced examination. This course is designed by expert IIT professors and includes thousands of practice problems, mock tests, and detailed video explanations for each concept. The course follows the latest JEE Advanced syllabus and focuses on building strong problem-solving skills needed for the examination.",
+    instructor: {
+      name: "Prof. Ravi Kumar",
+      bio: "PhD in Mathematics from IIT Delhi with 15+ years of teaching experience. Has mentored over 500 students who successfully cleared JEE Advanced.",
+      image: "https://randomuser.me/api/portraits/men/42.jpg"
+    },
     rating: 4.8,
-    category: 'Computer Science',
-    price: 49.99,
-    language: 'English',
-    lastUpdated: 'March 2025',
-    image: 'https://images.unsplash.com/photo-1677442135436-78bfa2a16f93?q=80&w=2232&auto=format&fit=crop',
-    topics: [
-      'Introduction to AI Concepts',
-      'Machine Learning Fundamentals',
-      'Neural Networks Architecture',
-      'Deep Learning Models',
-      'Natural Language Processing',
-      'Computer Vision',
-      'Reinforcement Learning',
-      'Ethics in AI',
+    reviews: 324,
+    students: 3240,
+    level: "Advanced",
+    duration: "60 hours",
+    language: "Hindi, English",
+    category: "Mathematics",
+    lastUpdated: "April 2024",
+    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop",
+    price: 2999,
+    tags: ["JEE", "Mathematics", "Advanced"],
+    includes: [
+      "60 hours on-demand video",
+      "150 downloadable resources",
+      "30 practice tests",
+      "Full lifetime access",
+      "Access on mobile and TV",
+      "Certificate of completion"
     ],
-    requirements: [
-      'Basic programming knowledge (preferably Python)',
-      'Understanding of algebra and statistics',
-      'No prior AI knowledge required'
+    modules: [
+      {
+        title: "Algebra Fundamentals",
+        lessons: [
+          { title: "Complex Numbers", duration: "45 min" },
+          { title: "Quadratic Equations", duration: "50 min" },
+          { title: "Progressions and Series", duration: "60 min" },
+          { title: "Binomial Theorem", duration: "55 min" },
+          { title: "Permutations and Combinations", duration: "70 min" }
+        ]
+      },
+      {
+        title: "Calculus",
+        lessons: [
+          { title: "Functions and Limits", duration: "65 min" },
+          { title: "Differentiation Techniques", duration: "80 min" },
+          { title: "Applications of Derivatives", duration: "75 min" },
+          { title: "Integration Methods", duration: "90 min" },
+          { title: "Definite Integrals", duration: "60 min" }
+        ]
+      },
+      {
+        title: "Coordinate Geometry",
+        lessons: [
+          { title: "Straight Lines", duration: "45 min" },
+          { title: "Circles", duration: "50 min" },
+          { title: "Parabola", duration: "55 min" },
+          { title: "Ellipse", duration: "60 min" },
+          { title: "Hyperbola", duration: "50 min" }
+        ]
+      },
+      {
+        title: "Vectors and 3D Geometry",
+        lessons: [
+          { title: "Vectors Basics", duration: "40 min" },
+          { title: "Dot and Cross Products", duration: "55 min" },
+          { title: "Planes in 3D Space", duration: "60 min" },
+          { title: "Lines in 3D Space", duration: "50 min" },
+          { title: "Shortest Distance Problems", duration: "65 min" }
+        ]
+      }
     ],
-    whatYouWillLearn: [
-      'Build and train machine learning models',
-      'Implement neural networks from scratch',
-      'Apply AI to solve real-world problems',
-      'Understand key AI algorithms and their applications',
-      'Evaluate and improve AI model performance'
+    features: [
+      "Step-by-step video lectures",
+      "Detailed PDF notes for each topic",
+      "10,000+ practice problems with solutions",
+      "20 full-length mock tests",
+      "Doubt clearing sessions",
+      "Performance analytics dashboard",
+      "Mobile app access"
     ]
   },
   {
-    id: 2,
-    title: 'Advanced Calculus',
-    description: 'Explore the depths of multivariable calculus, differentiation and integration.',
-    detailedDescription: 'Dive deep into the world of advanced calculus with this comprehensive course covering multivariable calculus, vector analysis, and differential equations. Master techniques for solving complex mathematical problems and understand the theoretical foundations of calculus.',
-    level: 'Advanced',
-    duration: '12 weeks',
-    instructor: 'Prof. Michael Chen',
-    enrolledStudents: 892,
+    id: "2",
+    title: "Physics for NEET",
+    description: "Complete physics preparation for NEET with practice questions and video lectures.",
+    instructor: {
+      name: "Dr. Anjali Patel",
+      bio: "PhD in Physics from AIIMS Delhi with 12+ years of teaching experience. Specializes in making complex physics concepts easy to understand.",
+      image: "https://randomuser.me/api/portraits/women/55.jpg"
+    },
     rating: 4.7,
-    category: 'Mathematics',
-    price: 59.99,
-    language: 'English',
-    lastUpdated: 'January 2025',
-    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop',
-    topics: [
-      'Limits and Continuity',
-      'Differentiation Techniques',
-      'Integration Methods',
-      'Multivariable Calculus',
-      'Vector Calculus',
-      'Differential Equations',
-      'Series and Convergence',
-      'Applications in Physics'
+    reviews: 285,
+    students: 2850,
+    level: "Intermediate",
+    duration: "48 hours",
+    language: "Hindi, English",
+    category: "Physics",
+    lastUpdated: "March 2024",
+    image: "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?q=80&w=800&auto=format&fit=crop",
+    price: 2499,
+    tags: ["NEET", "Physics", "Medical"],
+    includes: [
+      "48 hours on-demand video",
+      "120 downloadable resources",
+      "25 practice tests",
+      "Full lifetime access",
+      "Access on mobile and TV",
+      "Certificate of completion"
     ],
-    requirements: [
-      'Strong foundation in basic calculus',
-      'Knowledge of linear algebra',
-      'Understanding of differential equations'
+    modules: [
+      {
+        title: "Mechanics",
+        lessons: [
+          { title: "Kinematics", duration: "40 min" },
+          { title: "Laws of Motion", duration: "45 min" },
+          { title: "Work, Energy, and Power", duration: "50 min" },
+          { title: "Rotational Motion", duration: "55 min" },
+          { title: "Gravitation", duration: "60 min" }
+        ]
+      },
+      {
+        title: "Thermodynamics",
+        lessons: [
+          { title: "Heat and Temperature", duration: "45 min" },
+          { title: "Thermodynamic Processes", duration: "50 min" },
+          { title: "Heat Engines and Refrigerators", duration: "55 min" },
+          { title: "Kinetic Theory of Gases", duration: "60 min" }
+        ]
+      },
+      {
+        title: "Optics",
+        lessons: [
+          { title: "Reflection and Refraction", duration: "40 min" },
+          { title: "Lenses and Optical Instruments", duration: "45 min" },
+          { title: "Wave Optics", duration: "50 min" },
+          { title: "Interference and Diffraction", duration: "55 min" }
+        ]
+      },
+      {
+        title: "Electromagnetism",
+        lessons: [
+          { title: "Electric Charges and Fields", duration: "45 min" },
+          { title: "Electric Potential and Capacitance", duration: "50 min" },
+          { title: "Current Electricity", duration: "55 min" },
+          { title: "Magnetic Effects of Current", duration: "60 min" },
+          { title: "Electromagnetic Induction", duration: "55 min" }
+        ]
+      }
     ],
-    whatYouWillLearn: [
-      'Solve complex integration problems',
-      'Apply vector calculus in physical scenarios',
-      'Understand theoretical foundations of advanced calculus',
-      'Master techniques for differential equations',
-      'Apply calculus to real-world engineering problems'
+    features: [
+      "Step-by-step video lectures",
+      "Detailed PDF notes for each topic",
+      "8,000+ practice problems with solutions",
+      "15 full-length mock tests",
+      "Doubt clearing sessions",
+      "Performance analytics dashboard",
+      "Mobile app access"
     ]
   },
   {
-    id: 3,
-    title: 'Quantum Physics Principles',
-    description: 'Understand the fundamental principles of quantum mechanics and their applications.',
-    detailedDescription: 'Explore the fascinating world of quantum physics, from wave-particle duality to quantum entanglement. This course covers the mathematical formulation of quantum mechanics, its experimental foundations, and modern applications in computing and technology.',
-    level: 'Intermediate',
-    duration: '10 weeks',
-    instructor: 'Dr. Emily Brooks',
-    enrolledStudents: 765,
+    id: "3",
+    title: "Complete UPSC CSE Preparation",
+    description: "Structured curriculum covering all subjects for UPSC Civil Services Examination.",
+    instructor: {
+      name: "Rajesh Sharma, IAS",
+      bio: "Retired IAS officer with 25+ years of experience in civil services. Expert in guiding students for UPSC CSE.",
+      image: "https://randomuser.me/api/portraits/men/68.jpg"
+    },
     rating: 4.9,
-    category: 'Physics',
-    price: 69.99,
-    language: 'English',
-    lastUpdated: 'February 2025',
-    image: 'https://images.unsplash.com/photo-1636466497217-06a7767eadb7?q=80&w=1974&auto=format&fit=crop',
-    topics: [
-      'Wave-Particle Duality',
-      'Quantum Superposition',
-      'Schrödinger Equation',
-      'Quantum Entanglement',
-      'Measurement Theory',
-      'Quantum Computing Basics',
-      'Quantum Field Theory Introduction',
-      'Applications in Modern Technology'
+    reviews: 520,
+    students: 5200,
+    level: "Advanced",
+    duration: "120 hours",
+    language: "Hindi, English",
+    category: "UPSC",
+    lastUpdated: "May 2024",
+    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop",
+    price: 8999,
+    tags: ["UPSC", "IAS", "Civil Services"],
+    includes: [
+      "120 hours on-demand video",
+      "300 downloadable resources",
+      "50 practice tests",
+      "Full lifetime access",
+      "Access on mobile and TV",
+      "Certificate of completion"
     ],
-    requirements: [
-      'Understanding of classical physics',
-      'Knowledge of differential equations',
-      'Basic linear algebra concepts'
+    modules: [
+      {
+        title: "Indian Polity",
+        lessons: [
+          { title: "Constitutional Framework", duration: "60 min" },
+          { title: "Parliamentary System", duration: "70 min" },
+          { title: "Fundamental Rights", duration: "65 min" },
+          { title: "Directive Principles", duration: "55 min" },
+          { title: "Union and State Governments", duration: "75 min" }
+        ]
+      },
+      {
+        title: "Indian Economy",
+        lessons: [
+          { title: "Economic Planning", duration: "65 min" },
+          { title: "Fiscal Policy", duration: "70 min" },
+          { title: "Monetary Policy", duration: "60 min" },
+          { title: "Inflation and Unemployment", duration: "55 min" },
+          { title: "External Sector", duration: "75 min" }
+        ]
+      },
+      {
+        title: "History",
+        lessons: [
+          { title: "Ancient History", duration: "60 min" },
+          { title: "Medieval History", duration: "70 min" },
+          { title: "Modern History", duration: "65 min" },
+          { title: "Indian National Movement", duration: "55 min" },
+          { title: "Post-Independence India", duration: "75 min" }
+        ]
+      },
+      {
+        title: "Geography",
+        lessons: [
+          { title: "Physical Geography", duration: "65 min" },
+          { title: "Indian Geography", duration: "70 min" },
+          { title: "Economic Geography", duration: "60 min" },
+          { title: "Human Geography", duration: "55 min" },
+          { title: "Environmental Geography", duration: "75 min" }
+        ]
+      }
     ],
-    whatYouWillLearn: [
-      'Understand core quantum mechanical principles',
-      'Solve basic quantum physics problems',
-      'Explain quantum phenomena mathematically',
-      'Connect quantum theory to modern applications',
-      'Appreciate the philosophical implications of quantum mechanics'
-    ]
-  },
-  {
-    id: 4,
-    title: 'Modern World History',
-    description: 'A comprehensive look at global events and developments from the 18th century to present day.',
-    detailedDescription: 'Journey through the major events that shaped our modern world, from the Industrial Revolution to the Digital Age. This course examines political movements, cultural transformations, technological advances, and the interconnected nature of global history.',
-    level: 'Beginner',
-    duration: '6 weeks',
-    instructor: 'Prof. David Williams',
-    enrolledStudents: 1432,
-    rating: 4.6,
-    category: 'History',
-    price: 39.99,
-    language: 'English',
-    lastUpdated: 'April 2025',
-    image: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=2074&auto=format&fit=crop',
-    topics: [
-      'The Age of Revolution',
-      'Imperialism and Colonialism',
-      'World Wars and Global Conflict',
-      'Cold War Era',
-      'Decolonization and Independence Movements',
-      'Globalization and Technology',
-      'Contemporary Global Issues',
-      'Cultural and Social Transformations'
-    ],
-    requirements: [
-      'No prior knowledge required',
-      'Interest in historical events and global politics',
-      'Basic reading and analytical skills'
-    ],
-    whatYouWillLearn: [
-      'Understand major historical movements of the modern era',
-      'Analyze the causes and effects of pivotal world events',
-      'Recognize patterns in global historical developments',
-      'Connect historical events to contemporary issues',
-      'Develop critical thinking about historical narratives'
-    ]
-  },
-  {
-    id: 5,
-    title: 'Data Science Fundamentals',
-    description: 'Learn to analyze, visualize, and interpret complex data sets using modern tools.',
-    detailedDescription: 'Master the essential skills of data science, from data cleaning and visualization to statistical analysis and machine learning. This course provides hands-on experience with real-world datasets using popular tools like Python, Pandas, and scikit-learn.',
-    level: 'Intermediate',
-    duration: '9 weeks',
-    instructor: 'Dr. Alex Martinez',
-    enrolledStudents: 1876,
-    rating: 4.9,
-    category: 'Computer Science',
-    price: 54.99,
-    language: 'English',
-    lastUpdated: 'March 2025',
-    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop',
-    topics: [
-      'Data Collection and Preprocessing',
-      'Exploratory Data Analysis',
-      'Statistical Inference',
-      'Machine Learning Basics',
-      'Data Visualization Techniques',
-      'Predictive Modeling',
-      'Big Data Technologies',
-      'Ethical Considerations in Data Science'
-    ],
-    requirements: [
-      'Basic programming experience (preferably Python)',
-      'Understanding of algebra and statistics',
-      'Familiarity with databases'
-    ],
-    whatYouWillLearn: [
-      'Clean and preprocess raw data for analysis',
-      'Create informative data visualizations',
-      'Build predictive models using machine learning',
-      'Extract actionable insights from complex datasets',
-      'Apply statistical methods to validate findings'
-    ]
-  },
-  {
-    id: 6,
-    title: 'Biochemistry Essentials',
-    description: 'Understand the chemical processes within and related to living organisms.',
-    detailedDescription: 'Explore the fascinating intersection of biology and chemistry in this comprehensive biochemistry course. Learn about the structure and function of biomolecules, metabolic pathways, enzyme kinetics, and the molecular basis of genetic information transfer.',
-    level: 'Advanced',
-    duration: '14 weeks',
-    instructor: 'Prof. Lisa Thompson',
-    enrolledStudents: 658,
-    rating: 4.7,
-    category: 'Biology',
-    price: 64.99,
-    language: 'English',
-    lastUpdated: 'February 2025',
-    image: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=1080&auto=format&fit=crop',
-    topics: [
-      'Protein Structure and Function',
-      'Enzyme Kinetics and Regulation',
-      'Carbohydrate Metabolism',
-      'Lipid Biochemistry',
-      'Nucleic Acid Structure',
-      'Gene Expression and Regulation',
-      'Metabolic Integration',
-      'Molecular Techniques in Biochemistry'
-    ],
-    requirements: [
-      'College-level biology and chemistry',
-      'Understanding of organic chemistry principles',
-      'Familiarity with cellular biology concepts'
-    ],
-    whatYouWillLearn: [
-      'Explain the structure-function relationship of biomolecules',
-      'Analyze metabolic pathways and their regulation',
-      'Understand the molecular basis of genetic processes',
-      'Apply biochemical principles to health and disease',
-      'Interpret experimental data from biochemical techniques'
+    features: [
+      "Step-by-step video lectures",
+      "Detailed PDF notes for each topic",
+      "20,000+ practice problems with solutions",
+      "30 full-length mock tests",
+      "Doubt clearing sessions",
+      "Performance analytics dashboard",
+      "Mobile app access"
     ]
   }
 ];
 
 const CourseDetail = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const { id } = useParams<{ id: string }>();
   
-  const course = useMemo(() => {
-    const courseId = parseInt(id || "0");
-    return coursesData.find(c => c.id === courseId);
-  }, [id]);
+  // Find the course by ID
+  const course = courses.find(c => c.id === id);
   
+  // If course not found, show error
   if (!course) {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-1 container mx-auto px-4 py-12 flex items-center justify-center">
+        <div className="flex-grow flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Course Not Found</h1>
-            <p className="mb-6">The course you're looking for doesn't exist or has been removed.</p>
-            <Button onClick={() => navigate('/courses')}>Return to Courses</Button>
+            <h1 className="text-3xl font-bold mb-4">Course Not Found</h1>
+            <p className="mb-6 text-muted-foreground">
+              The course you're looking for doesn't exist or has been removed.
+            </p>
+            <Link to="/courses">
+              <Button>Browse All Courses</Button>
+            </Link>
           </div>
-        </main>
+        </div>
         <Footer />
       </div>
     );
   }
   
-  const handleEnroll = () => {
-    toast({
-      title: "Enrollment Successful",
-      description: `You've enrolled in ${course.title}. Start learning now!`,
-    });
+  // Calculate total lessons and duration
+  const totalLessons = course.modules.reduce((acc, module) => acc + module.lessons.length, 0);
+  const totalDuration = course.modules.reduce((acc, module) => {
+    return acc + module.lessons.reduce((lessonAcc, lesson) => {
+      const minutes = parseInt(lesson.duration.split(' ')[0]);
+      return lessonAcc + minutes;
+    }, 0);
+  }, 0);
+  
+  // Format total duration
+  const formatDuration = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours} hours ${mins} minutes`;
   };
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section 
-          className="relative bg-cover bg-center py-24 text-white"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${course.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-2 mb-4">
-                <Badge className="bg-primary">{course.category}</Badge>
-                <Badge variant="outline" className="border-white text-white">{course.level}</Badge>
-                <div className="flex items-center text-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1 text-yellow-400">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                  </svg>
-                  <span>{course.rating} ({course.enrolledStudents.toLocaleString()} students)</span>
-                </div>
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">{course.title}</h1>
-              <p className="text-lg mb-6">{course.description}</p>
+      {/* Course Header */}
+      <section className="bg-gradient-to-br from-primary to-secondary text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-start gap-8">
+            <div className="flex-1">
+              <Badge className="mb-4 bg-white/20 text-white border-white/10">{course.category}</Badge>
+              <h1 className="heading text-3xl md:text-4xl font-bold mb-4">
+                {course.title}
+              </h1>
+              <p className="text-lg text-white/90 mb-6 max-w-2xl">
+                {course.description.split('.')[0] + '.'}
+              </p>
+              
               <div className="flex flex-wrap gap-4 mb-6">
                 <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                  <span>Instructor: <strong>{course.instructor}</strong></span>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>{course.students.toLocaleString()} students</span>
                 </div>
                 <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
+                  <svg className="w-4 h-4 text-yellow-300 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                   </svg>
-                  <span>Duration: <strong>{course.duration}</strong></span>
+                  <span>{course.rating} ({course.reviews} reviews)</span>
                 </div>
                 <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                  </svg>
-                  <span>Last updated: <strong>{course.lastUpdated}</strong></span>
+                  <Clock className="mr-2 h-4 w-4" />
+                  <span>{course.duration}</span>
                 </div>
                 <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                    <path d="M12 20v-6M9 17l3-3 3 3M4 4v10M7 4l3 3 3-3M20 4v10M17 4l-3 3-3-3M4 14h16"></path>
-                  </svg>
-                  <span>Language: <strong>{course.language}</strong></span>
+                  <Globe className="mr-2 h-4 w-4" />
+                  <span>{course.language}</span>
                 </div>
-              </div>
-              <div className="flex flex-wrap gap-4 items-center">
-                <div className="text-3xl font-bold">${course.price}</div>
-                <Button onClick={handleEnroll} size="lg" className="bg-primary hover:bg-primary/90">
-                  Enroll Now
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Course Content */}
-        <section className="py-12">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <Tabs defaultValue="overview" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 mb-8">
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
-                    <TabsTrigger value="instructor">Instructor</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="overview" className="space-y-6">
-                    <div>
-                      <h3 className="text-xl font-bold mb-4">About This Course</h3>
-                      <p className="text-muted-foreground">{course.detailedDescription}</p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-bold mb-4">What You'll Learn</h3>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {course.whatYouWillLearn.map((item, index) => (
-                          <li key={index} className="flex items-start gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-primary flex-shrink-0 mt-1">
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-bold mb-4">Requirements</h3>
-                      <ul className="space-y-2">
-                        {course.requirements.map((req, index) => (
-                          <li key={index} className="flex items-start gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-1">
-                              <circle cx="12" cy="12" r="10"></circle>
-                              <line x1="12" y1="8" x2="12" y2="16"></line>
-                              <line x1="8" y1="12" x2="16" y2="12"></line>
-                            </svg>
-                            <span>{req}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="curriculum">
-                    <div className="space-y-6">
-                      <h3 className="text-xl font-bold mb-4">Course Topics</h3>
-                      <div className="space-y-4">
-                        {course.topics.map((topic, index) => (
-                          <Card key={index}>
-                            <CardContent className="p-4 flex justify-between items-center">
-                              <div className="flex items-center gap-3">
-                                <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold">
-                                  {index + 1}
-                                </div>
-                                <div>{topic}</div>
-                              </div>
-                              <Button variant="ghost" size="sm">Preview</Button>
-                            </CardContent>
-                          </Card>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="instructor">
-                    <div className="space-y-6">
-                      <div className="flex flex-col sm:flex-row gap-6 items-start">
-                        <div className="h-32 w-32 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400">
-                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold mb-2">{course.instructor}</h3>
-                          <p className="text-sm text-muted-foreground mb-3">Expert in {course.category}</p>
-                          <p className="mb-4">
-                            An experienced educator with a passion for teaching {course.category.toLowerCase()}. With years of experience in both academia and industry, {course.instructor.split(' ')[0]} brings practical insights and theoretical depth to this course.
-                          </p>
-                          <Button variant="outline" size="sm">View Profile</Button>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
               </div>
               
-              <div>
-                <Card className="sticky top-6">
-                  <CardContent className="p-6 space-y-6">
-                    <h3 className="text-lg font-semibold">Course Includes</h3>
-                    <ul className="space-y-3">
-                      <li className="flex items-center gap-3 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                          <path d="M21 15V6m-4-3v18m-4-10v10M7 7v10M3 10v7"></path>
-                        </svg>
-                        <span>{course.duration} of on-demand video</span>
-                      </li>
-                      <li className="flex items-center gap-3 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
-                        </svg>
-                        <span>Comprehensive study materials</span>
-                      </li>
-                      <li className="flex items-center gap-3 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                          <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
-                          <line x1="16" x2="16" y1="2" y2="6"></line>
-                          <line x1="8" x2="8" y1="2" y2="6"></line>
-                          <line x1="3" x2="21" y1="10" y2="10"></line>
-                          <path d="m9 16 2 2 4-4"></path>
-                        </svg>
-                        <span>Self-paced learning schedule</span>
-                      </li>
-                      <li className="flex items-center gap-3 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                          <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path>
-                        </svg>
-                        <span>Interactive practice exercises</span>
-                      </li>
-                      <li className="flex items-center gap-3 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                          <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8V3"></path>
-                          <path d="M21 3v5h-5"></path>
-                        </svg>
-                        <span>Lifetime access</span>
-                      </li>
-                      <li className="flex items-center gap-3 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-                          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-                        </svg>
-                        <span>Course completion certificate</span>
-                      </li>
-                    </ul>
-                    
-                    <div className="pt-4 border-t">
-                      <Button onClick={handleEnroll} className="w-full">
-                        Enroll Now - ${course.price}
-                      </Button>
-                      <div className="text-xs text-center mt-3 text-muted-foreground">
-                        30-day money-back guarantee
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              <div className="flex items-center mb-4">
+                <img
+                  src={course.instructor.image}
+                  alt={course.instructor.name}
+                  className="w-10 h-10 rounded-full mr-3"
+                />
+                <div>
+                  <p className="font-medium">Created by</p>
+                  <p className="text-white/90">{course.instructor.name}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center">
+                <p className="text-white/80 text-sm">Last updated: {course.lastUpdated}</p>
               </div>
             </div>
-          </div>
-        </section>
-        
-        {/* Related Courses - would normally be dynamically generated */}
-        <section className="py-12 bg-slate-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold mb-8">Related Courses</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {coursesData
-                .filter(c => c.category === course.category && c.id !== course.id)
-                .slice(0, 3)
-                .map(relatedCourse => (
-                  <Card key={relatedCourse.id} className="overflow-hidden">
-                    <div className="h-40 overflow-hidden">
-                      <img 
-                        src={relatedCourse.image} 
-                        alt={relatedCourse.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold mb-2">{relatedCourse.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{relatedCourse.description}</p>
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center text-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1 text-yellow-400">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                          </svg>
-                          <span>{relatedCourse.rating}</span>
-                        </div>
-                        <Button 
-                          variant="link" 
-                          className="p-0 h-auto font-normal"
-                          onClick={() => navigate(`/course/${relatedCourse.id}`)}
-                        >
-                          View Course →
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+            
+            {/* Course Card (Desktop) */}
+            <div className="hidden md:block w-80 lg:w-96">
+              <Card className="overflow-hidden">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src={course.image} 
+                    alt={course.title} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-3xl font-bold">₹{course.price.toLocaleString()}</span>
+                  </div>
+                  
+                  <Button className="w-full mb-4">Enroll Now</Button>
+                  <Button variant="outline" className="w-full mb-6">Add to Cart</Button>
+                  
+                  <div className="space-y-4">
+                    <p className="font-medium">This course includes:</p>
+                    <ul className="space-y-2">
+                      {course.includes.map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <CheckCircle className="h-5 w-5 text-primary mr-2 shrink-0" />
+                          <span className="text-sm">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
       
-      <Footer />
-    </div>
-  );
-};
-
-export default CourseDetail;
+      {/* Mobile Course Card */}
+      <div className="md:hidden bg-background p-4 sticky top-0 z-20 shadow-md">
+        <div className="flex justify-between items-center">
+          <div>
+            <span className="text-2xl font-bold">₹{course.price.toLocaleString()}</span>
+          </div>
+          <Button>Enroll Now</Button>
+        </div>
+      </div>
+      
+      {/* Course Content */}
+      <section className="py-12 bg-background flex-grow">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex-grow lg:max-w-[65%]">
+              {/* Course Tabs */}
+              <Tabs defaultValue="overview" className="mb-8">
+                <TabsList>
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
+                  <TabsTrigger value="instructor">Instructor</TabsTrigger>
+                  <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                </TabsList>
+                
+                {/* Overview Tab */}
+                <TabsContent value="overview" className="pt-6">
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-4">About This Course</h2>
+                      <p className="text-muted-foreground whitespace-pre-line mb-4">
+                        {course.description}
+                      </p>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card>
+                          <CardContent className="p-4 flex items-center">
+                            <div className="bg-primary/10 rounded-full p-2 mr-4">
+                              <Book className="h-5 w-5 text-primary" />
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">Total Lessons</p>
+                              <p className="font-medium">{totalLessons} lessons</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card>
+                          <CardContent className="p-4 flex items-center">
+                            <div className="bg-primary/10 rounded-full p-2 mr-4">
+                              <Clock className="h-5 w-5 text-primary" />
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">Total Duration</p>
+                              <p className="font-medium">{formatDuration(totalDuration)}</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h2 className="text-2xl font-bold mb-4">What You'll Learn</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {course.features.map((feature, index) => (
+                          <div key={index} className="flex items-start">
+                            <CheckCircle className="h-5 w-5 text-primary mr-2 shrink-0" />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="pt-4 border-t">
+                      <h3 className="text-xl font-bold mb-4">Required For This Course</h3>
+                      <ul className="space-y-2">
+                        <li className="flex items-center">
+                          <div className="bg-primary/10 w-1.5 h-1.5 rounded-full mr-2"></div>
+                          <span>Basic understanding of mathematics</span>
+                        </li>
+                        <li className="flex items-center">
+                          <div className="bg-primary/10 w-1.5 h-1.5 rounded-full mr-2"></div>
+                          <span>Class 11 mathematics knowledge</span>
+                        </li>
+                        <li className="flex items-center">
+                          <div className="bg-primary/10 w-1.5 h-1.5 rounded-full mr-2"></div>
+                          <span>Commitment to regular practice</span>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <div className="pt-4 border-t">
+                      <h3 className="text-xl font-bold mb-4">Who This Course Is For</h3>
+                      <ul className="space-y-2">
+                        <li className="flex items-center">
+                          <div className="bg-primary/10 w-1.5 h-1.5 rounded-full mr-2"></div>
+                          <span>Students preparing for JEE Advanced examination</span>
+                        </li>
+                        <li className="flex items-center">
+                          <div className="bg-primary/10 w-1.5 h-1.5 rounded-full mr-2"></div>
+                          <span>Class 11 and 12 students focusing on competitive exams</span>
+                        </li>
+                        <li className="flex items-center">
+                          <div className="bg-primary/10 w-1.5 h-1.5 rounded-full mr-2"></div>
+                          <span>Anyone looking to strengthen their advanced mathematics skills</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </TabsContent>
+                
+                {/* Curriculum Tab */}
+                <TabsContent value="curriculum" className="pt-6">
+                  <div className="mb-6">
+                    <h2 className="text-2xl font-bold mb-2">Course Curriculum</h2>
+                    <p className="text-muted-foreground">
+                      {totalLessons} lessons • {formatDuration(totalDuration)} total duration
+                    </p>
+                  </div>
+                  
+                  <Accordion type="single" collapsible className="w-full">
+                    {course.modules.map((module, index) => (
+                      <AccordionItem key={index} value={`module-${index}`}>
+                        <AccordionTrigger className="hover:no-underline">
+                          <div>
+                            <h3 className="text-left font-medium">{module.title}</h3>
+                            <p className="text-sm text-muted-foreground text-left">
+                              {module.lessons.length} lessons • 
+                              {formatDuration(module.lessons.reduce((acc, lesson) => acc + parseInt(lesson.duration), 0))}
+                            </p>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <ul className="space-y-4">
+                            {module.lessons.map((lesson, lessonIndex) => (
+                              <li key={lessonIndex} className="flex items-start justify-between">
+                                <div className="flex items-start">
+                                  <PlayCircle className="h-5 w-5 text-primary mr-3 mt-0.5 shrink-0" />
+                                  <span>{lesson.title}</span>
+                                </div>
+                                <span className="text-muted-foreground text-sm">{lesson.duration}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </TabsContent>
+                
+                {/* Instructor Tab */}
+                <TabsContent value="instructor" className="pt-6">
+                  <div className="flex items-start gap-6 mb-8">
+                    <img
+                      src={course.instructor.image}
+                      alt={course.instructor.name}
+                      className="w-20 h-20 rounded-full"
+                    />
+                    <div>
+                      <h2 className="text-2xl font-bold mb-2">{course.instructor.name}</h2>
+                      <p className="text-primary mb-4">Course Instructor</p>
+                      <p className="text-muted-foreground">{course.instructor.bio}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card>
+                      <CardContent className="p-4">
+                        <p className="text-3xl font-bold text-primary">15+</p>
+                        <p className="text-muted-foreground">Years Teaching</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <p className="text-3xl font-bold text-primary">500+</p>
+                        <p className="text-muted-foreground">Students Mentored</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <p className="text-3xl font-bold text-primary">8</p>
+                        <p className="text-muted-foreground">Courses Created</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+                
+                {/* Reviews Tab */}
+                <TabsContent value="reviews" className="pt-6">
+                  <div className="mb-8">
+                    <h2 className="text-2xl font-bold mb-4">Student Reviews</h2>
+                    <div className="flex items-center gap-4">
+                      <div className="text-center">
+                        <div className="text-5xl font-bold mb-2">{course.rating}</div>
+                        <div className="flex gap-1 mb-1">
+                          {[1, 2, 3, 4, 5].map(star => (
+                            <svg key={star} className={`w-5 h-5 ${star <= Math.floor(course.rating) ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                          ))}
+                        </div>
+                        <p className="text-muted-foreground text-sm">{course.reviews} reviews</p>
+                      </div>
+                      
+                      <div className="flex-1">
+                        {[5, 4, 3, 2, 1].map(star => {
+                          // Dummy percentages
+                          const percentage = star === 5 ? 75 : star === 4 ? 18 : star === 3 ? 5 : star === 2 ? 1 : 1;
+                          
+                          return (
+                            <div key={star} className="flex items-center mb-1">
+                              <div className="flex items-center w-16">
+                                <span>{star}</span>
+                                <svg className="w-4 h-4 text-yellow-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                              </div>
+                              <div className="flex-1 h-2 mx-2 bg-slate-200 rounded-full overflow-hidden">
+                                <div className="h-full bg-yellow-400 rounded-full" style={{width: `${percentage}%`}}></div>
+                              </div>
+                              <span className="text-muted-foreground text-sm w-12">{percentage}%</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Individual Reviews - This would typically be dynamically generated */}
+                  <div className="space-y-6">
+                    {[1, 2, 3].map(review => (
+                      <div key={review} className="border-b pb-6">
+                        <div className="flex items-center mb-4">
+                          <img
+                            src={`https://randomuser.me/api/portraits/${review % 2 === 0 ? 'women' : 'men'}/${review + 30}.jpg`}
+                            alt="Reviewer"
+                            className="w-10 h-10 rounded-full mr-3"
+                          />
+                          <div>
+                            <p className="font-medium">Student {review}</p>
+                            <div className="flex items-center">
+                              {[1, 2, 3, 4, 5].map(star => (
+                                <svg key={star} className={`w-4 h-4 ${star <= 5 ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98

@@ -2,200 +2,236 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
 
 const About = () => {
+  // Team members data
+  const teamMembers = [
+    {
+      name: 'Dr. Priya Sharma',
+      role: 'Founder & AI Research Lead',
+      bio: 'PhD in Machine Learning with 10+ years of experience in education technology.',
+      image: 'https://randomuser.me/api/portraits/women/44.jpg'
+    },
+    {
+      name: 'Vikram Mehta',
+      role: 'Educational Content Director',
+      bio: 'Former professor with expertise in curriculum development for the Indian education system.',
+      image: 'https://randomuser.me/api/portraits/men/32.jpg'
+    },
+    {
+      name: 'Aisha Patel',
+      role: 'Voice Technology Specialist',
+      bio: 'Speech recognition expert with a passion for making learning accessible to all.',
+      image: 'https://randomuser.me/api/portraits/women/68.jpg'
+    },
+    {
+      name: 'Rajesh Kumar',
+      role: 'Learning Experience Designer',
+      bio: 'UX specialist focused on creating intuitive and engaging educational interfaces.',
+      image: 'https://randomuser.me/api/portraits/men/62.jpg'
+    }
+  ];
+
+  // Timeline data
+  const timeline = [
+    {
+      year: '2020',
+      title: 'Foundation',
+      description: 'University AI was founded with the vision to transform education in India through technology.'
+    },
+    {
+      year: '2021',
+      title: 'First AI Tutor',
+      description: 'Launched our first version of the AI tutoring system specifically designed for Indian curricula.'
+    },
+    {
+      year: '2022',
+      title: 'Voice Technology',
+      description: 'Integrated voice clone technology to create more natural and engaging learning experiences.'
+    },
+    {
+      year: '2023',
+      title: 'Expansion',
+      description: 'Expanded our course offerings to cover all major subjects in the Indian education system.'
+    },
+    {
+      year: '2024',
+      title: 'Recognition',
+      description: 'Recognized as one of the top EdTech innovations in India by the Ministry of Education.'
+    }
+  ];
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary to-secondary text-white py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
-              <h1 className="heading text-3xl md:text-4xl font-bold mb-4">
-                About University AI
-              </h1>
-              <p className="text-xl text-white/90 mb-6">
-                Our mission is to revolutionize education through artificial intelligence and personalized learning experiences.
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-primary to-secondary py-16 md:py-24 text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              About University AI
+            </h1>
+            <p className="text-xl mb-6">
+              We're on a mission to transform education in India by making quality learning accessible to everyone through artificial intelligence.
+            </p>
+            <p className="text-lg text-white/80">
+              Founded in 2020, University AI combines cutting-edge technology with deep educational expertise to create personalized learning experiences.
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      {/* Our Mission */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="heading text-3xl font-bold mb-6">Our Mission</h2>
+              <p className="text-lg text-muted-foreground mb-4">
+                At University AI, we believe that every student in India deserves access to high-quality education regardless of their location or economic background.
+              </p>
+              <p className="text-lg text-muted-foreground mb-4">
+                Our platform is designed to bridge educational gaps by providing personalized AI tutoring, voice-based learning, and comprehensive courses aligned with Indian educational standards.
+              </p>
+              <p className="text-lg text-muted-foreground">
+                We're committed to continuously improving our technology to make learning more engaging, effective, and accessible for students across India.
               </p>
             </div>
-          </div>
-        </section>
-        
-        {/* Vision & Mission */}
-        <section className="py-16 bg-slate-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="heading text-2xl md:text-3xl font-bold mb-8 text-center">Our Vision & Mission</h2>
-              
-              <div className="bg-white rounded-lg shadow-lg p-8 mb-10">
-                <h3 className="heading text-xl font-bold mb-4 text-primary">Vision</h3>
-                <p className="text-gray-700 mb-6">
-                  To create a world where quality education is accessible to everyone, regardless of their location, background, or circumstances. 
-                  We envision a future where learning is personalized, engaging, and effective, empowering individuals to reach their full potential.
-                </p>
-                
-                <h3 className="heading text-xl font-bold mb-4 text-primary">Mission</h3>
-                <p className="text-gray-700">
-                  University AI is committed to harnessing the power of artificial intelligence to deliver personalized learning experiences 
-                  that adapt to each student's unique needs, learning style, and pace. We strive to make education more accessible, enjoyable, 
-                  and effective through innovative technology solutions.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Our Team */}
-        <section className="py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="heading text-2xl md:text-3xl font-bold mb-12 text-center">Meet Our Team</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Team Member 1 */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="h-48 bg-slate-200 flex items-center justify-center">
-                  <svg className="w-24 h-24 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-1">Dr. Sarah Johnson</h3>
-                  <p className="text-primary font-medium mb-3">Chief AI Officer</p>
-                  <p className="text-gray-600">
-                    With a PhD in Machine Learning, Sarah leads our AI research and development team, ensuring our platform delivers cutting-edge personalized learning experiences.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Team Member 2 */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="h-48 bg-slate-200 flex items-center justify-center">
-                  <svg className="w-24 h-24 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-1">Michael Chen</h3>
-                  <p className="text-primary font-medium mb-3">Education Director</p>
-                  <p className="text-gray-600">
-                    With 15 years in educational technology, Michael ensures our platform meets the highest pedagogical standards and adapts to diverse learning needs.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Team Member 3 */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="h-48 bg-slate-200 flex items-center justify-center">
-                  <svg className="w-24 h-24 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-1">Emily Rodriguez</h3>
-                  <p className="text-primary font-medium mb-3">UX Design Lead</p>
-                  <p className="text-gray-600">
-                    Emily specializes in creating intuitive, accessible learning interfaces that make complex educational content engaging and easy to navigate for learners of all ages.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Our Approach */}
-        <section className="py-16 bg-slate-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="heading text-2xl md:text-3xl font-bold mb-8 text-center">Our Approach to AI-Powered Education</h2>
-              
-              <div className="space-y-8">
-                <div className="bg-white rounded-lg shadow p-6 flex gap-4">
-                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary flex items-center justify-center text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-                      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                      <line x1="12" x2="12" y1="19" y2="22"></line>
+            <div className="bg-gradient-to-br from-accent/10 to-primary/10 p-8 rounded-xl">
+              <div className="space-y-6">
+                <div className="flex items-start">
+                  <div className="bg-primary/20 rounded-full p-2 mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="heading text-lg font-bold mb-2">Personalized Learning Paths</h3>
-                    <p className="text-gray-700">
-                      Our AI analyzes learning patterns, strengths, and areas for improvement to create customized educational journeys for each student.
-                    </p>
+                    <h3 className="font-bold text-lg mb-1">Accessible Education</h3>
+                    <p className="text-muted-foreground">Making quality education available to everyone regardless of geographical or financial constraints.</p>
                   </div>
                 </div>
                 
-                <div className="bg-white rounded-lg shadow p-6 flex gap-4">
-                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary flex items-center justify-center text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
-                      <line x1="16" x2="16" y1="2" y2="6"></line>
-                      <line x1="8" x2="8" y1="2" y2="6"></line>
-                      <line x1="3" x2="21" y1="10" y2="10"></line>
-                      <path d="m9 16 2 2 4-4"></path>
+                <div className="flex items-start">
+                  <div className="bg-primary/20 rounded-full p-2 mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="heading text-lg font-bold mb-2">Real-Time Feedback</h3>
-                    <p className="text-gray-700">
-                      Students receive immediate, constructive feedback that helps them understand concepts better and correct misconceptions instantly.
-                    </p>
+                    <h3 className="font-bold text-lg mb-1">Personalized Learning</h3>
+                    <p className="text-muted-foreground">Using AI to adapt to each student's unique learning style and pace.</p>
                   </div>
                 </div>
                 
-                <div className="bg-white rounded-lg shadow p-6 flex gap-4">
-                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary flex items-center justify-center text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <path d="M16 13H8"></path>
-                      <path d="M16 17H8"></path>
-                      <path d="M10 9H8"></path>
+                <div className="flex items-start">
+                  <div className="bg-primary/20 rounded-full p-2 mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="heading text-lg font-bold mb-2">Adaptive Content</h3>
-                    <p className="text-gray-700">
-                      Our platform dynamically adjusts content difficulty based on student performance, ensuring learners are always appropriately challenged.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="bg-white rounded-lg shadow p-6 flex gap-4">
-                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary flex items-center justify-center text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <path d="M12 16v-4"></path>
-                      <path d="M12 8h.01"></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="heading text-lg font-bold mb-2">24/7 AI Tutor Support</h3>
-                    <p className="text-gray-700">
-                      Our AI tutors are always available to answer questions, provide explanations, and guide students through difficult concepts at any time.
-                    </p>
+                    <h3 className="font-bold text-lg mb-1">Indian Education Focus</h3>
+                    <p className="text-muted-foreground">Content specifically designed for the Indian curriculum and examination patterns.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-        
-        {/* Contact CTA */}
-        <section className="py-16 bg-primary text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">Want to learn more about University AI?</h2>
-            <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-              We're happy to answer any questions you have about our platform, approach, or the future of AI in education.
+        </div>
+      </section>
+      
+      {/* Our Journey Timeline */}
+      <section className="py-16 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="heading text-3xl font-bold mb-4">Our Journey</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              From a small startup to becoming a leading EdTech platform in India
             </p>
-            <button className="bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-lg font-medium">
-              Contact Us
-            </button>
           </div>
-        </section>
-      </main>
+          
+          <div className="max-w-4xl mx-auto">
+            {timeline.map((item, index) => (
+              <div key={index} className="flex mb-8 relative">
+                <div className="mr-8 text-right min-w-[100px]">
+                  <div className="text-2xl font-bold text-primary">{item.year}</div>
+                </div>
+                
+                <div className="relative">
+                  <div className="absolute top-2 -left-[41px] w-6 h-6 rounded-full border-4 border-primary bg-background"></div>
+                  {index < timeline.length - 1 && (
+                    <div className="absolute top-8 -left-[38px] w-0.5 h-[calc(100%+20px)] bg-primary/30"></div>
+                  )}
+                  
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                    <p className="text-muted-foreground">{item.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Our Team */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="heading text-3xl font-bold mb-4">Our Team</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Meet the passionate experts behind University AI
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <Card key={index} className="overflow-hidden hover:shadow-lg transition-all duration-300">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src={member.image} 
+                    alt={member.name} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+                  <p className="text-sm text-primary mb-2">{member.role}</p>
+                  <p className="text-muted-foreground">{member.bio}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* CTA Section */}
+      <section className="bg-gradient-to-br from-primary to-secondary text-white py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="heading text-3xl font-bold mb-4">
+            Join Us in Transforming Education in India
+          </h2>
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            Be part of our mission to make quality education accessible to every student in India.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/sign-up">
+              <Button size="lg" className="bg-white text-primary hover:bg-white/90">
+                Sign Up Now
+              </Button>
+            </Link>
+            <Link to="/courses">
+              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+                Explore Courses
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
       
       <Footer />
     </div>
