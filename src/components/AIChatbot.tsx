@@ -247,55 +247,55 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
       }
     }
     
-    // YouTube resources to recommend based on the query
+    // YouTube resources to recommend based on the query - Fixed the type issue here
     const getRelevantYouTubeResources = (topic: string): Resource[] => {
       let resources: Resource[] = [];
       
       if (topic === "math") {
         resources = [
-          { type: "youtube", title: "Khan Academy India - Algebra", url: "https://www.youtube.com/c/KhanAcademyIndia" },
-          { type: "youtube", title: "Vedantu JEE - Mathematics", url: "https://www.youtube.com/c/VedantuJEE" }
+          { type: "youtube" as const, title: "Khan Academy India - Algebra", url: "https://www.youtube.com/c/KhanAcademyIndia" },
+          { type: "youtube" as const, title: "Vedantu JEE - Mathematics", url: "https://www.youtube.com/c/VedantuJEE" }
         ];
       } else if (topic === "physics") {
         resources = [
-          { type: "youtube", title: "Physics Wallah - Mechanics", url: "https://www.youtube.com/c/PhysicsWallah" },
-          { type: "youtube", title: "Unacademy JEE - Physics", url: "https://www.youtube.com/c/UnacademyJEE" }
+          { type: "youtube" as const, title: "Physics Wallah - Mechanics", url: "https://www.youtube.com/c/PhysicsWallah" },
+          { type: "youtube" as const, title: "Unacademy JEE - Physics", url: "https://www.youtube.com/c/UnacademyJEE" }
         ];
       } else if (topic === "chemistry") {
         resources = [
-          { type: "youtube", title: "Vedantu NEET - Organic Chemistry", url: "https://www.youtube.com/c/VedantuNEET" },
-          { type: "youtube", title: "Physics Wallah - Chemistry", url: "https://www.youtube.com/c/PhysicsWallah" }
+          { type: "youtube" as const, title: "Vedantu NEET - Organic Chemistry", url: "https://www.youtube.com/c/VedantuNEET" },
+          { type: "youtube" as const, title: "Physics Wallah - Chemistry", url: "https://www.youtube.com/c/PhysicsWallah" }
         ];
       } else if (topic === "biology") {
         resources = [
-          { type: "youtube", title: "Unacademy NEET - Biology", url: "https://www.youtube.com/c/unacademyneet" },
-          { type: "youtube", title: "Aakash iTutor", url: "https://www.youtube.com/c/AakashiTutor" }
+          { type: "youtube" as const, title: "Unacademy NEET - Biology", url: "https://www.youtube.com/c/unacademyneet" },
+          { type: "youtube" as const, title: "Aakash iTutor", url: "https://www.youtube.com/c/AakashiTutor" }
         ];
       } else if (topic === "history" || topic === "geography") {
         resources = [
-          { type: "youtube", title: "Study IAS - History & Geography", url: "https://www.youtube.com/c/StudyIAS" },
-          { type: "youtube", title: "Unacademy UPSC", url: "https://www.youtube.com/c/UnacademyUPSC" }
+          { type: "youtube" as const, title: "Study IAS - History & Geography", url: "https://www.youtube.com/c/StudyIAS" },
+          { type: "youtube" as const, title: "Unacademy UPSC", url: "https://www.youtube.com/c/UnacademyUPSC" }
         ];
       } else if (topic === "computers") {
         resources = [
-          { type: "youtube", title: "Code with Harry - Programming", url: "https://www.youtube.com/c/CodeWithHarry" },
-          { type: "youtube", title: "Apni Kaksha - Computer Science", url: "https://www.youtube.com/c/ApniKaksha" }
+          { type: "youtube" as const, title: "Code with Harry - Programming", url: "https://www.youtube.com/c/CodeWithHarry" },
+          { type: "youtube" as const, title: "Apni Kaksha - Computer Science", url: "https://www.youtube.com/c/ApniKaksha" }
         ];
       } else if (examDetected) {
         if (lowerQuery.includes("jee")) {
           resources = [
-            { type: "youtube", title: "Physics Wallah - JEE Complete Course", url: "https://www.youtube.com/c/PhysicsWallah" },
-            { type: "youtube", title: "Unacademy JEE", url: "https://www.youtube.com/c/UnacademyJEE" }
+            { type: "youtube" as const, title: "Physics Wallah - JEE Complete Course", url: "https://www.youtube.com/c/PhysicsWallah" },
+            { type: "youtube" as const, title: "Unacademy JEE", url: "https://www.youtube.com/c/UnacademyJEE" }
           ];
         } else if (lowerQuery.includes("neet")) {
           resources = [
-            { type: "youtube", title: "Unacademy NEET", url: "https://www.youtube.com/c/unacademyneet" },
-            { type: "youtube", title: "Aakash iTutor - NEET Preparation", url: "https://www.youtube.com/c/AakashiTutor" }
+            { type: "youtube" as const, title: "Unacademy NEET", url: "https://www.youtube.com/c/unacademyneet" },
+            { type: "youtube" as const, title: "Aakash iTutor - NEET Preparation", url: "https://www.youtube.com/c/AakashiTutor" }
           ];
         } else if (lowerQuery.includes("upsc") || lowerQuery.includes("ias") || lowerQuery.includes("civil services")) {
           resources = [
-            { type: "youtube", title: "Study IAS", url: "https://www.youtube.com/c/StudyIAS" },
-            { type: "youtube", title: "Unacademy UPSC", url: "https://www.youtube.com/c/UnacademyUPSC" }
+            { type: "youtube" as const, title: "Study IAS", url: "https://www.youtube.com/c/StudyIAS" },
+            { type: "youtube" as const, title: "Unacademy UPSC", url: "https://www.youtube.com/c/UnacademyUPSC" }
           ];
         }
       }
@@ -305,9 +305,9 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     
     // Handle specific Indian education system queries
     if (lowerQuery.includes("cbse") || lowerQuery.includes("icse") || lowerQuery.includes("state board")) {
-      const resources = [
-        { type: "youtube", title: "CBSE Official Channel", url: "https://www.youtube.com/c/cbsechannel" },
-        { type: "youtube", title: "NCERT Official", url: "https://www.youtube.com/c/ncertofficial" }
+      const resources: Resource[] = [
+        { type: "youtube" as const, title: "CBSE Official Channel", url: "https://www.youtube.com/c/cbsechannel" },
+        { type: "youtube" as const, title: "NCERT Official", url: "https://www.youtube.com/c/ncertofficial" }
       ];
       
       return {
@@ -450,8 +450,8 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     return {
       content: generalResponses[Math.floor(Math.random() * generalResponses.length)],
       resources: [
-        { type: "youtube", title: "Educational Resources", url: "https://www.youtube.com/results?search_query=indian+education" },
-        { type: "youtube", title: "NCERT Solutions", url: "https://www.youtube.com/results?search_query=ncert+solutions" }
+        { type: "youtube" as const, title: "Educational Resources", url: "https://www.youtube.com/results?search_query=indian+education" },
+        { type: "youtube" as const, title: "NCERT Solutions", url: "https://www.youtube.com/results?search_query=ncert+solutions" }
       ]
     };
   };
