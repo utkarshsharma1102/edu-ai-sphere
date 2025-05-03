@@ -62,28 +62,32 @@ const AITutor = () => {
       level: 'Undergraduate+',
       type: 'Engineering Entrance',
       videoUrl: 'https://www.youtube.com/watch?v=example1',
-      description: 'Complete preparation covering all CS topics for GATE examination'
+      description: 'Complete preparation covering all CS topics for GATE examination',
+      price: 199
     },
     {
       title: 'CAT MBA Entrance Full Preparation',
       level: 'Graduate',
       type: 'Management Entrance',
       videoUrl: 'https://www.youtube.com/watch?v=example2',
-      description: 'Comprehensive coverage of Quantitative Aptitude, Verbal Ability, Data Interpretation and Logical Reasoning'
+      description: 'Comprehensive coverage of Quantitative Aptitude, Verbal Ability, Data Interpretation and Logical Reasoning',
+      price: 189
     },
     {
       title: 'UGC NET Computer Science',
       level: 'Postgraduate',
       type: 'Academic Research',
       videoUrl: 'https://www.youtube.com/watch?v=example3',
-      description: 'Complete preparation for UGC NET Computer Science for assistant professor and JRF positions'
+      description: 'Complete preparation for UGC NET Computer Science for assistant professor and JRF positions',
+      price: 149
     },
     {
       title: 'Data Science & Machine Learning Bootcamp',
       level: 'All Levels',
       type: 'Professional Skills',
       videoUrl: 'https://www.youtube.com/watch?v=example4',
-      description: 'Learn industry-relevant skills in Python, Machine Learning, Deep Learning and Artificial Intelligence'
+      description: 'Learn industry-relevant skills in Python, Machine Learning, Deep Learning and Artificial Intelligence',
+      price: 199
     },
   ];
 
@@ -93,25 +97,29 @@ const AITutor = () => {
       title: 'Advanced Database Management Systems',
       channel: 'NPTEL',
       views: '1.2M',
-      url: 'https://youtube.com/example1'
+      url: 'https://youtube.com/example1',
+      thumbnail: 'https://images.unsplash.com/photo-1633412802994-5c058f151b66?q=80&w=200&auto=format&fit=crop'
     },
     {
       title: 'Machine Learning Specialization',
       channel: 'Stanford University',
       views: '890K',
-      url: 'https://youtube.com/example2'
+      url: 'https://youtube.com/example2',
+      thumbnail: 'https://images.unsplash.com/photo-1591453089816-0fbb971b454c?q=80&w=200&auto=format&fit=crop'
     },
     {
       title: 'Digital Marketing Masterclass',
       channel: 'IIM Digital',
       views: '450K',
-      url: 'https://youtube.com/example3'
+      url: 'https://youtube.com/example3',
+      thumbnail: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?q=80&w=200&auto=format&fit=crop'
     },
     {
       title: 'Research Methodology and Academic Publishing',
       channel: 'Academic Guide',
       views: '380K',
-      url: 'https://youtube.com/example4'
+      url: 'https://youtube.com/example4',
+      thumbnail: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=200&auto=format&fit=crop'
     },
   ];
   
@@ -338,7 +346,8 @@ const AITutor = () => {
                                   <Badge variant="secondary">{course.type}</Badge>
                                 </div>
                                 <p className="text-sm text-muted-foreground mt-2">{course.description}</p>
-                                <div className="mt-3 flex justify-end">
+                                <div className="mt-3 flex justify-between items-center">
+                                  <span className="font-bold text-primary">₹{course.price}</span>
                                   <Button variant="outline" size="sm" className="flex items-center gap-1">
                                     <Youtube className="h-4 w-4" />
                                     Free Preview
@@ -364,8 +373,12 @@ const AITutor = () => {
                         <div className="space-y-4">
                           {youtubeVideos.map((video, index) => (
                             <div key={index} className="flex gap-4 p-3 rounded-lg hover:bg-muted/40 transition-colors">
-                              <div className="h-20 w-32 bg-slate-200 rounded flex items-center justify-center flex-shrink-0">
-                                <Youtube className="h-8 w-8 text-muted-foreground" />
+                              <div className="h-20 w-32 bg-slate-200 rounded flex-shrink-0 overflow-hidden">
+                                <img 
+                                  src={video.thumbnail} 
+                                  alt={video.title}
+                                  className="w-full h-full object-cover"
+                                />
                               </div>
                               <div className="flex-1">
                                 <h4 className="font-medium text-base">{video.title}</h4>
