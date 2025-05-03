@@ -29,88 +29,88 @@ const AITutor = () => {
   const [voiceSpeed, setVoiceSpeed] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<string>('tutor');
   
-  // Indian education system specific subjects
+  // College and higher education focused subjects
   const subjects = [
-    'Mathematics',
-    'Physics',
-    'Chemistry',
-    'Biology',
+    'Engineering',
     'Computer Science',
-    'History',
-    'Geography',
-    'English',
-    'Hindi',
+    'Business Administration',
+    'Data Science',
+    'Finance',
     'Economics',
+    'Psychology',
     'Political Science',
-    'Sociology',
+    'Literature',
+    'Law',
+    'Medicine',
+    'Architecture',
   ];
   
-  // Indian educational context questions
+  // College and higher education context questions
   const sampleQuestions = [
-    'Explain the Pythagorean theorem for class 10 CBSE',
-    'How can I prepare for JEE Advanced physics section?',
-    'What are the key topics for NEET Biology?',
-    'Explain Panchayati Raj system for UPSC preparation',
-    'How to solve integration problems for class 12?',
-    'What is the difference between NCERT and State board curriculum?',
+    'How to prepare for GATE Computer Science?',
+    'What are the best colleges for MBA in India?',
+    'How to write a research paper for engineering journals?',
+    'Explain CAT exam preparation strategy',
+    'What are the career options after B.Tech in Electronics?',
+    'How to apply for PhD programs in Indian universities?',
   ];
 
-  // Course suggestions relevant to Indian education system
+  // Course suggestions relevant to higher education
   const courseRecommendations = [
     {
-      title: 'JEE Main & Advanced Full Preparation',
-      level: 'Class 11-12',
+      title: 'GATE Computer Science Complete Course',
+      level: 'Undergraduate+',
       type: 'Engineering Entrance',
       videoUrl: 'https://www.youtube.com/watch?v=example1',
-      description: 'Complete course covering Physics, Chemistry, Mathematics for JEE aspirants'
+      description: 'Complete preparation covering all CS topics for GATE examination'
     },
     {
-      title: 'NEET Complete Biology',
-      level: 'Class 11-12',
-      type: 'Medical Entrance',
+      title: 'CAT MBA Entrance Full Preparation',
+      level: 'Graduate',
+      type: 'Management Entrance',
       videoUrl: 'https://www.youtube.com/watch?v=example2',
-      description: 'In-depth coverage of Botany and Zoology topics for NEET examination'
+      description: 'Comprehensive coverage of Quantitative Aptitude, Verbal Ability, Data Interpretation and Logical Reasoning'
     },
     {
-      title: 'UPSC Civil Services Foundation Course',
-      level: 'Undergraduate+',
-      type: 'Civil Services',
+      title: 'UGC NET Computer Science',
+      level: 'Postgraduate',
+      type: 'Academic Research',
       videoUrl: 'https://www.youtube.com/watch?v=example3',
-      description: 'Basic concepts and approach to civil services examination preparation'
+      description: 'Complete preparation for UGC NET Computer Science for assistant professor and JRF positions'
     },
     {
-      title: 'CBSE Class 10 Full Course',
-      level: 'Class 10',
-      type: 'School Board',
+      title: 'Data Science & Machine Learning Bootcamp',
+      level: 'All Levels',
+      type: 'Professional Skills',
       videoUrl: 'https://www.youtube.com/watch?v=example4',
-      description: 'Comprehensive coverage of all subjects for CBSE Class 10 board exams'
+      description: 'Learn industry-relevant skills in Python, Machine Learning, Deep Learning and Artificial Intelligence'
     },
   ];
 
   // Free learning video recommendations
   const youtubeVideos = [
     {
-      title: 'Understanding Quantum Physics',
-      channel: 'Physics Wallah',
+      title: 'Advanced Database Management Systems',
+      channel: 'NPTEL',
       views: '1.2M',
       url: 'https://youtube.com/example1'
     },
     {
-      title: 'Organic Chemistry Made Easy for NEET/JEE',
-      channel: 'Unacademy JEE',
+      title: 'Machine Learning Specialization',
+      channel: 'Stanford University',
       views: '890K',
       url: 'https://youtube.com/example2'
     },
     {
-      title: 'Ancient Indian History Complete Course',
-      channel: 'Study IAS',
+      title: 'Digital Marketing Masterclass',
+      channel: 'IIM Digital',
       views: '450K',
       url: 'https://youtube.com/example3'
     },
     {
-      title: 'Mathematics Tricks for Competitive Exams',
-      channel: 'Vedantu JEE',
-      views: '2.1M',
+      title: 'Research Methodology and Academic Publishing',
+      channel: 'Academic Guide',
+      views: '380K',
       url: 'https://youtube.com/example4'
     },
   ];
@@ -190,11 +190,11 @@ const AITutor = () => {
               <div className="flex items-center gap-3 mb-2">
                 <School className="h-8 w-8" />
                 <h1 className="heading text-3xl md:text-4xl font-bold">
-                  AI Educational Assistant
+                  Academic AI Assistant
                 </h1>
               </div>
               <p className="text-xl text-white/90 mb-6">
-                Your personal AI-powered learning companion for the Indian education system. Ask questions, get instant help, and access free resources.
+                Your personal AI-powered learning companion for college, higher education, and competitive exams. Ask questions, get expert guidance, and access curated resources.
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Button variant="secondary" className="bg-white text-primary hover:bg-white/90">
@@ -217,7 +217,7 @@ const AITutor = () => {
                 </div>
               </div>
               <p className="text-sm text-white/80 mt-2">
-                Try saying "Explain Vedic Mathematics" or "Help me prepare for NEET"
+                Try saying "How to prepare for GATE?" or "Explain research methodology"
               </p>
             </div>
           </div>
@@ -295,7 +295,7 @@ const AITutor = () => {
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-primary flex-shrink-0">
                             <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
-                          <span>Use keywords from your syllabus or textbook</span>
+                          <span>Use academic terminology for better results</span>
                         </li>
                         <li className="flex gap-2">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-primary flex-shrink-0">
@@ -325,7 +325,7 @@ const AITutor = () => {
                           <School className="h-5 w-5" />
                           Recommended Courses
                         </CardTitle>
-                        <CardDescription>Based on Indian education system and exam patterns</CardDescription>
+                        <CardDescription>Focused on higher education and professional advancement</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -358,7 +358,7 @@ const AITutor = () => {
                           <Youtube className="h-5 w-5" />
                           Free Educational Videos
                         </CardTitle>
-                        <CardDescription>Curated content from top Indian educators</CardDescription>
+                        <CardDescription>Quality academic content from top institutions</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-4">
@@ -389,21 +389,21 @@ const AITutor = () => {
                   </div>
                   
                   <div className="space-y-8">
-                    {/* Indian Education System Exams */}
+                    {/* Higher Education Exams */}
                     <Card>
                       <CardHeader>
                         <CardTitle>Popular Exams</CardTitle>
-                        <CardDescription>Major competitive exams in India</CardDescription>
+                        <CardDescription>Major competitive exams for higher education</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-3">
                           {[
-                            { name: 'JEE Main & Advanced', type: 'Engineering Entrance' },
-                            { name: 'NEET', type: 'Medical Entrance' },
-                            { name: 'UPSC Civil Services', type: 'Government Services' },
-                            { name: 'CAT', type: 'Management Entrance' },
                             { name: 'GATE', type: 'Engineering PG Entrance' },
-                            { name: 'CLAT', type: 'Law Entrance' },
+                            { name: 'CAT', type: 'Management Entrance' },
+                            { name: 'UGC NET', type: 'Research & Teaching' },
+                            { name: 'UPSC Civil Services', type: 'Government Services' },
+                            { name: 'GRE', type: 'International PG Entrance' },
+                            { name: 'GMAT', type: 'Business School Entrance' },
                           ].map((exam, index) => (
                             <div key={index} className="flex justify-between items-center p-2 border-b border-border/40 last:border-0">
                               <div>
@@ -420,8 +420,8 @@ const AITutor = () => {
                     {/* Current Education Trends */}
                     <Card>
                       <CardHeader>
-                        <CardTitle>Education Trends</CardTitle>
-                        <CardDescription>Updates in Indian education</CardDescription>
+                        <CardTitle>Higher Education Trends</CardTitle>
+                        <CardDescription>Latest developments in academia</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-3">
@@ -430,12 +430,12 @@ const AITutor = () => {
                             <p className="text-sm text-muted-foreground">Multi-disciplinary education with flexibility in course choices</p>
                           </div>
                           <div className="p-2 border-l-2 border-primary">
-                            <h5 className="font-medium">Skill-Based Learning</h5>
-                            <p className="text-sm text-muted-foreground">Focus on vocational courses and practical skills</p>
+                            <h5 className="font-medium">Digital Transformation</h5>
+                            <p className="text-sm text-muted-foreground">Online degrees and digital certification platforms</p>
                           </div>
                           <div className="p-2 border-l-2 border-primary">
-                            <h5 className="font-medium">Digital Education</h5>
-                            <p className="text-sm text-muted-foreground">Online learning platforms and digital resources</p>
+                            <h5 className="font-medium">Industry-Academia Collaboration</h5>
+                            <p className="text-sm text-muted-foreground">Practical training and research partnerships</p>
                           </div>
                         </div>
                       </CardContent>
@@ -448,7 +448,7 @@ const AITutor = () => {
                         <CardDescription>Ask our AI tutor for guidance</CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm mb-4">Get custom assistance for your specific educational needs and exam preparation</p>
+                        <p className="text-sm mb-4">Get expert assistance for your academic queries, research needs, and exam preparation</p>
                         <Button 
                           onClick={() => setActiveTab('tutor')}
                           className="w-full"

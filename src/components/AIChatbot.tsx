@@ -28,110 +28,134 @@ interface AIChatbotProps {
 const initialMessages: Message[] = [
   {
     id: 1,
-    content: "Hello! I'm your AI educational assistant specialized in the Indian education system. What would you like to learn about today?",
+    content: "Hello! I'm your Academic Assistant specializing in higher education, research, and professional advancement. How can I help you today?",
     isUser: false,
     timestamp: new Date(),
   },
 ];
 
-// Enhanced educational topics focused on Indian education system
-const educationalTopics = {
-  mathematics: [
-    "In Indian education, mathematics is given significant emphasis from early classes. NCERT textbooks follow a progressive approach to mathematics learning.",
-    "Vedic Mathematics is a collection of techniques to solve mathematical problems in a faster and easier way, developed by ancient Indian mathematicians.",
-    "For competitive exams like JEE, mathematics topics such as calculus, coordinate geometry, and algebra are extensively tested with specific problem patterns.",
-    "The Indian education system emphasizes mathematical derivations and theoretical concepts alongside numerical problem-solving.",
-    "The CBSE and ICSE boards have slightly different approaches to mathematics education, with ICSE generally considered more comprehensive."
-  ],
-  physics: [
-    "Physics in the Indian curriculum is divided into theoretical concepts and practical applications, with experiments forming a crucial part of evaluation.",
-    "HC Verma's Concepts of Physics is a widely recommended textbook for JEE and NEET preparation in India.",
-    "The NCERT Physics curriculum follows international standards while incorporating local contexts and applications relevant to India.",
-    "In higher classes (11-12), physics is categorized into mechanics, thermodynamics, electricity and magnetism, optics, and modern physics.",
-    "Practical examinations in physics focus on error analysis and experimental skills, which is a unique aspect of the Indian education system."
-  ],
-  chemistry: [
-    "Chemistry in Indian education is divided into physical, organic and inorganic branches with equal emphasis on all three.",
-    "NCERT Chemistry textbooks are considered the foundation for competitive exams like NEET and JEE.",
-    "Structural formulas and reaction mechanisms are emphasized in organic chemistry sections of Indian syllabi.",
-    "The periodic table and its trends form a core component of the inorganic chemistry curriculum in Indian education.",
-    "Chemical equations and stoichiometry are given special focus in the Indian chemistry curriculum."
-  ],
-  biology: [
-    "Biology in Indian education has a strong focus on taxonomic classification and detailed study of plant and animal physiology.",
-    "NEET (National Eligibility cum Entrance Test) heavily tests biology concepts, making it a crucial subject for medical aspirants in India.",
-    "The NCERT Biology curriculum includes chapters on biodiversity with special emphasis on Indian flora and fauna.",
-    "Practical examinations in biology include microscopy skills, dissections (now mostly virtual), and herbarium preparation.",
-    "Environmental science and ecology have gained importance in recent years in the Indian biology curriculum."
-  ],
-  history: [
-    "Indian history curriculum is typically divided into Ancient, Medieval, and Modern periods with special emphasis on freedom struggle.",
-    "Ancient Indian history covers the Indus Valley Civilization, Vedic period, and various dynasties like Maurya, Gupta, Chola, etc.",
-    "Medieval Indian history focuses on Delhi Sultanate, Mughal Empire, and regional kingdoms like Vijayanagara and Maratha empires.",
-    "Modern Indian history emphasizes the British colonial period, freedom movement, and post-independence developments.",
-    "UPSC Civil Services examination extensively tests Indian history with focus on socio-economic and cultural aspects alongside political events."
-  ],
-  geography: [
-    "Indian geography curriculum covers physical features, climate, natural resources, agriculture, and demographics of India.",
-    "The diverse physiographic divisions of India (Himalayan region, Indo-Gangetic Plains, Peninsular Plateau, etc.) are studied in detail.",
-    "Indian monsoon systems and their impact on agriculture and economy form a crucial part of geography education.",
-    "Natural resources, conservation, and sustainable development with reference to India's policies are important topics.",
-    "Human geography aspects like population distribution, migration patterns, and urbanization in the Indian context are extensively covered."
+// Enhanced academic topics focused on higher education
+const academicTopics = {
+  engineering: [
+    "Engineering disciplines include Civil, Mechanical, Electrical, Electronics, Computer, Chemical, and many more specialized fields. Each requires strong foundations in mathematics and sciences.",
+    "The GATE (Graduate Aptitude Test in Engineering) is crucial for engineering graduates seeking postgraduate education or PSU recruitment in India.",
+    "Modern engineering education emphasizes interdisciplinary learning, combining traditional disciplines with emerging fields like AI, sustainability, and bioengineering.",
+    "Engineering research methodology typically follows the scientific method with emphasis on applied problem-solving and prototype development.",
+    "Engineering graduates can pursue careers in industry, research, consulting, entrepreneurship, or further specialization through higher education."
   ],
   computerScience: [
-    "Computer Science education in India has evolved from basic programming to advanced topics like AI, ML and cybersecurity.",
-    "The CBSE curriculum includes Python programming from Class 11, while some state boards offer C++ or Java.",
-    "Computer Science olympiads like INOI provide platforms for talented students to represent India internationally.",
-    "The National Education Policy 2020 emphasizes coding skills from the middle school level in Indian education.",
-    "Indian technical institutions like IITs and NITs offer specialized computer science programs with focus on both theoretical foundations and practical applications."
+    "Computer Science education covers algorithms, data structures, programming languages, software engineering, artificial intelligence, machine learning, and more.",
+    "For advanced studies, specializing in areas like AI/ML, cybersecurity, cloud computing, or data science provides focused expertise.",
+    "Research in Computer Science requires understanding of theoretical foundations, experimental design, implementation, and empirical evaluation.",
+    "Computer Science professionals need to continuously update their skills as technologies evolve rapidly in this field.",
+    "Career paths include software development, data science, IT management, research, teaching, and entrepreneurship."
+  ],
+  management: [
+    "Management education focuses on business administration, finance, marketing, human resources, operations, strategy, and organizational behavior.",
+    "The CAT (Common Admission Test) is the primary entrance examination for prestigious management institutions like IIMs in India.",
+    "MBA programs typically offer specializations in finance, marketing, HR, operations, IT, and increasingly in emerging areas like sustainable business and digital transformation.",
+    "Executive MBA programs cater to working professionals seeking to advance their careers without leaving their jobs.",
+    "Management research methods include case studies, surveys, statistical analysis, and qualitative approaches like interviews and focus groups."
+  ],
+  humanities: [
+    "Humanities disciplines include literature, history, philosophy, linguistics, cultural studies, and more, focusing on human culture and experience.",
+    "Research in humanities typically employs qualitative methodologies like textual analysis, ethnography, historiography, and critical theory.",
+    "Advanced degrees in humanities prepare students for careers in academia, publishing, media, cultural institutions, and increasingly in corporate settings valuing critical thinking.",
+    "Digital humanities is an emerging field combining traditional humanities scholarship with computational methods and digital tools.",
+    "Humanities education develops critical thinking, communication skills, cultural awareness, and ethical reasoning applicable across diverse careers."
+  ],
+  research: [
+    "Research methodology varies across disciplines but generally includes problem formulation, literature review, hypothesis development, data collection and analysis, and publication.",
+    "Academic publishing requires understanding of peer review processes, journal selection, impact factors, citation practices, and increasingly open access options.",
+    "Research funding can be secured through university grants, government agencies like UGC or DST in India, corporate sponsorships, or international collaborations.",
+    "Interdisciplinary research combining insights and methods from multiple fields is increasingly valued in addressing complex societal challenges.",
+    "Research ethics encompasses issues of informed consent, data privacy, plagiarism prevention, conflicts of interest, and responsible reporting of results."
   ]
 };
 
-// Indian education system specific information
-const indianEducationSystem = {
-  boards: [
-    "CBSE (Central Board of Secondary Education) is a national level board for public and private schools in India.",
-    "ICSE/ISC (Indian Certificate of Secondary Education) is known for its comprehensive curriculum covering a wide range of subjects.",
-    "State Boards operate under individual state governments with curriculum focused on regional languages and contexts.",
-    "IB (International Baccalaureate) and IGCSE are international curricula available in select schools across India."
+// Higher education system specific information
+const higherEducationSystem = {
+  degrees: [
+    "Bachelor's degrees (BA, BSc, BTech) typically require 3-4 years of full-time study and serve as the foundation for higher education.",
+    "Master's degrees (MA, MSc, MTech, MBA) usually require 1-2 years beyond bachelor's and provide specialized knowledge in specific fields.",
+    "Doctoral degrees (PhD) focus on original research contributions to a field, typically requiring 3-5+ years beyond a master's degree.",
+    "Professional degrees like MBBS (medicine), LLB (law), and B.Arch (architecture) prepare students for specific licensed professions."
   ],
-  exams: [
-    "JEE (Joint Entrance Examination) is the entrance test for engineering programs at IITs, NITs, and other technical institutions.",
-    "NEET (National Eligibility cum Entrance Test) is mandatory for admission to medical courses across India.",
-    "UPSC conducts Civil Services Examination for recruitment to various administrative services like IAS, IPS, IFS etc.",
-    "CAT (Common Admission Test) is the entrance exam for prestigious management institutions like IIMs.",
-    "GATE (Graduate Aptitude Test in Engineering) is for admission to postgraduate engineering programs and PSU recruitment."
+  admissions: [
+    "Entrance examinations are common for admission to prestigious institutions and programs in India.",
+    "Statement of purpose (SOP), letters of recommendation, academic transcripts, and interviews are typical components of graduate admissions.",
+    "International education often requires standardized tests like GRE, GMAT, TOEFL or IELTS for language proficiency.",
+    "Research-based admissions may require research proposals and potential supervisor approval before formal application."
   ],
   institutions: [
-    "IITs (Indian Institutes of Technology) are premier engineering institutions known for technical education and research.",
-    "IIMs (Indian Institutes of Management) are the top business schools offering management education.",
-    "AIIMS (All India Institute of Medical Sciences) is the leading medical education and research institution.",
-    "Central Universities like JNU, DU, BHU offer diverse programs across disciplines.",
-    "NITs (National Institutes of Technology) are important technical institutions spread across different states."
+    "Universities are degree-granting institutions offering a wide range of academic programs across disciplines.",
+    "Specialized institutions like IITs, IIMs, AIIMS, and NITs focus on specific fields like engineering, management, medicine, and technology.",
+    "Research institutes often focus on advanced research rather than teaching, though many offer doctoral and post-doctoral opportunities.",
+    "Autonomous colleges have greater academic freedom while being affiliated with universities for degree-granting purposes."
   ]
 };
 
-// YouTube resources for Indian education
-const youtubeResources = [
+// Competitive exams information
+const competitiveExams = {
+  gate: [
+    "GATE (Graduate Aptitude Test in Engineering) tests engineering fundamentals and is conducted for admission to postgraduate programs.",
+    "GATE score is valid for 3 years and is also used for recruitment by public sector undertakings (PSUs).",
+    "The exam includes General Aptitude (15%) and subject-specific questions (85%) in 29 different disciplines.",
+    "Preparation typically requires strong fundamentals in the chosen engineering discipline and practice with previous years' papers."
+  ],
+  cat: [
+    "CAT (Common Admission Test) is the entrance exam for IIMs and many other prestigious business schools.",
+    "The exam tests Verbal Ability and Reading Comprehension (VARC), Data Interpretation and Logical Reasoning (DILR), and Quantitative Ability (QA).",
+    "Preparation requires strong mathematical skills, logical reasoning abilities, and excellent reading comprehension.",
+    "Beyond CAT, business school admissions typically consider academic performance, work experience, and interview performance."
+  ],
+  ugcnet: [
+    "UGC NET (National Eligibility Test) qualifies candidates for assistant professor positions and Junior Research Fellowships.",
+    "The exam consists of two papers: Paper I on general aptitude and teaching, and Paper II on the chosen subject.",
+    "Preparation requires in-depth knowledge of the subject area and understanding of research methodology.",
+    "Qualifying candidates become eligible to apply for teaching positions in Indian universities and colleges."
+  ],
+  upsc: [
+    "UPSC Civil Services Examination has three stages: Preliminary, Mains, and Interview.",
+    "The syllabus is vast, covering general studies, optional subjects, and current affairs.",
+    "Preparation typically takes 1-3 years of dedicated study covering diverse subjects.",
+    "Success requires not only knowledge but analytical abilities, ethical reasoning, and communication skills."
+  ],
+  gre: [
+    "GRE (Graduate Record Examination) is required for admission to many graduate programs internationally.",
+    "The exam tests verbal reasoning, quantitative reasoning, and analytical writing.",
+    "Scores range from 130-170 for verbal and quantitative sections, and 0-6 for analytical writing.",
+    "Preparation should focus on vocabulary, reading comprehension, basic mathematics, and essay writing skills."
+  ],
+  gmat: [
+    "GMAT (Graduate Management Admission Test) is specifically designed for business school admissions.",
+    "The exam includes sections on analytical writing, integrated reasoning, quantitative, and verbal skills.",
+    "Scores range from 200-800, with top business schools typically expecting scores above 700.",
+    "Preparation should emphasize data sufficiency questions, critical reasoning, and time management."
+  ]
+};
+
+// Academic resources
+const academicResources = [
   {
-    subject: "Mathematics",
-    channels: ["Khan Academy India", "Vedantu JEE", "Physics Wallah", "Unacademy"]
+    subject: "Engineering",
+    channels: ["NPTEL", "MIT OpenCourseWare", "Coursera", "edX"]
   },
   {
-    subject: "Physics",
-    channels: ["Physics Wallah", "Unacademy JEE", "Khan Academy India", "Pradeep Kshetrapal"]
+    subject: "Computer Science",
+    channels: ["freeCodeCamp", "CS50", "GeeksforGeeks", "Codecademy"]
   },
   {
-    subject: "Chemistry",
-    channels: ["Vedantu NEET Made Ejee", "Physics Wallah", "Unacademy NEET", "Khan Academy India"]
+    subject: "Management",
+    channels: ["Harvard Business Review", "Wharton Online", "Stanford GSB", "IIM Digital"]
   },
   {
-    subject: "Biology",
-    channels: ["Aakash iTutor", "Khan Academy India", "Unacademy NEET", "Biology by PW"]
+    subject: "Research Methods",
+    channels: ["Research Methodology World", "Coursera Research Courses", "SAGE Research Methods", "Scribbr"]
   },
   {
-    subject: "History",
-    channels: ["Study IAS", "Amit Sengupta", "Unacademy UPSC", "World of History"]
+    subject: "Academic Writing",
+    channels: ["Academic Writing Pro", "Purdue OWL", "Write That PhD", "Academic English UK"]
   }
 ];
 
@@ -192,7 +216,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     
     // Generate improved AI response with context awareness
     setTimeout(() => {
-      const responseData = generateIndianEducationResponse(input, updatedContext);
+      const responseData = generateAcademicResponse(input, updatedContext);
       const aiResponseMessage: Message = {
         id: messages.length + 2,
         content: responseData.content,
@@ -211,8 +235,8 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     }, 1500);
   };
   
-  // Enhanced response generator specialized for Indian education system
-  const generateIndianEducationResponse = (query: string, context: string[]): { content: string, resources?: Resource[] } => {
+  // Enhanced response generator specialized for higher education
+  const generateAcademicResponse = (query: string, context: string[]): { content: string, resources?: Resource[] } => {
     // Convert query to lowercase for easier matching
     const lowerQuery = query.toLowerCase();
     
@@ -224,15 +248,12 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     
     // Define topics to search for in the query
     const topicMatches = {
-      math: ["math", "algebra", "calculus", "equation", "geometry", "trigonometry", "quadratic", "vedic"],
-      physics: ["physics", "mechanics", "optics", "electrostatics", "magnetism", "thermodynamics", "hc verma"],
-      chemistry: ["chemistry", "organic", "inorganic", "physical", "periodic table", "reaction", "chemical"],
-      biology: ["biology", "zoology", "botany", "anatomy", "physiology", "ecosystem", "cell", "dna"],
-      history: ["history", "ancient", "medieval", "modern", "independence", "freedom struggle", "mughal", "british raj"],
-      geography: ["geography", "climate", "resources", "mountain", "river", "plateau", "population", "monsoon"],
-      computers: ["computer", "programming", "algorithm", "data structure", "python", "java", "c++", "coding"],
-      education: ["cbse", "icse", "state board", "ncert", "syllabus", "curriculum", "textbook"],
-      exams: ["jee", "neet", "upsc", "cat", "gate", "clat", "bank", "ssc", "ias", "civil services"]
+      engineering: ["engineering", "gate", "tech", "mechanical", "electrical", "civil", "electronics"],
+      computerScience: ["computer", "programming", "algorithm", "data structure", "python", "java", "coding", "software"],
+      management: ["management", "mba", "cat", "marketing", "finance", "business", "operations", "hr"],
+      humanities: ["literature", "history", "philosophy", "sociology", "psychology", "arts", "language"],
+      research: ["research", "methodology", "thesis", "dissertation", "paper", "publication", "phd", "doctorate"],
+      exams: ["gate", "cat", "gre", "gmat", "ugc", "net", "upsc", "civil services"]
     };
     
     // Try to determine the topic based on query content
@@ -247,55 +268,60 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
       }
     }
     
-    // YouTube resources to recommend based on the query - Fixed the type issue here
+    // YouTube resources to recommend based on the query
     const getRelevantYouTubeResources = (topic: string): Resource[] => {
       let resources: Resource[] = [];
       
-      if (topic === "math") {
+      if (topic === "engineering") {
         resources = [
-          { type: "youtube" as const, title: "Khan Academy India - Algebra", url: "https://www.youtube.com/c/KhanAcademyIndia" },
-          { type: "youtube" as const, title: "Vedantu JEE - Mathematics", url: "https://www.youtube.com/c/VedantuJEE" }
+          { type: "youtube" as const, title: "NPTEL - Engineering Courses", url: "https://www.youtube.com/c/nptel" },
+          { type: "youtube" as const, title: "GATE Academy", url: "https://www.youtube.com/c/GateAcademyOfficial" }
         ];
-      } else if (topic === "physics") {
+      } else if (topic === "computerScience") {
         resources = [
-          { type: "youtube" as const, title: "Physics Wallah - Mechanics", url: "https://www.youtube.com/c/PhysicsWallah" },
-          { type: "youtube" as const, title: "Unacademy JEE - Physics", url: "https://www.youtube.com/c/UnacademyJEE" }
+          { type: "youtube" as const, title: "freeCodeCamp", url: "https://www.youtube.com/c/freecodecamp" },
+          { type: "youtube" as const, title: "CS Dojo", url: "https://www.youtube.com/c/CSDojo" }
         ];
-      } else if (topic === "chemistry") {
+      } else if (topic === "management") {
         resources = [
-          { type: "youtube" as const, title: "Vedantu NEET - Organic Chemistry", url: "https://www.youtube.com/c/VedantuNEET" },
-          { type: "youtube" as const, title: "Physics Wallah - Chemistry", url: "https://www.youtube.com/c/PhysicsWallah" }
+          { type: "youtube" as const, title: "MBA Crystal Ball", url: "https://www.youtube.com/c/MbaCrystalBall" },
+          { type: "youtube" as const, title: "CAT Preparation by Unacademy", url: "https://www.youtube.com/c/UnacademyCAT" }
         ];
-      } else if (topic === "biology") {
+      } else if (topic === "humanities") {
         resources = [
-          { type: "youtube" as const, title: "Unacademy NEET - Biology", url: "https://www.youtube.com/c/unacademyneet" },
-          { type: "youtube" as const, title: "Aakash iTutor", url: "https://www.youtube.com/c/AakashiTutor" }
+          { type: "youtube" as const, title: "CrashCourse - Humanities", url: "https://www.youtube.com/user/crashcourse" },
+          { type: "youtube" as const, title: "Yale Courses", url: "https://www.youtube.com/user/YaleCourses" }
         ];
-      } else if (topic === "history" || topic === "geography") {
+      } else if (topic === "research") {
         resources = [
-          { type: "youtube" as const, title: "Study IAS - History & Geography", url: "https://www.youtube.com/c/StudyIAS" },
-          { type: "youtube" as const, title: "Unacademy UPSC", url: "https://www.youtube.com/c/UnacademyUPSC" }
-        ];
-      } else if (topic === "computers") {
-        resources = [
-          { type: "youtube" as const, title: "Code with Harry - Programming", url: "https://www.youtube.com/c/CodeWithHarry" },
-          { type: "youtube" as const, title: "Apni Kaksha - Computer Science", url: "https://www.youtube.com/c/ApniKaksha" }
+          { type: "youtube" as const, title: "Research Methodology", url: "https://www.youtube.com/results?search_query=research+methodology" },
+          { type: "youtube" as const, title: "Academic Writing Tips", url: "https://www.youtube.com/results?search_query=academic+writing+tips" }
         ];
       } else if (examDetected) {
-        if (lowerQuery.includes("jee")) {
+        if (lowerQuery.includes("gate")) {
           resources = [
-            { type: "youtube" as const, title: "Physics Wallah - JEE Complete Course", url: "https://www.youtube.com/c/PhysicsWallah" },
-            { type: "youtube" as const, title: "Unacademy JEE", url: "https://www.youtube.com/c/UnacademyJEE" }
+            { type: "youtube" as const, title: "GATE Preparation - NPTEL", url: "https://www.youtube.com/c/nptel" },
+            { type: "youtube" as const, title: "Made Easy GATE", url: "https://www.youtube.com/c/MadeEasyGroup" }
           ];
-        } else if (lowerQuery.includes("neet")) {
+        } else if (lowerQuery.includes("cat")) {
           resources = [
-            { type: "youtube" as const, title: "Unacademy NEET", url: "https://www.youtube.com/c/unacademyneet" },
-            { type: "youtube" as const, title: "Aakash iTutor - NEET Preparation", url: "https://www.youtube.com/c/AakashiTutor" }
+            { type: "youtube" as const, title: "CAT Preparation by IIM Alumni", url: "https://www.youtube.com/results?search_query=cat+preparation+iim+alumni" },
+            { type: "youtube" as const, title: "CAT Exam Strategies", url: "https://www.youtube.com/results?search_query=cat+exam+strategies" }
           ];
         } else if (lowerQuery.includes("upsc") || lowerQuery.includes("ias") || lowerQuery.includes("civil services")) {
           resources = [
             { type: "youtube" as const, title: "Study IAS", url: "https://www.youtube.com/c/StudyIAS" },
             { type: "youtube" as const, title: "Unacademy UPSC", url: "https://www.youtube.com/c/UnacademyUPSC" }
+          ];
+        } else if (lowerQuery.includes("gre")) {
+          resources = [
+            { type: "youtube" as const, title: "GRE Prep - Magoosh", url: "https://www.youtube.com/user/MagooshGRE" },
+            { type: "youtube" as const, title: "GREgmat", url: "https://www.youtube.com/c/GREgmat" }
+          ];
+        } else if (lowerQuery.includes("gmat")) {
+          resources = [
+            { type: "youtube" as const, title: "GMAT Club", url: "https://www.youtube.com/c/GMATClub" },
+            { type: "youtube" as const, title: "e-GMAT", url: "https://www.youtube.com/channel/UCF0wCZYj6NQDBkF3FlUshSQ" }
           ];
         }
       }
@@ -303,155 +329,158 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
       return resources;
     };
     
-    // Handle specific Indian education system queries
-    if (lowerQuery.includes("cbse") || lowerQuery.includes("icse") || lowerQuery.includes("state board")) {
-      const resources: Resource[] = [
-        { type: "youtube" as const, title: "CBSE Official Channel", url: "https://www.youtube.com/c/cbsechannel" },
-        { type: "youtube" as const, title: "NCERT Official", url: "https://www.youtube.com/c/ncertofficial" }
-      ];
+    // Handle specific higher education queries
+    if (lowerQuery.includes("gate") && !lowerQuery.includes("gateaway") && !lowerQuery.includes("delegate")) {
+      const resources = getRelevantYouTubeResources("engineering");
       
       return {
-        content: "The Indian education system has multiple boards including CBSE (Central Board of Secondary Education), ICSE (Indian Certificate of Secondary Education), and various State Boards. CBSE is a national board that follows NCERT curriculum and is recognized throughout India. ICSE is known for its comprehensive curriculum with emphasis on language and practical knowledge. State Boards focus on regional contexts and often teach in local languages alongside English. The choice of board can impact a student's approach to competitive exams, though the major exams accept students from all recognized boards. Would you like more specific information about a particular board's curriculum or exam pattern?",
+        content: "The Graduate Aptitude Test in Engineering (GATE) is a national-level examination in India that tests the comprehensive understanding of undergraduate engineering and science subjects. GATE scores are used for admissions to postgraduate programs (M.Tech/ME/Ph.D) in IITs, NITs, and other prestigious institutions. It's also recognized by various Public Sector Undertakings (PSUs) for recruitment. The exam consists of a single paper of 3 hours, with 65 questions worth 100 marks. It includes 15% General Aptitude questions and 85% subject-specific questions in 29 disciplines including Computer Science, Mechanical Engineering, Electrical Engineering, etc. For effective preparation, I recommend mastering the fundamentals of your subject, understanding the exam pattern, practicing previous years' papers, and taking mock tests. Would you like more specific information about GATE preparation for a particular engineering branch?",
         resources
       };
     }
     
-    if (lowerQuery.includes("jee") || lowerQuery.includes("engineering entrance")) {
+    if (lowerQuery.includes("cat") && lowerQuery.includes("exam")) {
+      const resources = getRelevantYouTubeResources("management");
+      
+      return {
+        content: "The Common Admission Test (CAT) is India's premier management entrance examination for admission to IIMs and over 1,200 business schools across the country. The exam evaluates candidates on three key areas: Verbal Ability and Reading Comprehension (VARC), Data Interpretation and Logical Reasoning (DILR), and Quantitative Ability (QA). The computer-based test lasts for 2 hours with sectional time limits. CAT is known for its challenging difficulty level and high competition. Effective preparation typically spans 6-12 months focusing on concept building, practice tests, and time management strategies. Beyond the CAT score, IIMs and other business schools also consider academic performance, work experience, diversity factors, and performance in subsequent group discussions and personal interviews. A structured approach covering all sections, regular mock tests, and analysis of your performance is essential for CAT success. Would you like specific strategies for any particular section of the CAT exam?",
+        resources
+      };
+    }
+    
+    if (lowerQuery.includes("research") && (lowerQuery.includes("methodology") || lowerQuery.includes("method") || lowerQuery.includes("how to"))) {
+      const resources = getRelevantYouTubeResources("research");
+      
+      return {
+        content: "Research methodology refers to the systematic process by which researchers approach their work. In academic research, this typically follows several key steps: 1) Problem identification: Defining your research question or hypothesis, 2) Literature review: Surveying existing research to understand the current state of knowledge, 3) Research design: Selecting appropriate methods (quantitative, qualitative, or mixed), 4) Data collection: Gathering information through surveys, experiments, interviews, etc., 5) Data analysis: Applying statistical or qualitative techniques to interpret findings, 6) Conclusion and reporting: Synthesizing results and documenting the research process and outcomes. The methodology you choose should align with your research question and disciplinary norms. Quantitative research focuses on numerical data and statistical analysis, while qualitative research explores non-numerical data like interviews and observations. Mixed methods combine both approaches. Ethical considerations are essential throughout the process, including informed consent, data privacy, and proper citation. Would you like more specific information about methodology for a particular type of research or academic discipline?",
+        resources
+      };
+    }
+    
+    if (lowerQuery.includes("phd") || lowerQuery.includes("doctorate") || (lowerQuery.includes("doctoral") && lowerQuery.includes("program"))) {
+      const resources = getRelevantYouTubeResources("research");
+      
+      return {
+        content: "A PhD (Doctor of Philosophy) is the highest academic degree awarded in most fields. The program typically requires 3-7 years of intensive research and culminates in a dissertation that makes an original contribution to knowledge in your field. The journey begins with coursework to build advanced knowledge, followed by a comprehensive examination or qualifying papers. The core of the program involves independent research under faculty supervision, leading to a dissertation that must be defended before a committee of experts. In India, PhD programs are offered by universities, IITs, IIMs, and specialized research institutes. Admission typically requires a master's degree with high academic standing, entrance examinations (like UGC NET), research proposals, and interviews. Funding options include university fellowships, UGC/CSIR fellowships, project assistantships, and teaching positions. The PhD journey is intellectually demanding but rewards you with specialized expertise, research skills, and credibility in your field. Are you considering applying to doctoral programs or currently pursuing a PhD?",
+        resources
+      };
+    }
+    
+    if (lowerQuery.includes("gre")) {
       const resources = getRelevantYouTubeResources("exams");
       
       return {
-        content: "The Joint Entrance Examination (JEE) is India's premier engineering entrance exam conducted in two stages: JEE Main and JEE Advanced. JEE Main is the qualifying exam for JEE Advanced and is also used for admission to NITs, IIITs and other technical institutions. JEE Advanced is specifically for admission to the prestigious IITs. The exam tests Physics, Chemistry, and Mathematics at a high difficulty level. Preparation typically takes 2 years of focused study during Classes 11-12. Key topics include Mechanics, Thermodynamics, and Optics in Physics; Organic, Inorganic, and Physical Chemistry; and Calculus, Algebra, and Coordinate Geometry in Mathematics. Would you like information about specific preparation strategies or important topics?",
+        content: "The Graduate Record Examination (GRE) is a standardized test widely used for admissions to graduate and business programs worldwide. The GRE General Test measures verbal reasoning, quantitative reasoning, and analytical writing skills. The Verbal section tests reading comprehension, critical reasoning, and vocabulary. The Quantitative section covers basic math concepts including arithmetic, algebra, geometry, and data analysis. The Analytical Writing section includes two timed essays: analyzing an issue and analyzing an argument. Scores range from 130-170 for verbal and quantitative sections (in 1-point increments) and 0-6 for analytical writing (in half-point increments). Most test-takers score between 145-165 on verbal and quantitative sections. Preparation typically involves understanding the test format, learning test-taking strategies, building vocabulary, reviewing math concepts, and practicing with official materials. The ETS (test administrator) offers official prep materials including free practice tests. Your GRE score is valid for five years. Would you like specific preparation strategies for any section of the GRE?",
         resources
       };
     }
     
-    if (lowerQuery.includes("neet") || lowerQuery.includes("medical entrance")) {
-      const resources = getRelevantYouTubeResources("exams");
+    // Handle queries about specific academic topics
+    if (detectedTopic) {
+      const resources = getRelevantYouTubeResources(detectedTopic);
       
-      return {
-        content: "The National Eligibility cum Entrance Test (NEET) is the unified medical entrance examination in India for admission to MBBS, BDS, AYUSH and other medical courses. It tests Physics, Chemistry, and Biology (Zoology and Botany) based on the NCERT curriculum of Classes 11-12. Biology carries the highest weightage (50%), followed by Chemistry (25%) and Physics (25%). Key topics include Human Physiology, Plant Physiology, Genetics, and Ecology in Biology; Organic Chemistry and Biomolecules in Chemistry; and Mechanics and Modern Physics in Physics. The competition is intense with over 15 lakh students competing annually for approximately 1 lakh seats. Would you like specific guidance on NEET preparation?",
-        resources
-      };
-    }
-    
-    if (lowerQuery.includes("upsc") || lowerQuery.includes("ias") || lowerQuery.includes("civil services")) {
-      const resources = getRelevantYouTubeResources("exams");
-      
-      return {
-        content: "The UPSC Civil Services Examination is considered one of the toughest exams in India, conducted in three stages: Preliminary, Main, and Interview. It recruits officers for prestigious services like IAS, IPS, IFS, and others. The syllabus is vast, covering General Studies (History, Geography, Polity, Economy, Science & Technology, Environment), Current Affairs, and optional subjects. The preparation requires a multi-dimensional approach with focus on developing analytical skills alongside factual knowledge. The exam tests candidates' aptitude, intellectual abilities, and personality traits suitable for civil services. Standard preparation time ranges from 1-3 years depending on individual capabilities and background. Would you like advice on a specific aspect of UPSC preparation?",
-        resources
-      };
-    }
-    
-    // Handle queries about specific subjects in Indian education context
-    if (lowerQuery.includes("vedic math") || lowerQuery.includes("vedic mathematics")) {
-      const resources = getRelevantYouTubeResources("math");
-      
-      return {
-        content: "Vedic Mathematics is a system of mathematical techniques derived from the Vedas, specifically the Atharva Veda. It was reconstructed by Bharati Krishna Tirthaji in the early 20th century. Vedic Math provides shortcuts for various mathematical operations like multiplication, division, square roots, and more. These techniques can significantly reduce calculation time and are particularly useful for competitive exams where speed matters. Some key techniques include Nikhilam (for multiplication), Urdhva Tiryakbhyam (cross multiplication), and Dwandwa Yoga (for squaring numbers). In the Indian education system, Vedic Math is often taught as supplementary material to enhance calculation speed, though it's not typically part of the main curriculum. Many coaching centers for JEE, banking exams, and other competitive tests incorporate Vedic Math techniques. Would you like to learn about specific Vedic Math techniques?",
-        resources
-      };
-    }
-    
-    if (lowerQuery.includes("ncert") || lowerQuery.includes("textbook")) {
-      return {
-        content: "NCERT (National Council of Educational Research and Training) textbooks form the foundation of education in CBSE schools and are highly recommended for competitive exam preparation in India. These textbooks are developed by subject experts and follow a systematic approach to building concepts from basics to advanced levels. For board exams, NCERT books are sufficient, but for competitive exams like JEE and NEET, students typically need additional reference materials. NCERT textbooks are particularly valued for their clear explanations and accuracy. The CBSE board exam questions are largely based on NCERT content, and even competitive exams like JEE and NEET draw their fundamental concepts from NCERT textbooks. The latest editions incorporate modern teaching methodologies and real-life applications. Would you like recommendations for specific subject NCERT textbooks or complementary study materials?",
-        resources: [
-          { type: "youtube", title: "NCERT Official Channel", url: "https://www.youtube.com/c/ncertofficial" },
-          { type: "youtube", title: "CBSE Official", url: "https://www.youtube.com/c/cbsechannel" }
-        ]
-      };
+      switch(detectedTopic) {
+        case "engineering":
+          return {
+            content: academicTopics.engineering[Math.floor(Math.random() * academicTopics.engineering.length)],
+            resources
+          };
+        case "computerScience":
+          return {
+            content: academicTopics.computerScience[Math.floor(Math.random() * academicTopics.computerScience.length)],
+            resources
+          };
+        case "management":
+          return {
+            content: academicTopics.management[Math.floor(Math.random() * academicTopics.management.length)],
+            resources
+          };
+        case "humanities":
+          return {
+            content: academicTopics.humanities[Math.floor(Math.random() * academicTopics.humanities.length)],
+            resources
+          };
+        case "research":
+          return {
+            content: academicTopics.research[Math.floor(Math.random() * academicTopics.research.length)],
+            resources
+          };
+        case "exams":
+          if (lowerQuery.includes("gate")) {
+            return {
+              content: competitiveExams.gate[Math.floor(Math.random() * competitiveExams.gate.length)],
+              resources
+            };
+          } else if (lowerQuery.includes("cat")) {
+            return {
+              content: competitiveExams.cat[Math.floor(Math.random() * competitiveExams.cat.length)],
+              resources
+            };
+          } else if (lowerQuery.includes("ugc") || lowerQuery.includes("net")) {
+            return {
+              content: competitiveExams.ugcnet[Math.floor(Math.random() * competitiveExams.ugcnet.length)],
+              resources
+            };
+          } else if (lowerQuery.includes("upsc") || lowerQuery.includes("civil service")) {
+            return {
+              content: competitiveExams.upsc[Math.floor(Math.random() * competitiveExams.upsc.length)],
+              resources
+            };
+          } else if (lowerQuery.includes("gre")) {
+            return {
+              content: competitiveExams.gre[Math.floor(Math.random() * competitiveExams.gre.length)],
+              resources
+            };
+          } else if (lowerQuery.includes("gmat")) {
+            return {
+              content: competitiveExams.gmat[Math.floor(Math.random() * competitiveExams.gmat.length)],
+              resources
+            };
+          }
+          break;
+      }
     }
     
     // For follow-up questions, provide more context-aware responses
     if (isFollowUp) {
       const previousQuery = context[context.length - 2].toLowerCase();
       
-      if (previousQuery.includes("jee") || previousQuery.includes("engineering")) {
+      if (previousQuery.includes("gate") || previousQuery.includes("engineering")) {
         return {
-          content: "Following up on JEE preparation, it's crucial to focus on building strong fundamentals before attempting advanced problems. The JEE syllabus follows NCERT curriculum but goes deeper in conceptual understanding and application. Most successful JEE candidates recommend starting preparation from Class 11 onwards with equal focus on all three subjects. For Physics, understanding concepts thoroughly is more important than memorizing formulas. For Chemistry, regular revision is key, especially for organic reactions. For Mathematics, practice is essential - solve as many problems as possible to develop problem-solving skills. Mock tests should be incorporated into your preparation strategy from the beginning to develop time management skills. Resources like previous years' papers, NCERT textbooks with supplementary reference books like HC Verma for Physics, and regular practice tests are highly recommended.",
-          resources: getRelevantYouTubeResources("exams")
+          content: "Following up on GATE preparation, it's essential to develop a systematic approach. Start with understanding the detailed syllabus for your chosen engineering discipline. NPTEL courses are excellent free resources that cover most GATE topics in depth. Previous years' question papers reveal patterns and important topics - analyze them to identify high-yield areas. Conceptual clarity matters more than memorization, so focus on understanding fundamental principles thoroughly. Practice numerical problems regularly, particularly in core topics that have historically had higher weightage. Time management is crucial during preparation and the exam itself. Join study groups or online forums where you can discuss complex concepts with peers. Mock tests simulate the actual exam experience and help you identify weaknesses. Balance your preparation across all topics rather than focusing too intensively on favorites. Standard textbooks recommended by most coaching institutes provide comprehensive coverage of the syllabus. Would you like recommendations for specific resources or strategies for a particular engineering branch?",
+          resources: getRelevantYouTubeResources("engineering")
         };
       }
       
-      if (previousQuery.includes("neet") || previousQuery.includes("medical")) {
+      if (previousQuery.includes("cat") || previousQuery.includes("mba")) {
         return {
-          content: "Regarding NEET preparation, Biology requires systematic memorization along with conceptual clarity. Topics like Human Physiology, Genetics, and Ecology need special attention. For Biology, NCERT textbooks are considered the Bible - every line is important. For Chemistry, focus on organic reactions, mechanisms, and named reactions which are frequently tested. Physics for NEET is less calculation-intensive compared to JEE but still requires solid understanding of concepts. Creating short notes, diagrams, and flowcharts can help with quick revision, especially for Biology. Regular testing is crucial - solve previous years' papers and take mock tests to build stamina for the 3-hour exam. Most successful NEET aspirants dedicate specific time slots to each subject daily, with extra hours for their weaker areas. For Biology, supplement your study with visual aids and mnemonic techniques to remember complex processes and classifications.",
-          resources: getRelevantYouTubeResources("exams")
+          content: "Regarding CAT preparation, a balanced approach is essential. For Verbal Ability and Reading Comprehension (VARC), develop a regular reading habit across diverse genres to improve comprehension speed and vocabulary. Practice RC passages daily, focusing on identifying main ideas and inferring unstated information. For Data Interpretation & Logical Reasoning (DILR), start with basic puzzles and progressively tackle more complex problems. Work on recognizing patterns quickly and developing alternative solution approaches when stuck. For Quantitative Ability (QA), ensure your fundamentals in arithmetic, algebra, geometry, and modern math are solid before attempting advanced problems. Maintain an error log to track and revisit mistakes. Mock tests are crucial - take at least 20-30 full-length mocks before the actual exam, analyzing each thoroughly. Time management strategies vary by section; for example, in VARC, read questions before passages for certain types of problems, while in DILR, spend the first 1-2 minutes evaluating which sets to attempt first. Would you like specific strategies for any particular section?",
+          resources: getRelevantYouTubeResources("management")
         };
       }
-    }
-    
-    // If we've detected a topic but haven't matched a specific query
-    if (detectedTopic) {
-      const resources = getRelevantYouTubeResources(detectedTopic);
       
-      switch(detectedTopic) {
-        case "math":
-          return {
-            content: educationalTopics.mathematics[Math.floor(Math.random() * educationalTopics.mathematics.length)],
-            resources
-          };
-        case "physics":
-          return {
-            content: educationalTopics.physics[Math.floor(Math.random() * educationalTopics.physics.length)],
-            resources
-          };
-        case "chemistry":
-          return {
-            content: educationalTopics.chemistry[Math.floor(Math.random() * educationalTopics.chemistry.length)],
-            resources
-          };
-        case "biology":
-          return {
-            content: educationalTopics.biology[Math.floor(Math.random() * educationalTopics.biology.length)],
-            resources
-          };
-        case "history":
-          return {
-            content: educationalTopics.history[Math.floor(Math.random() * educationalTopics.history.length)],
-            resources
-          };
-        case "geography":
-          return {
-            content: educationalTopics.geography[Math.floor(Math.random() * educationalTopics.geography.length)],
-            resources
-          };
-        case "computers":
-          return {
-            content: educationalTopics.computerScience[Math.floor(Math.random() * educationalTopics.computerScience.length)],
-            resources
-          };
-        case "education":
-          return {
-            content: indianEducationSystem.boards[Math.floor(Math.random() * indianEducationSystem.boards.length)],
-            resources: [
-              { type: "youtube", title: "Indian Education System", url: "https://www.youtube.com/results?search_query=indian+education+system" },
-              { type: "youtube", title: "NCERT Solutions", url: "https://www.youtube.com/results?search_query=ncert+solutions" }
-            ]
-          };
-        case "exams":
-          return {
-            content: indianEducationSystem.exams[Math.floor(Math.random() * indianEducationSystem.exams.length)],
-            resources
-          };
+      if (previousQuery.includes("research") || previousQuery.includes("phd")) {
+        return {
+          content: "Expanding on research methodology, the approach you take should align with your research question and disciplinary norms. Quantitative research uses numerical data and statistical analysis to test hypotheses and identify patterns. It's valuable when you need to generalize findings from a sample to a larger population. Qualitative research explores non-numerical data like interviews, focus groups, and observations to understand meanings, experiences, and perspectives. Mixed methods combine both approaches to provide a more comprehensive understanding. Data collection tools should be valid and reliable - piloting your instruments before full implementation is advisable. For data analysis, quantitative methods include descriptive statistics, inferential tests, and multivariate analyses, while qualitative approaches include thematic analysis, content analysis, and grounded theory. Ethical considerations are paramount throughout the research process, including obtaining proper approvals from ethics committees, ensuring informed consent from participants, maintaining confidentiality, and acknowledging all sources to avoid plagiarism. Would you like more specific guidance on developing your research design or methodology?",
+          resources: getRelevantYouTubeResources("research")
+        };
       }
     }
     
     // Default responses for general queries
     const generalResponses = [
-      `I've analyzed your question about "${query}" in the context of the Indian education system. This is a complex topic with multiple aspects relevant to different educational boards and standards. Would you like me to focus on CBSE, ICSE, or state board perspective?`,
-      `"${query}" is an interesting topic in the Indian educational context! I can provide information based on NCERT guidelines or go beyond the curriculum. Which specific aspect interests you most?`,
-      `Based on your question about "${query}", I can see several educational angles relevant to Indian students. Would you like a general overview according to CBSE/NCERT standards or a more competitive exam-oriented explanation?`,
-      `I've researched "${query}" from an Indian education perspective. This topic connects to several key concepts across multiple disciplines in the Indian curriculum. Which standard or board's perspective would you like me to elaborate on?`,
-      `Your question about "${query}" touches on important educational concepts for Indian students. I can provide detailed explanations based on NCERT textbooks, example problems from board exams, or approaches for competitive exams like JEE/NEET. What would be most helpful?`
+      `I've analyzed your question about "${query}" in the context of higher education and academic advancement. This topic encompasses multiple aspects relevant to different disciplines and career paths. Would you like me to focus on undergraduate, postgraduate, or professional development perspectives?`,
+      `"${query}" is an interesting topic in the academic context! I can provide information based on current educational practices or research perspectives. Which specific aspect interests you most?`,
+      `Based on your question about "${query}", I see several academic angles that might be helpful. Would you like a general overview or a more focused explanation related to a specific field of study or career path?`,
+      `I've researched "${query}" from an academic perspective. This topic connects to several key concepts across multiple disciplines. Which academic level or professional context would you like me to elaborate on?`,
+      `Your question about "${query}" touches on important concepts for academic and professional advancement. I can provide detailed explanations based on educational research, career development perspectives, or specific academic disciplines. What would be most helpful?`
     ];
     
     return {
       content: generalResponses[Math.floor(Math.random() * generalResponses.length)],
       resources: [
-        { type: "youtube" as const, title: "Educational Resources", url: "https://www.youtube.com/results?search_query=indian+education" },
-        { type: "youtube" as const, title: "NCERT Solutions", url: "https://www.youtube.com/results?search_query=ncert+solutions" }
+        { type: "youtube" as const, title: "Academic Resources", url: "https://www.youtube.com/results?search_query=higher+education+resources" },
+        { type: "youtube" as const, title: "Educational Research", url: "https://www.youtube.com/results?search_query=academic+research+methods" }
       ]
     };
   };
@@ -531,8 +560,8 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     <div className="flex flex-col h-[600px] md:h-[700px] bg-slate-50 rounded-lg border border-border/40">
       <div className="p-4 border-b border-border/40 bg-white rounded-t-lg flex justify-between items-center">
         <div>
-          <h2 className="font-heading text-lg font-medium">AI Educational Assistant</h2>
-          <p className="text-sm text-muted-foreground">Specialized in Indian Education System</p>
+          <h2 className="font-heading text-lg font-medium">Academic AI Assistant</h2>
+          <p className="text-sm text-muted-foreground">Specialized in Higher Education & Research</p>
         </div>
         <Button 
           variant="ghost" 
@@ -608,7 +637,7 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about NEET preparation, JEE syllabus, etc..."
+            placeholder="Ask about GATE preparation, research methods, etc..."
             disabled={isLoading}
             className="flex-1"
           />
