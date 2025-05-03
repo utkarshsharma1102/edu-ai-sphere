@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -155,7 +156,7 @@ const competitiveExams = {
       varc: "Reading Comprehension, Para Jumbles, Para Summary, Sentence Completion, Verbal Reasoning",
       dilr: "Data Interpretation (Tables, Graphs, Charts), Logical Reasoning (Arrangements, Puzzles, Syllogisms)",
       qa: "Arithmetic, Algebra, Geometry, Number System, Modern Math, Mensuration, Trigonometry"
-    ],
+    },
     preparation: [
       "Develop strong reading habits across diverse genres to improve VARC",
       "Practice DILR sets daily to improve pattern recognition and analytical thinking",
@@ -576,4 +577,227 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
       if (lowerQuery.includes("literature review") || lowerQuery.includes("review of literature")) {
         const literatureReviewResource = researchResources.find(r => r.title.includes("Literature Review"));
         return {
-          content: `A literature review is a critical component of academic research that involves analyzing, evaluating, and synthesizing existing research relevant to your research question. Here's a comprehensive guide on conducting an effective literature review:\n\n**1. Purpose of Literature Review:**\n- Establish what is known about your topic\n- Identify theories, methods, and gaps in existing research\n- Position your research within the existing body of knowledge\n- Justify your research question and methodology\n\n**2. Step-by-Step Process:**\n\n**Define scope:** Determine parameters - time period, geographical regions, methodologies, key concepts\n\n**Search for literature:** Use academic databases (Google Scholar, JSTOR, ScienceDirect, PubMed), library catalogs, and citation tracking\n\n**Evaluate sources:** Assess credibility, authority, objectivity, methodology, and relevance\n\n**Organize information:** Create a system
+          content: `A literature review is a critical component of academic research that involves analyzing, evaluating, and synthesizing existing research relevant to your research question. Here's a comprehensive guide on conducting an effective literature review:\n\n**1. Purpose of Literature Review:**\n- Establish what is known about your topic\n- Identify theories, methods, and gaps in existing research\n- Position your research within the existing body of knowledge\n- Justify your research question and methodology\n\n**2. Step-by-Step Process:**\n\n**Define scope:** Determine parameters - time period, geographical regions, methodologies, key concepts\n\n**Search for literature:** Use academic databases (Google Scholar, JSTOR, ScienceDirect, PubMed), library catalogs, and citation tracking\n\n**Evaluate sources:** Assess credibility, authority, objectivity, methodology, and relevance\n\n**Organize information:** Create a system for categorizing and taking notes on sources\n\n**Analyze patterns:** Identify themes, contradictions, gaps, and methodological approaches\n\n**Synthesize findings:** Connect ideas across different sources, don't just summarize each source\n\n**Write critically:** Evaluate strengths and weaknesses of existing research\n\n**3. Types of Literature Reviews:**\n\n**Narrative review:** Traditional comprehensive overview of literature\n\n**Systematic review:** Rigorous, transparent methodology to identify and evaluate all relevant research\n\n**Meta-analysis:** Statistical analysis combining results from multiple studies\n\n**Scoping review:** Preliminary assessment to map key concepts and identify research gaps\n\n**4. Common Challenges and Solutions:**\n\n**Information overload:** Use reference management software (Zotero, Mendeley)\n\n**Staying organized:** Create a literature review matrix or table\n\n**Critical analysis:** Ask specific questions about each source (methodology, sample size, limitations)\n\n**Avoiding plagiarism:** Carefully document sources and paraphrase appropriately\n\nRemember that a literature review is not just a summary of sources but a critical dialogue with existing research that helps position your study within the field.`,
+          resources: literatureReviewResource ? [literatureReviewResource] : researchResources
+        };
+      }
+
+      if (lowerQuery.includes("thesis") || lowerQuery.includes("dissertation")) {
+        return {
+          content: `Writing a thesis or dissertation is a complex, multi-stage process that represents the culmination of your academic journey. Here's a comprehensive guide:\n\n**1. Planning Phase (3-6 months):**\n\n**Topic selection:** Choose something meaningful, manageable, and appropriately scoped\n\n**Literature review:** Thoroughly explore existing research to identify gaps and position your work\n\n**Research question formulation:** Develop specific, clear, and answerable questions\n\n**Methodology selection:** Choose appropriate methods based on your research questions\n\n**Proposal development:** Create a detailed plan including timeline, methods, and expected outcomes\n\n**2. Research Phase (6-12 months):**\n\n**Data collection:** Follow your methodology rigorously and document everything\n\n**Organization:** Maintain meticulous records of all sources, data, and analyses\n\n**Regular supervisor meetings:** Get feedback at various stages to stay on track\n\n**3. Writing Phase (6-8 months):**\n\n**Structure:** Follow standard academic structure (Introduction, Literature Review, Methodology, Results, Discussion, Conclusion)\n\n**First draft:** Focus on getting ideas down without perfectionism\n\n**Revisions:** Multiple rounds of editing for content, clarity, and coherence\n\n**Citations:** Ensure proper attribution using appropriate academic style (APA, MLA, Chicago, etc.)\n\n**4. Final Phase (1-2 months):**\n\n**Proofreading:** Eliminate grammatical errors and typos\n\n**Formatting:** Follow institutional guidelines precisely for margins, spacing, references, etc.\n\n**Defense preparation:** Create clear, concise slides and anticipate questions\n\n**Submission:** Follow all institutional procedures and deadlines\n\n**5. Key Success Factors:**\n\n**Time management:** Break the project into smaller tasks with deadlines\n\n**Writing routine:** Establish consistent writing habits\n\n**Feedback loops:** Regularly share your work with supervisors and peers\n\n**Self-care:** Maintain physical and mental well-being throughout the process\n\n**6. Common Challenges and Solutions:**\n\n**Scope creep:** Regularly revisit your research questions to stay focused\n\n**Writer's block:** Use techniques like free writing, mind mapping, or changing environment\n\n**Motivation issues:** Set small, achievable goals and celebrate progress\n\n**Perfectionism:** Remember that all dissertations are flawed, focus on completion\n\nRemember that a thesis/dissertation is not just a product but a process that develops your identity as a researcher and contributor to your field. Stay committed to the journey and keep your purpose in mind.`,
+          resources: researchResources
+        };
+      }
+
+      // Default research methodology response
+      return {
+        content: `Research methodology refers to the systematic approach used to collect, analyze, and interpret data to answer research questions. Here's a comprehensive overview:\n\n**1. Research Paradigms:**\n\n**Quantitative:** Focuses on numerical data and statistical analysis to test hypotheses and establish cause-effect relationships\n\n**Qualitative:** Explores non-numerical data like interviews, observations, and texts to understand meanings and experiences\n\n**Mixed methods:** Combines both approaches to gain deeper insights\n\n**2. Research Design Types:**\n\n**Experimental:** Controls variables to establish causality\n\n**Quasi-experimental:** Similar but lacks full randomization\n\n**Survey research:** Collects data from a sample through questionnaires/interviews\n\n**Case studies:** In-depth analysis of specific instances\n\n**Ethnography:** Immersion in cultures or communities\n\n**Action research:** Combines research with practical action\n\n**Grounded theory:** Develops theory from collected data\n\n**3. Data Collection Methods:**\n\n**Primary data:** Questionnaires, interviews, observations, experiments\n\n**Secondary data:** Existing sources like articles, reports, datasets\n\n**4. Sampling Techniques:**\n\n**Probability sampling:** Random, stratified, systematic, cluster\n\n**Non-probability sampling:** Convenience, purposive, snowball, quota\n\n**5. Data Analysis:**\n\n**Quantitative analysis:** Descriptive statistics, inferential statistics, regression analysis\n\n**Qualitative analysis:** Content analysis, thematic analysis, discourse analysis, narrative analysis\n\n**6. Research Quality Criteria:**\n\n**Quantitative:** Validity, reliability, generalizability, objectivity\n\n**Qualitative:** Credibility, transferability, dependability, confirmability\n\n**7. Research Ethics:**\n\n**Informed consent:** Participants understand and voluntarily agree to participate\n\n**Confidentiality:** Protecting participant identity and data\n\n**Risk assessment:** Minimizing potential harm to participants\n\n**Data integrity:** Honest collection, analysis, and reporting\n\n**8. Research Process Steps:**\n\n1) Problem identification and question formulation\n2) Literature review to understand existing knowledge\n3) Research design selection\n4) Data collection planning and execution\n5) Data analysis and interpretation\n6) Conclusion drawing and recommendation formulation\n7) Research communication through publications/presentations\n\nChoosing appropriate methodology depends on your research questions, philosophical assumptions, practical constraints, and disciplinary traditions. The methodology should create a coherent link between your research question and conclusion.`,
+        resources: researchResources
+      };
+    }
+    
+    // If it's a general academic question without specific topic match
+    if (!detectedTopic && !examDetected) {
+      // Check if question is about college/higher education in general
+      if (lowerQuery.includes("college") || lowerQuery.includes("degree") || lowerQuery.includes("major") || 
+          lowerQuery.includes("university") || lowerQuery.includes("higher education") || lowerQuery.includes("institution")) {
+        
+        return {
+          content: `Higher education encompasses learning that occurs after secondary education, typically at colleges and universities. Here's an overview of the higher education system:\n\n**Types of Institutions:**\n\n- **Universities:** Offer undergraduate and graduate degrees across multiple disciplines\n- **Colleges:** Often focus on undergraduate education or specific fields\n- **Community/Junior Colleges:** Provide two-year associate degrees and certificate programs\n- **Technical Institutions:** Specialize in specific vocational or technical fields\n- **Research Institutes:** Focus on advanced research in specific domains\n\n**Degrees and Qualifications:**\n\n- **Associate Degrees:** 2-year programs, often at community colleges\n- **Bachelor's Degrees:** Undergraduate programs taking 3-4 years (BA, BS, BBA, BTech)\n- **Master's Degrees:** Graduate programs taking 1-3 years (MA, MS, MBA, MTech)\n- **Doctoral Degrees:** Advanced research degrees taking 3+ years (PhD, EdD)\n- **Professional Degrees:** Specialized programs for specific careers (MD, JD, DDS)\n- **Certificates and Diplomas:** Focused programs for specific skills\n\n**Admission Process:**\n\n- **Undergraduate:** High school transcripts, standardized tests (SAT, ACT), personal statements, recommendations\n- **Graduate:** Bachelor's degree, entrance exams (GRE, GMAT), letters of recommendation, statement of purpose\n- **Professional Schools:** Specialized tests (MCAT, LSAT), interviews, work experience\n\n**Financing Education:**\n\n- **Scholarships:** Merit-based or need-based financial awards\n- **Grants:** Financial aid that doesn't require repayment\n- **Student Loans:** Borrowed money that must be repaid with interest\n- **Work-Study Programs:** Part-time employment to help finance education\n- **Fellowships:** Merit-based awards for graduate students\n\nThe higher education landscape continues to evolve with emerging trends including online learning, micro-credentials, interdisciplinary programs, and lifelong learning initiatives. Would you like more specific information about any particular aspect of higher education?`,
+          resources: undefined
+        };
+      }
+      
+      // If it seems like a general greeting or non-academic question
+      return {
+        content: `I'm your Academic Assistant specializing in higher education, research, and professional advancement. I can help you with:\n\n**Exam Preparation:**\n- GATE (Engineering entrance)\n- CAT (Management entrance)\n- UGC NET (Teaching eligibility)\n- GRE and GMAT (International graduate admissions)\n\n**Academic Guidance:**\n- Research methodology\n- Academic writing and publication\n- Higher education systems and degrees\n- Subject-specific knowledge in engineering, management, computer science, and humanities\n\n**Professional Development:**\n- Career pathways in academia and research\n- CV/Resume building for academic positions\n- Academic interview preparation\n- Research funding opportunities\n\nFeel free to ask me about any of these topics or related questions. What specific academic or professional guidance are you looking for today?`,
+        resources: undefined
+      };
+    }
+    
+    // Handle topic-specific queries
+    const topic = detectedTopic as keyof typeof academicTopics;
+    if (academicTopics[topic]) {
+      const topicInfo = academicTopics[topic];
+      let resources: Resource[] = [];
+      
+      // Find relevant resources for the topic
+      academicResources.forEach(subject => {
+        if (subject.subject.toLowerCase().includes(topic.toLowerCase())) {
+          resources = [...resources, ...subject.resources];
+        }
+      });
+      
+      // Generate a response based on the detected topic
+      return {
+        content: `Here's some information about ${topic}:\n\n${topicInfo.join('\n\n')}`,
+        resources: resources.length > 0 ? resources : undefined
+      };
+    }
+    
+    // Default response if no specific matches
+    return {
+      content: "I'd be happy to help with your academic or career questions. Could you provide more details about what specific information you're looking for? I can assist with exam preparation (like GATE, CAT, GRE), research methodology, academic disciplines, or higher education guidance.",
+      resources: undefined
+    };
+  };
+
+  // Function to handle speaking text
+  const speakText = (text: string) => {
+    if (speechSynthesis) {
+      // Cancel any ongoing speech
+      speechSynthesis.cancel();
+      
+      // Create a new utterance
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = speechRate;
+      
+      // Set speaking state
+      setIsSpeaking(true);
+      
+      utterance.onend = () => {
+        setIsSpeaking(false);
+      };
+      
+      utterance.onerror = () => {
+        setIsSpeaking(false);
+        toast({
+          title: "Speech Error",
+          description: "There was an error with the speech synthesis.",
+          variant: "destructive",
+        });
+      };
+      
+      // Speak the text
+      speechSynthesis.speak(utterance);
+    }
+  };
+  
+  // Function to stop speaking
+  const stopSpeaking = () => {
+    if (speechSynthesis) {
+      speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+  };
+  
+  // Toggle mute function
+  const toggleMute = () => {
+    if (isSpeaking) {
+      stopSpeaking();
+    }
+    setIsMuted(!isMuted);
+  };
+  
+  // Function to handle speech rate change
+  const handleSpeechRateChange = (newRate: number) => {
+    setSpeechRate(newRate);
+  };
+  
+  // Function to render resource links
+  const renderResourceLinks = (resources: Resource[] | undefined) => {
+    if (!resources || resources.length === 0) return null;
+    
+    return (
+      <div className="mt-4 space-y-2">
+        <h3 className="font-medium text-sm">Helpful Resources:</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {resources.map((resource, index) => (
+            <a 
+              key={index}
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-2 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors text-sm"
+            >
+              {resource.type === 'youtube' && <Youtube className="h-4 w-4 mr-2 text-red-500" />}
+              {resource.type === 'notes' && <FileText className="h-4 w-4 mr-2 text-blue-500" />}
+              {resource.type === 'article' && <LinkIcon className="h-4 w-4 mr-2 text-green-500" />}
+              {resource.type === 'book' && <FileText className="h-4 w-4 mr-2 text-amber-500" />}
+              {resource.type === 'course' && <FileText className="h-4 w-4 mr-2 text-purple-500" />}
+              <div>
+                <span className="font-medium">{resource.title}</span>
+                {resource.description && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{resource.description}</p>}
+              </div>
+              <ExternalLink className="h-3 w-3 ml-auto flex-shrink-0" />
+            </a>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
+      <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Academic Assistant</h2>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleMute}
+            className="hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            {isMuted ? 
+              <VolumeX className="h-5 w-5 text-gray-500" /> : 
+              <Volume2 className="h-5 w-5 text-blue-500" />
+            }
+          </Button>
+          <VoiceControl 
+            onSpeechRateChange={handleSpeechRateChange}
+            speechRate={speechRate}
+          />
+        </div>
+      </div>
+      
+      <div className="flex-grow overflow-auto p-4 space-y-4">
+        {messages.map((message) => (
+          <div 
+            key={message.id} 
+            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+          >
+            <Card className={`max-w-[85%] ${message.isUser ? 'bg-blue-50 dark:bg-blue-900' : 'bg-white dark:bg-gray-800'}`}>
+              <CardContent className="p-4">
+                <div className="whitespace-pre-line">{message.content}</div>
+                {!message.isUser && renderResourceLinks(message.resources)}
+              </CardContent>
+            </Card>
+          </div>
+        ))}
+        
+        {isLoading && (
+          <div className="flex justify-start">
+            <Card className="max-w-[85%] bg-white dark:bg-gray-800">
+              <CardContent className="p-4">
+                <div className="flex space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 animate-bounce"></div>
+                  <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+        
+        <div ref={messagesEndRef} />
+      </div>
+      
+      <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+        <div className="flex space-x-2">
+          <Input
+            placeholder="Ask me about academic topics, research, or higher education..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="flex-grow"
+          />
+          <Button type="submit" disabled={isLoading}>
+            Send
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default AIChatbot;
+
