@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import {
@@ -10,14 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
   Tabs,
   TabsContent,
   TabsList,
@@ -26,11 +17,17 @@ import {
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import VoiceControl from '@/components/VoiceControl';
 import AcademicDetails from '@/components/AcademicDetails';
+import { toast } from '@/hooks/use-toast';
+import StudySchedule from '@/components/StudySchedule';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [showScheduleDialog, setShowScheduleDialog] = useState(false);
+
+  // Course data
   const courses = [
     {
       id: '1',
@@ -137,6 +134,50 @@ const Dashboard = () => {
     },
   ];
 
+  // Find the most recently accessed course to resume
+  const findMostRecentCourse = () => {
+    if (courses.length === 0) return null;
+    
+    // Sort courses by last accessed date (assuming format like "2 days ago", "1 week ago")
+    const sortedCourses = [...courses].sort((a, b) => {
+      const getTimeValue = (timeStr) => {
+        const num = parseInt(timeStr.split(' ')[0]);
+        const unit = timeStr.split(' ')[1];
+        
+        // Convert to approximate hours for comparison
+        if (unit.includes('day')) return num * 24;
+        if (unit.includes('week')) return num * 24 * 7;
+        if (unit.includes('month')) return num * 24 * 30;
+        return num; // hours or minutes
+      };
+      
+      return getTimeValue(a.lastAccessed) - getTimeValue(b.lastAccessed);
+    });
+    
+    return sortedCourses[0];
+  };
+
+  const resumeLearning = () => {
+    const recentCourse = findMostRecentCourse();
+    if (recentCourse) {
+      toast({
+        title: "Resuming Course",
+        description: `Continuing ${recentCourse.title} from ${recentCourse.nextLesson}`,
+      });
+      navigate(`/course/${recentCourse.id}`);
+    } else {
+      toast({
+        title: "No courses found",
+        description: "You don't have any active courses to resume",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const openSchedule = () => {
+    setShowScheduleDialog(true);
+  };
+
   // Handle voice commands for dashboard
   const handleVoiceInput = (text: string) => {
     const lowerText = text.toLowerCase();
@@ -153,6 +194,10 @@ const Dashboard = () => {
       document.getElementById("analytics-section")?.scrollIntoView({ behavior: 'smooth' });
     } else if (lowerText.includes("show academic") || lowerText.includes("academics")) {
       document.getElementById("academic-section")?.scrollIntoView({ behavior: 'smooth' });
+    } else if (lowerText.includes("resume") || lowerText.includes("continue learning")) {
+      resumeLearning();
+    } else if (lowerText.includes("schedule") || lowerText.includes("my schedule")) {
+      openSchedule();
     }
   };
 
@@ -168,8 +213,8 @@ const Dashboard = () => {
               <p className="text-muted-foreground">Welcome back, Alex! Track your progress and manage your learning.</p>
             </div>
             <div className="mt-4 md:mt-0 flex gap-2 items-center">
-              <Button>Resume Learning</Button>
-              <Button variant="outline">My Schedule</Button>
+              <Button onClick={resumeLearning}>Resume Learning</Button>
+              <Button variant="outline" onClick={openSchedule}>My Schedule</Button>
               <div className="ml-2 relative group">
                 <VoiceControl
                   onVoiceInput={handleVoiceInput}
@@ -250,14 +295,12 @@ const Dashboard = () => {
             ))}
             
             {/* Add Voice Assistant Card */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigate("/voice-assistant")}>
               <CardContent className="p-6">
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Voice Assistant</p>
-                    <Link to="/voice-clone-agent">
-                      <p className="text-3xl font-bold mt-1 mb-1 hover:text-primary transition-colors">Try Now</p>
-                    </Link>
+                    <p className="text-3xl font-bold mt-1 mb-1 hover:text-primary transition-colors">Try Now</p>
                     <p className="text-xs text-muted-foreground">Voice-first learning</p>
                   </div>
                   <div className="rounded-full bg-primary/10 p-2">
@@ -303,7 +346,19 @@ const Dashboard = () => {
                         <Progress value={course.progress} className="h-2" />
                         <div className="flex justify-between text-xs">
                           <span>Next: {course.nextLesson}</span>
-                          <Button variant="link" className="p-0 h-auto">Continue</Button>
+                          <Button 
+                            variant="link" 
+                            className="p-0 h-auto"
+                            onClick={() => {
+                              toast({
+                                title: "Continuing Course",
+                                description: `Loading ${course.title}`
+                              });
+                              navigate(`/course/${course.id}`);
+                            }}
+                          >
+                            Continue
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -330,11 +385,21 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div>
-                        <Badge className={`${
-                          item.status === 'In Progress' 
-                            ? 'bg-secondary-light text-secondary' 
-                            : 'bg-primary-light text-primary'
-                        } text-xs px-2 py-0.5 rounded-full`}>
+                        <Badge 
+                          className={`${
+                            item.status === 'In Progress' 
+                              ? 'bg-secondary-light text-secondary' 
+                              : 'bg-primary-light text-primary'
+                          } text-xs px-2 py-0.5 rounded-full cursor-pointer`}
+                          onClick={() => {
+                            toast({
+                              title: "Status Updated",
+                              description: item.status === 'Not Started' 
+                                ? `${item.assignment} marked as In Progress` 
+                                : `${item.assignment} marked as Complete`,
+                            });
+                          }}
+                        >
                           {item.status}
                         </Badge>
                       </div>
@@ -531,6 +596,12 @@ const Dashboard = () => {
                     </ul>
                     <Button 
                       className={`w-full ${plan.popular ? '' : 'bg-secondary hover:bg-secondary/90'}`}
+                      onClick={() => {
+                        toast({
+                          title: `${plan.title} Plan Selected`,
+                          description: "Redirecting to payment page...",
+                        });
+                      }}
                     >
                       {plan.cta}
                     </Button>
@@ -542,14 +613,23 @@ const Dashboard = () => {
         </div>
       </main>
       
+      {/* Study Schedule Dialog */}
+      <StudySchedule 
+        isOpen={showScheduleDialog}
+        onClose={() => setShowScheduleDialog(false)}
+      />
+      
       <Footer />
     </div>
   );
 };
 
-const Badge = ({ className, children }: { className: string, children: React.ReactNode }) => {
+const Badge = ({ className, children, onClick }: { className: string, children: React.ReactNode, onClick?: () => void }) => {
   return (
-    <span className={`inline-block text-xs font-medium ${className}`}>
+    <span 
+      className={`inline-block text-xs font-medium ${className}`}
+      onClick={onClick}
+    >
       {children}
     </span>
   );
