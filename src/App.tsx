@@ -16,6 +16,7 @@ import CourseDetail from "./pages/CourseDetail";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import VoiceCloneAgent from "./pages/VoiceCloneAgent";
+import VoiceAssistant from "./pages/VoiceAssistant";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/about" element={<About />} />
             <Route path="/voice-clone-agent" element={<VoiceCloneAgent />} />
+            <Route path="/voice-assistant" element={<VoiceAssistant />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
