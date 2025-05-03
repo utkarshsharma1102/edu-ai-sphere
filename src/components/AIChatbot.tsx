@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -749,3 +750,209 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
       }
       
       // Default GATE response
+      return {
+        content: `The Graduate Aptitude Test in Engineering (GATE) is a prestigious national-level examination in India that tests comprehensive understanding of undergraduate engineering and science subjects. GATE scores are used for:\n\n1) Admissions to postgraduate programs (M.Tech/ME/Ph.D) in IITs, NITs, and other prestigious institutions\n2) Recruitment in several Public Sector Undertakings (PSUs)\n3) Scholarships for higher studies\n\nThe exam structure consists of a single paper of 3 hours duration with 65 questions worth 100 marks. It includes 15% General Aptitude questions and 85% subject-specific questions across 29 disciplines. The question types include Multiple Choice Questions (MCQs) and Numerical Answer Type (NAT) questions.\n\nPreparation typically requires 6-12 months of dedicated study, focusing on building strong conceptual understanding rather than memorization. Would you like more specific information about GATE syllabus, preparation strategy, or recommended study materials for a particular engineering branch?`,
+        resources: competitiveExams.gate.resources
+      };
+    }
+
+    // Handle CAT exam specific queries
+    if (examDetected === "cat") {
+      // Check for specific CAT related sub-topics
+      if (lowerQuery.includes("syllabus") || lowerQuery.includes("pattern") || lowerQuery.includes("sections")) {
+        return {
+          content: `The CAT exam has three main sections:\n\n1) Verbal Ability and Reading Comprehension (VARC): Tests your comprehension of complex passages and verbal reasoning skills.\n\n2) Data Interpretation and Logical Reasoning (DILR): Tests your ability to interpret data in various formats and solve logical puzzles.\n\n3) Quantitative Ability (QA): Tests your mathematical skills covering arithmetic, algebra, geometry, and modern math.\n\nThe exam is computer-based with a duration of 2 hours (120 minutes) with section-wise time limits. It consists primarily of MCQs with negative marking for incorrect answers. Some questions may be non-MCQ type without negative marking.`,
+          resources: competitiveExams.cat.resources
+        };
+      }
+
+      // Default CAT response
+      return {
+        content: `The Common Admission Test (CAT) is the premier management entrance exam in India, primarily for admission to the prestigious Indian Institutes of Management (IIMs) and several other top business schools.\n\nThe exam tests three main areas: Verbal Ability & Reading Comprehension (VARC), Data Interpretation & Logical Reasoning (DILR), and Quantitative Ability (QA). The difficulty level is high, designed to test your aptitude for management studies.\n\nBeyond academics, CAT also evaluates your time management and decision-making skills under pressure. Success typically requires 4-6 months of focused preparation.\n\nAfter clearing CAT with a good percentile (typically 95+ for IIMs), candidates go through subsequent rounds including Written Ability Test (WAT), Group Discussion (GD), and Personal Interview (PI).\n\nWould you like specific information about the CAT syllabus, preparation strategy, or recommended study materials?`,
+        resources: competitiveExams.cat.resources
+      };
+    }
+
+    // Handle other exams and general queries with appropriate responses
+    if (detectedTopic === "engineering") {
+      return {
+        content: academicTopics.engineering.join("\n\n"),
+        resources: academicResources.find(r => r.subject === "Engineering")?.resources || []
+      };
+    }
+
+    if (detectedTopic === "computerScience") {
+      return {
+        content: academicTopics.computerScience.join("\n\n"),
+        resources: academicResources.find(r => r.subject === "Computer Science")?.resources || []
+      };
+    }
+
+    if (detectedTopic === "management") {
+      return {
+        content: academicTopics.management.join("\n\n"),
+        resources: academicResources.find(r => r.subject === "Management")?.resources || []
+      };
+    }
+
+    if (detectedTopic === "humanities") {
+      return {
+        content: academicTopics.humanities.join("\n\n"),
+        resources: []
+      };
+    }
+
+    if (detectedTopic === "research") {
+      return {
+        content: academicTopics.research.join("\n\n"),
+        resources: researchResources
+      };
+    }
+
+    // Default response for general academic queries
+    return {
+      content: `Thank you for your question about "${query}". This is an interesting academic topic. To provide you with the most helpful response, could you please specify which aspect you're most interested in? I can offer information about various academic disciplines, examination preparation, research methodologies, or career guidance.`,
+      resources: []
+    };
+  };
+
+  // UI rendering
+  return (
+    <div className="flex flex-col h-full">
+      {/* API Key input form if API key not provided */}
+      {!useAI && (
+        <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <h3 className="font-medium text-amber-800 mb-2">Enable AI Responses</h3>
+          <p className="text-sm text-amber-700 mb-3">
+            Connect to OpenAI API for more intelligent responses. Your API key is stored locally and never sent to our servers.
+          </p>
+          <form onSubmit={handleAPIKeySubmit} className="flex gap-2">
+            <Input
+              type="password"
+              placeholder="Enter your OpenAI API key"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              className="flex-1"
+            />
+            <Button type="submit" variant="default">
+              Save Key
+            </Button>
+          </form>
+        </div>
+      )}
+
+      {/* Message list */}
+      <div className="flex-1 overflow-y-auto mb-4 space-y-4 p-4 bg-slate-50 rounded-lg">
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'}`}
+          >
+            <div>
+              <Card
+                className={`max-w-[80%] ${
+                  msg.isUser
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-white'
+                }`}
+              >
+                <CardContent className="p-3">
+                  <div className={`text-sm ${msg.isUser ? 'text-white' : 'text-gray-800'}`}>
+                    {msg.content}
+                  </div>
+                  
+                  {!msg.isUser && msg.resources && msg.resources.length > 0 && (
+                    <div className="mt-3 pt-2 border-t border-gray-200">
+                      <p className="text-xs font-medium text-gray-500 mb-1">Related Resources:</p>
+                      <div className="space-y-1">
+                        {msg.resources.map((resource, index) => (
+                          <a 
+                            key={index}
+                            href={resource.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-xs text-indigo-600 hover:text-indigo-800"
+                          >
+                            {resource.type === 'youtube' && <Youtube size={12} className="mr-1" />}
+                            {resource.type === 'notes' && <FileText size={12} className="mr-1" />}
+                            {resource.type === 'article' && <LinkIcon size={12} className="mr-1" />}
+                            {resource.type === 'course' && <ExternalLink size={12} className="mr-1" />}
+                            {resource.type === 'book' && <FileText size={12} className="mr-1" />}
+                            <span className="truncate">{resource.title}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className={`text-xs ${msg.isUser ? 'text-indigo-100' : 'text-gray-400'} mt-1`}>
+                    {msg.timestamp.toLocaleTimeString()}
+                  </div>
+                </CardContent>
+              </Card>
+              {!msg.isUser && (
+                <div className="mt-1 flex justify-start">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 px-2 text-xs text-gray-500 hover:text-gray-700"
+                    onClick={() => !isMuted && speakText(msg.content)}
+                    disabled={isMuted}
+                  >
+                    <Volume2 size={14} className="mr-1" />
+                    Listen
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Voice controls */}
+      <div className="flex items-center justify-between mb-2 px-4">
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleMute}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+          </Button>
+          <span className="text-xs text-gray-500 ml-2">
+            {isMuted ? "Voice Disabled" : "Voice Enabled"}
+          </span>
+        </div>
+        <div className="flex items-center">
+          {speechRate !== 1 && (
+            <span className="text-xs text-gray-500 mr-2">
+              Speed: {speechRate.toFixed(1)}x
+            </span>
+          )}
+          <VoiceControl
+            speechRate={speechRate}
+            onSpeechRateChange={setSpeechRate}
+          />
+        </div>
+      </div>
+
+      {/* Message input */}
+      <form onSubmit={handleSendMessage} className="flex gap-2">
+        <Input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask about academic topics, exams, or research..."
+          disabled={isLoading}
+          className="flex-1"
+        />
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Thinking..." : "Send"}
+        </Button>
+      </form>
+    </div>
+  );
+};
+
+export default AIChatbot;
