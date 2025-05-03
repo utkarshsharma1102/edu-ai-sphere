@@ -566,6 +566,40 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
     return resources;
   };
 
+  // Function for text-to-speech
+  const speakText = (text: string) => {
+    if (speechSynthesis) {
+      // Cancel any ongoing speech
+      speechSynthesis.cancel();
+      
+      // Create a new utterance with the text
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Set the speech rate
+      utterance.rate = speechRate;
+      
+      // Start speaking
+      setIsSpeaking(true);
+      
+      // Add an event listener for when speech ends
+      utterance.onend = () => {
+        setIsSpeaking(false);
+      };
+      
+      // Speak the text
+      speechSynthesis.speak(utterance);
+    }
+  };
+
+  // Toggle mute/unmute function
+  const toggleMute = () => {
+    if (isSpeaking && !isMuted) {
+      speechSynthesis?.cancel();
+      setIsSpeaking(false);
+    }
+    setIsMuted(!isMuted);
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -715,5 +749,3 @@ const AIChatbot: React.FC<AIChatbotProps> = ({ initialInput = '' }) => {
       }
       
       // Default GATE response
-      return {
-        content: `The Graduate Aptitude Test in Engineering (GATE) is a prestigious national-level examination in India that tests comprehensive understanding of undergraduate engineering and science subjects. GATE scores are used for:\n\n1) Admissions to postgraduate programs (M.Tech/ME/Ph.D) in IITs, NITs, and other prestigious institutions\n2) Recruitment in several Public Sector Undertakings (PSUs)\n3) Scholarships for higher studies\n\nThe exam structure consists of a single paper of 3 hours duration with 65 questions worth 100 marks. It includes 15% General Aptitude questions and 85% subject-specific questions across 29 disciplines. The question types include Multiple Choice Questions (MCQs) and Numerical Answer Type (NAT) questions.\n\nPreparation typically requires 6-12 months of dedicated study, focusing on building strong conceptual understanding rather than memorization. Would you like more specific information about GATE syllabus, preparation strategy, or recommended study materials for a particular engineering branch?`,
