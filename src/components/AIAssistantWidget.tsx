@@ -7,6 +7,7 @@ import { MessageSquare } from 'lucide-react';
 const AIAssistantWidget = () => {
   const [isWidgetVisible, setIsWidgetVisible] = useState(false);
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const [isWidgetInitialized, setIsWidgetInitialized] = useState(false);
   const widgetRef = useRef<HTMLDivElement>(null);
   
   // Load the script when the component mounts
@@ -42,15 +43,25 @@ const AIAssistantWidget = () => {
         widgetContainer.setAttribute('data-agent-id', 'fB4D7yBHx11wB1zghlqa');
         widgetRef.current.appendChild(widgetContainer);
         
-        // Force widget initialization
-        if (window.ElevenLabsConvaiInit) {
-          setTimeout(() => {
-            window.ElevenLabsConvaiInit();
-            console.log("Widget initialized");
-          }, 300);
-        } else {
-          console.log("ElevenLabsConvaiInit function not available yet");
-        }
+        // Force widget initialization with retry mechanism
+        const initWidget = () => {
+          if (window.ElevenLabsConvaiInit) {
+            try {
+              window.ElevenLabsConvaiInit();
+              console.log("Widget initialized");
+              setIsWidgetInitialized(true);
+            } catch (e) {
+              console.error("Widget initialization failed, retrying in 500ms", e);
+              setTimeout(initWidget, 500);
+            }
+          } else {
+            console.log("ElevenLabsConvaiInit function not available yet, retrying in 500ms");
+            setTimeout(initWidget, 500);
+          }
+        };
+        
+        // Start initialization process
+        setTimeout(initWidget, 300);
       }
     }
   }, [isScriptLoaded, isWidgetVisible]);
@@ -88,7 +99,15 @@ const AIAssistantWidget = () => {
               </Button>
             </div>
             <div className="h-full dark:bg-slate-900" ref={widgetRef}>
-              {/* The widget will be dynamically inserted here */}
+              {!isWidgetInitialized && isWidgetVisible && (
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-pulse flex flex-col items-center">
+                    <div className="h-10 w-10 rounded-full bg-primary/20 mb-4"></div>
+                    <div className="h-4 w-32 bg-primary/20 rounded"></div>
+                    <div className="mt-2 text-sm text-muted-foreground">Loading assistant...</div>
+                  </div>
+                </div>
+              )}
             </div>
           </Card>
         </div>

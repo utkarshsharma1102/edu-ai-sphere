@@ -17,6 +17,7 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import VoiceCloneAgent from "./pages/VoiceCloneAgent";
 import VoiceAssistant from "./pages/VoiceAssistant";
+import AIAssistantWidget from "./components/AIAssistantWidget";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <AIAssistantWidget />
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>

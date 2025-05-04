@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -146,11 +147,42 @@
     --elevenlabs-button-bg: rgba(30, 41, 59, 0.8) !important;
     --elevenlabs-button-text: rgba(255, 255, 255, 0.9) !important;
     --elevenlabs-primary-color: var(--primary) !important;
+    --elevenlabs-font-color: rgba(255, 255, 255, 0.9) !important;
+    --elevenlabs-message-bg: rgba(30, 41, 59, 0.8) !important;
+    --elevenlabs-message-text: rgba(255, 255, 255, 0.9) !important;
     color-scheme: dark !important;
   }
   
   .elevenlabs-convai {
     --elevenlabs-bg-color: white !important;
     --elevenlabs-primary-color: var(--primary) !important;
+    --elevenlabs-button-bg: rgba(240, 240, 245, 0.9) !important; 
+    --elevenlabs-button-text: rgba(30, 41, 59, 0.9) !important;
+    --elevenlabs-font-color: rgba(30, 41, 59, 0.9) !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+
+  /* Improved pulse animation for loading states */
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Widget button effects */
+  .widget-button-hover {
+    @apply transition-all duration-300 hover:scale-110;
+  }
+
+  /* Widget chat container */
+  .chat-container {
+    @apply p-4 overflow-y-auto h-[calc(100%-4rem)] scrollbar-thin;
   }
 }
