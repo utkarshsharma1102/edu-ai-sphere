@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MessageSquare } from 'lucide-react';
@@ -7,6 +7,7 @@ import { MessageSquare } from 'lucide-react';
 const AIAssistantWidget = () => {
   const [isWidgetVisible, setIsWidgetVisible] = useState(false);
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const widgetRef = useRef<HTMLDivElement>(null);
   
   // Load the script when the component mounts
   useEffect(() => {
@@ -18,6 +19,7 @@ const AIAssistantWidget = () => {
       script.type = "text/javascript";
       script.onload = () => {
         setIsScriptLoaded(true);
+        console.log("ElevenLabs script loaded successfully");
       };
       document.body.appendChild(script);
     } else {
@@ -29,12 +31,36 @@ const AIAssistantWidget = () => {
     };
   }, []);
 
+  // Initialize widget after script is loaded and widget becomes visible
+  useEffect(() => {
+    if (isScriptLoaded && isWidgetVisible && widgetRef.current) {
+      // Reset the widget container to ensure proper initialization
+      if (widgetRef.current) {
+        widgetRef.current.innerHTML = '';
+        const widgetContainer = document.createElement('div');
+        widgetContainer.className = 'elevenlabs-convai w-full h-full';
+        widgetContainer.setAttribute('data-agent-id', 'fB4D7yBHx11wB1zghlqa');
+        widgetRef.current.appendChild(widgetContainer);
+        
+        // Force widget initialization
+        if (window.ElevenLabsConvaiInit) {
+          setTimeout(() => {
+            window.ElevenLabsConvaiInit();
+            console.log("Widget initialized");
+          }, 300);
+        } else {
+          console.log("ElevenLabsConvaiInit function not available yet");
+        }
+      }
+    }
+  }, [isScriptLoaded, isWidgetVisible]);
+
   const toggleWidget = () => {
     setIsWidgetVisible(!isWidgetVisible);
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-50">
       {/* Widget Button */}
       <Button 
         onClick={toggleWidget}
@@ -61,11 +87,8 @@ const AIAssistantWidget = () => {
                 ✕
               </Button>
             </div>
-            <div className="h-full dark:bg-slate-900">
-              <div 
-                className="elevenlabs-convai w-full h-full" 
-                data-agent-id="fB4D7yBHx11wB1zghlqa"
-              ></div>
+            <div className="h-full dark:bg-slate-900" ref={widgetRef}>
+              {/* The widget will be dynamically inserted here */}
             </div>
           </Card>
         </div>
@@ -73,5 +96,12 @@ const AIAssistantWidget = () => {
     </div>
   );
 };
+
+// Add this to global Window interface
+declare global {
+  interface Window {
+    ElevenLabsConvaiInit?: () => void;
+  }
+}
 
 export default AIAssistantWidget;

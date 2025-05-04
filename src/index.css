@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -139,5 +138,19 @@
   
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out forwards;
+  }
+  
+  /* Fix for ElevenLabs widget in dark mode */
+  .dark .elevenlabs-convai {
+    --elevenlabs-bg-color: rgba(15, 23, 42, 1) !important;
+    --elevenlabs-button-bg: rgba(30, 41, 59, 0.8) !important;
+    --elevenlabs-button-text: rgba(255, 255, 255, 0.9) !important;
+    --elevenlabs-primary-color: var(--primary) !important;
+    color-scheme: dark !important;
+  }
+  
+  .elevenlabs-convai {
+    --elevenlabs-bg-color: white !important;
+    --elevenlabs-primary-color: var(--primary) !important;
   }
 }
