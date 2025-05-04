@@ -86,7 +86,7 @@ const StudySchedule: React.FC<StudyScheduleProps> = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[800px] dark:bg-slate-900">
         <DialogHeader>
           <DialogTitle>My Study Schedule</DialogTitle>
           <DialogDescription>
@@ -115,8 +115,8 @@ const StudySchedule: React.FC<StudyScheduleProps> = ({ isOpen, onClose }) => {
                   <TableCell>
                     <span className={`inline-block text-xs font-medium px-2 py-1 rounded-full 
                       ${session.status === 'Optional' 
-                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100'
-                        : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'
+                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200'
+                        : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200'
                       }`}>
                       {session.status}
                     </span>

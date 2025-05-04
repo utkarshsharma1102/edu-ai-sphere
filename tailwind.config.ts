@@ -30,20 +30,20 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#2563EB', // Deep blue
-					foreground: '#FFFFFF',
+					DEFAULT: 'hsl(var(--primary))',
+					foreground: 'hsl(var(--primary-foreground))',
 					hover: '#1D4ED8',
 					light: '#DBEAFE'
 				},
 				secondary: {
-					DEFAULT: '#0EA5E9', // Teal
-					foreground: '#FFFFFF',
+					DEFAULT: 'hsl(var(--secondary))',
+					foreground: 'hsl(var(--secondary-foreground))',
 					hover: '#0284C7',
 					light: '#E0F2FE'
 				},
 				accent: {
-					DEFAULT: '#8B5CF6', // Purple
-					foreground: '#FFFFFF',
+					DEFAULT: 'hsl(var(--accent))',
+					foreground: 'hsl(var(--accent-foreground))',
 					hover: '#7C3AED',
 					light: '#EDE9FE'
 				},
