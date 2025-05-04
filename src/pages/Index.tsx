@@ -1,40 +1,45 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ArrowRight, Book, Lightbulb, Headphones, LayoutDashboard } from 'lucide-react';
+import { ArrowRight, Book, Lightbulb, Headphones, LayoutDashboard, MessageSquare } from 'lucide-react';
+import AIAssistantWidget from '@/components/AIAssistantWidget';
 
 const Index = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       
-      {/* Hero Section */}
+      {/* Hero Section with AI Assistant */}
       <section className="bg-gradient-to-br from-primary to-secondary py-16 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="heading text-4xl md:text-5xl lg:text-6xl text-white font-bold mb-6">
-              Transform Your Learning with AI
-            </h1>
-            <p className="text-xl text-white/90 mb-8">
-              University AI combines personalized AI tutoring, voice clone technology,
-              and structured courses to create an immersive educational experience.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/courses">
-                <Button size="lg" className="bg-white text-primary hover:bg-white/90">
-                  Explore Courses
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/ai-tutor">
-                <Button size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white/10">
-                  Try AI Tutor
-                </Button>
-              </Link>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="max-w-3xl">
+              <h1 className="heading text-4xl md:text-5xl lg:text-6xl text-white font-bold mb-6">
+                Transform Your Learning with AI
+              </h1>
+              <p className="text-xl text-white/90 mb-8">
+                University AI combines personalized AI tutoring, voice clone technology,
+                and structured courses to create an immersive educational experience.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link to="/courses">
+                  <Button size="lg" className="bg-white text-primary hover:bg-white/90">
+                    Explore Courses
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/ai-tutor">
+                  <Button size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white/10">
+                    Try AI Tutor
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <AIAssistantWidget />
             </div>
           </div>
         </div>
