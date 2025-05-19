@@ -68,8 +68,9 @@ This solution is built to address the growing demand for adaptive, scalable, and
 - Expansion to multilingual and cross-institutional deployments.
 
 ## Contributors
-- **Utkarsh Sharma** – Project Developer and Researcher  
-- **Under the Guidance of Vikram Neerugatti** – Faculty Mentor
+- **Utkarsh Sharma** – Project Developer and Researcher
+- **Karan Nagwani** – Project Developer
+- **Viksd Sinha** – Project Developer
 
 ## License
 This project is developed for academic and research purposes. For collaboration, licensing, or deployment inquiries, please contact the project developer.
